@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e7bbcb39927244a8b97e3b78d642b969" Name="Diagram1">
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.BaiViet" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.BinhLuan" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.ChuDe" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.GopY" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.LoaiCD" Width="1.5" PointX="1.5" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.QuanTriVien" Width="1.5" PointX="0.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.ThanhVien" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DienDanThaoLuanModel.ThongBao" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__BaiViet__MaCD__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__BaiViet__MaQTV__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__BaiViet__MaTV__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__BinhLuan__MaBV__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__BinhLuan__MaTV__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__ChuDe__MaLoai__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__GopY__MaTV__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__ThongBao__MaQTV__4BAC3F29" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

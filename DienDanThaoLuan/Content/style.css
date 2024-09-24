@@ -1,0 +1,131 @@
+﻿/* General body settings */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e7e7e7;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header Section - Full width */
+#header {
+    background-color: #0c88c2;
+}
+
+#menu {
+    background-color: #f8f9fa;
+}
+
+header {
+    width: 100%;
+    background-color: #0c88c2;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    position: relative;
+    left: 0;
+}
+
+    /* Ensuring no margin on the sides of the header */
+    header .logo-section {
+        display: flex;
+        align-items: center;
+    }
+
+    header .logo {
+        height: 80px;
+        margin-right: 10px;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 28px;
+    }
+
+    header .user-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+        header .user-buttons .btn {
+            background-color: white;
+            color: #0c88c2;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+            header .user-buttons .btn:hover {
+                background-color: #0a6a98;
+                color: white;
+            }
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: var(--bs-dropdown-link-hover-color);
+    background-color: #d6dade;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: var(--bs-dropdown-link-active-color);
+    text-decoration: none;
+    background-color: var(--bs-dropdown-link-active-bg);
+}
+
+.banner {
+    margin-top: 50px;
+    margin-left: 20px;
+    width: 1260px;
+    border-radius: 10px;
+    background-color: #0051BA;
+}
+
+.tencd {
+    text-decoration: none;
+    color: #212529;
+}
+
+    .tencd:hover {
+        color: #0051BA;
+        font-weight: 200;
+    }
+
+.bg-custom {
+    background-color: #0078d4 !important;
+}
+
+div.row {
+    width: 1310px !important;
+    padding-left: 20px;
+}
+
+footer {
+    background-color: #0c88c2;
+}
+
+.marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    background-color: #023e73e6 !important;
+}
+
+    .marquee p {
+        display: inline-block;
+        animation: marquee 15s linear infinite !important;
+    }
+
+@keyframes marquee {
+    0% {
+        transform: translateX(1530px);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
