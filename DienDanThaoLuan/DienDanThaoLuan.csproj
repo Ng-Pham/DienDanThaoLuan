@@ -129,6 +129,7 @@
     <Compile Include="Models\BaiViet.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaiVietView.cs" />
     <Compile Include="Models\BinhLuan.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
@@ -332,6 +333,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Upload_images\Screenshot 2024-09-23 161151.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -368,6 +370,10 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\DienDanThaoLuan\ChuDe.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\BaiVietTheoCD.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\ThemBV.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\NDBaiViet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
