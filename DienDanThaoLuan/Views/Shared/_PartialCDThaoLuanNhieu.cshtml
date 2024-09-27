@@ -8,7 +8,7 @@
         @foreach (var cd in Model)
         {
             <li class="list-group-item d-flex justify-content-between">
-                <span>💬 <a href="#" class="tencd">@cd.TenCD</a></span>
+                <span>💬 <a href="@Url.Action("ChuDe", "DienDanThaoLuan", new {id = cd.MaLoai})" class="tencd">@cd.TenCD</a></span>
                 <span class="posts"> Số bài: @cd.SoBai</span>
             </li>
         }

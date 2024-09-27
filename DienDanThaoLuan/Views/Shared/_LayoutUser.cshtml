@@ -7,6 +7,56 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/Content/style.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#content',
+            plugins: 'image',
+            toolbar: 'undo redo | image | code',
+            images_upload_url: '/DienDanThaoLuan/Upload', // Đường dẫn đến action trong controller
+            automatic_uploads: true,
+            images_upload_handler: function (blobInfo, success, failure) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/DienDanThaoLuan/Upload'); // Đường dẫn đến action Upload
+
+                xhr.onload = function () {
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                        failure('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+
+                    var json = JSON.parse(xhr.responseText);
+
+                    if (!json || typeof json.location != 'string') {
+                        failure('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+
+                    success(json.location); // Đảm bảo URL đúng
+                };
+
+                var formData = new FormData();
+                formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                xhr.send(formData);
+            }
+
+        });
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form'); // Đảm bảo chọn đúng form
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    tinymce.triggerSave(); // Đồng bộ nội dung từ TinyMCE về 
+                    var content = tinymce.get('content').getContent();
+                    if (content.trim() === '') {
+                        e.preventDefault(); // Ngăn form submit
+                        alert('Nội dung bài viết không được để trống.');
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
     
@@ -14,7 +64,10 @@
         @Html.Action("_PartialHeader","DienDanThaoLuan")
     <!--Menu-->
         @Html.Action("_PartialMenu","DienDanThaoLuan")
+
         @Html.Action("_PartialThongBao","DienDanThaoLuan")
+        
+        @RenderSection("breadcrumb",required:false)
     <div class="container">
         <!-- Banner Section -->
         @RenderSection("PartialBanner",required:false)
