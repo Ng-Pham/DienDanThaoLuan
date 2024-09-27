@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using DienDanThaoLuan.Models;
 
 namespace DienDanThaoLuan.Controllers
@@ -13,9 +14,10 @@ namespace DienDanThaoLuan.Controllers
         DienDanThaoLuanEntities db = new DienDanThaoLuanEntities();
         public ActionResult Index()
         {
-            if (Session["user"] == null)
+            var currentUser = Session["user"] as ThanhVien;
+            if (currentUser != null)
             {
-                return RedirectToAction("Login");
+                ViewBag.Username = currentUser.TenDangNhap;
             }
             return View();
         }
@@ -105,10 +107,9 @@ namespace DienDanThaoLuan.Controllers
 
             //Lấy dữ liệu tài khoản mật khẩu
             var memberAcc = db.ThanhViens.SingleOrDefault(m => m.TenDangNhap.ToLower() == username.ToLower());
-            var adminAcc = db.QuanTriViens.SingleOrDefault(m => m.TenDangNhap.ToLower() == username.ToLower());
 
             //Check tồn tại tài khoản
-            if (memberAcc == null || adminAcc == null)
+            if (memberAcc == null)
             {
                 ViewBag.error = "Tài khoản không tồn tại!!";
                 ViewBag.username = username;
@@ -123,15 +124,15 @@ namespace DienDanThaoLuan.Controllers
                 return View();
             }
 
-            //Nếu tk mk đúng, lưu session, trả về trang chính
-            Session["user"] = memberAcc;
+            FormsAuthentication.SetAuthCookie(username, false);
             return  RedirectToAction("Index");
         }
-
+        //Đăng xuất 
         public ActionResult Logout()
         {
             Session.Remove("user");
             return RedirectToAction("Login  ");
         }
+
     }
 }
