@@ -13,6 +13,10 @@ namespace DienDanThaoLuan.Controllers
         DienDanThaoLuanEntities db = new DienDanThaoLuanEntities();
         public ActionResult Index()
         {
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("Login");
+            }
             return View();
         }
         public ActionResult _PartialHeader()
@@ -82,6 +86,52 @@ namespace DienDanThaoLuan.Controllers
         public ActionResult _PartialFooter()
         {
             return PartialView();
+        }
+
+        //Dang Nhap && Dang Ky
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(string username, string password)
+        {
+            //check null tài khoản && mật khẩu
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                ViewBag.error = "Không được để trống tài khoản hoặc mật khẩu!!!";
+                return View();
+            }
+
+            //Lấy dữ liệu tài khoản mật khẩu
+            var memberAcc = db.ThanhViens.SingleOrDefault(m => m.TenDangNhap.ToLower() == username.ToLower());
+            var adminAcc = db.QuanTriViens.SingleOrDefault(m => m.TenDangNhap.ToLower() == username.ToLower());
+
+            //Check tồn tại tài khoản
+            if (memberAcc == null || adminAcc == null)
+            {
+                ViewBag.error = "Tài khoản không tồn tại!!";
+                ViewBag.username = username;
+                return View();
+            }
+
+            //Check đúng sai tài khoản mật khẩu
+            if (memberAcc.MatKhau != password || memberAcc.TenDangNhap != username)
+            {
+                ViewBag.error = "Sai tên tài khoản hoặc mật khẩu!! Vui lòng thử lại";
+                ViewBag.username = username;
+                return View();
+            }
+
+            //Nếu tk mk đúng, lưu session, trả về trang chính
+            Session["user"] = memberAcc;
+            return  RedirectToAction("Index");
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Remove("user");
+            return RedirectToAction("Login  ");
         }
     }
 }
