@@ -9,8 +9,25 @@
                 <h1>IT Xperience</h1>
             </div>
             <div class="user-buttons">
-                <button class="btn btn-primary me-2">Đăng nhập</button>
-                <button class="btn btn-outline-primary">Đăng ký</button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- Dropdown menu for logged-in user -->
+                    <div class="dropdown" style="min-width: auto">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Xin chào, @ViewBag.Username!
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/Account/Profile">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Login", "DienDanThaoLuan")">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <!-- Show login and register buttons if user is not authenticated -->
+                    <a href="~/DienDanThaoLuan/Login" class="btn btn-primary me-2">Đăng nhập</a>
+                    <a class="btn btn-outline-primary">Đăng ký</a>
+                }
             </div>
         </header>
     </div>
