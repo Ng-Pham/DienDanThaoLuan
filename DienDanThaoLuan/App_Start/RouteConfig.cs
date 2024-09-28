@@ -15,15 +15,10 @@ namespace DienDanThaoLuan
 
             routes.MapRoute(
                 name: "",
-                url: "trang_chu",
+                url: "{controller}/{action}/{id}",
                 defaults: new { controller = "DienDanThaoLuan", action = "Index", id = UrlParameter.Optional }
             );
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
         }
     }
 }

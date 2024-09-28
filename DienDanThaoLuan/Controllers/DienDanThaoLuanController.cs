@@ -138,7 +138,6 @@ namespace DienDanThaoLuan.Controllers
         //Đăng xuất 
         public ActionResult Logout()
         {
-            Session.Remove("user");
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
@@ -272,7 +271,6 @@ namespace DienDanThaoLuan.Controllers
                     post.MaBV = newMaBV; // Gán mã bài viết mới
                     post.NgayDang = DateTime.Now; // Gán ngày đăng bài viết
                     post.TrangThai = "Đã duyệt"; // Gán trạng thái bài viết
-                    post.MaQTV = "QTV002"; // Gán mã quản trị viên
                     post.MaTV = userId; // Gán mã thành viên
                     post.NoiDung = $"<NoiDung>{post.NoiDung}</NoiDung>";
 
@@ -375,9 +373,15 @@ namespace DienDanThaoLuan.Controllers
             ViewBag.tenloai = tenloai;
             ViewBag.macd = macd;
             ViewBag.tencd = tencd;
-
-            var tk = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == userId);
-            ViewBag.User = tk;
+            if (userId != null)
+            {
+                var tk = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == userId);
+                ViewBag.User = tk;
+            }
+            else
+            {
+                ViewBag.User = null;
+            }
 
             return View(nd);
         }

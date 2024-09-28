@@ -17,14 +17,11 @@ namespace DienDanThaoLuan.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public QuanTriVien()
         {
-            this.BaiViets = new HashSet<BaiViet>();
             this.ThongBaos = new HashSet<ThongBao>();
         }
     
         public string MaQTV { get; set; }
-        public string Ho { get; set; }
-        public string Lot { get; set; }
-        public string Ten { get; set; }
+        public string HoTen { get; set; }
         public string AnhDaiDien { get; set; }
         public string Email { get; set; }
         public string SDT { get; set; }
@@ -32,8 +29,6 @@ namespace DienDanThaoLuan.Models
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BaiViet> BaiViets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ThongBao> ThongBaos { get; set; }
     }
