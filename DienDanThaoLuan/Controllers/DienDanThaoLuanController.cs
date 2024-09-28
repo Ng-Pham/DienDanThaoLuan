@@ -20,11 +20,6 @@ namespace DienDanThaoLuan.Controllers
         DienDanThaoLuanEntities db = new DienDanThaoLuanEntities();
         public ActionResult Index()
         {
-            var currentUser = Session["user"] as ThanhVien;
-            if (currentUser != null)
-            {
-                ViewBag.Username = currentUser.TenDangNhap;
-            }
            
             return View();
         }
