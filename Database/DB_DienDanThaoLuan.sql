@@ -14,9 +14,7 @@ use DienDanThaoLuan
 CREATE TABLE QuanTriVien
 (
 	MaQTV VARCHAR(15) PRIMARY KEY,
-	Ho NVARCHAR(10),
-	Lot NVARCHAR(10),
-	Ten NVARCHAR(10),
+	HoTen NVARCHAR(80),
 	AnhDaiDien VARCHAR(50),
 	Email VARCHAR(30),
 	SDT VARCHAR(11),
@@ -28,9 +26,7 @@ CREATE TABLE QuanTriVien
 CREATE TABLE ThanhVien
 (
 	MaTV VARCHAR(15) PRIMARY KEY,
-	Ho NVARCHAR(10),
-	Lot NVARCHAR(10),
-	Ten NVARCHAR(10),
+	HoTen NVARCHAR(80),
 	AnhDaiDien VARCHAR(50),
 	Email VARCHAR(30),
 	GioiTinh NVARCHAR(3),
@@ -62,13 +58,13 @@ CREATE TABLE BaiViet
 	NgayDang DATE,
 	TrangThai NVARCHAR(20),
 	MaCD VARCHAR(15) FOREIGN KEY (MaCD) REFERENCES ChuDe(MaCD),
-	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV),
-	MaQTV VARCHAR(15) FOREIGN KEY (MaQTV) REFERENCES QuanTriVien(MaQTV)
+	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV)
 )
 
 CREATE TABLE BinhLuan
 (
 	MaBL VARCHAR(15) PRIMARY KEY,
+	IDCha VARCHAR(15),
 	NoiDung xml,
 	NgayGui DATE,
 	TrangThai NVARCHAR(20),
@@ -93,14 +89,14 @@ CREATE TABLE ThongBao
 )
 
 -- Dữ liệu cho bảng QuanTriVien
-INSERT INTO QuanTriVien (MaQTV, Ho, Lot, Ten, AnhDaiDien, Email, SDT, NgaySinh, TenDangNhap, MatKhau) VALUES
-('QTV001', N'Nguyễn', N'Văn', N'A', N'avatar.jpg', 'nva@gmail.com', '0912345678', '1980-05-15', 'nguyenvana', 'ad123'),
-('QTV002', N'Trần', N'Thị', N'B', N'avatar.jpg', 'ttb@gmail.com', '0987654321', '1985-11-25', 'tranthib', 'ad456');
+INSERT INTO QuanTriVien (MaQTV, HoTen, AnhDaiDien, Email, SDT, NgaySinh, TenDangNhap, MatKhau) VALUES
+('QTV001', N'Nguyễn Văn A', N'avatar.jpg', 'nva@gmail.com', '0912345678', '1980-05-15', 'nguyenvana', 'ad123'),
+('QTV002', N'Trần Thị B', N'avatar.jpg', 'ttb@gmail.com', '0987654321', '1985-11-25', 'tranthib', 'ad456');
 
 -- Dữ liệu cho bảng ThanhVien
-INSERT INTO ThanhVien (MaTV, Ho, Lot, Ten, AnhDaiDien, Email, GioiTinh, SDT, NgaySinh, NgayThamGia, TenDangNhap, MatKhau) VALUES
-('TV001', N'Lê', N'Văn', N'C', N'avatar.jpg', 'lvc@gmail.com', 'Nam', '0911222333', '1999-03-21', '2023-01-01', 'levanc', '123'),
-('TV002', N'Phạm', N'Thị', N'D', N'avatar.jpg', 'ptd@gmail.com', 'Nữ', '0922333444', '2000-08-10', '2023-02-15', 'phamthid', '456');
+INSERT INTO ThanhVien (MaTV, HoTen, AnhDaiDien, Email, GioiTinh, SDT, NgaySinh, NgayThamGia, TenDangNhap, MatKhau) VALUES
+('TV001', N'Lê Văn C', N'avatar.jpg', 'lvc@gmail.com', 'Nam', '0911222333', '1999-03-21', '2023-01-01', 'levanc', '123'),
+('TV002', N'Phạm Thị D', N'avatar.jpg', 'ptd@gmail.com', 'Nữ', '0922333444', '2000-08-10', '2023-02-15', 'phamthid', '456');
 
 -- Dữ liệu cho bảng LoaiCD
 INSERT INTO LoaiCD (MaLoai, TenLoai) VALUES
@@ -150,16 +146,16 @@ INSERT INTO ChuDe (MaCD, TenCD, MaLoai) VALUES
 ('CD024', N'Phát triển ứng dụng IoT với Arduino', 'L006');
 
 -- Dữ liệu cho bảng BaiViet
-INSERT INTO BaiViet (MaBV, TieuDeBV, NoiDung, NgayDang, TrangThai, MaCD, MaTV, MaQTV) VALUES
-('BV001', N'Học lập trình Python cơ bản',N'<NoiDung>Bài viết về Python dành cho người mới bắt đầu</NoiDung>', '2023-09-01', 'Đã duyệt', 'CD001', 'TV001', 'QTV001'),
-('BV002', N'Các phương pháp bảo mật mạng', N'<NoiDung>Những cách bảo vệ hệ thống mạng khỏi tấn công mạng</NoiDung>', '2023-09-10', 'Đã duyệt', 'CD005', 'TV002', 'QTV002'),
-('BV003', N'Giới thiệu về Machine Learning', N'<NoiDung>Bài viết về Machine Learning cơ bản</NoiDung>', '2023-09-15', 'Đã duyệt', 'CD009', 'TV001', N'QTV001'),
-('BV004', N'Quản trị SQL Server', N'<NoiDung>Cách quản trị cơ sở dữ liệu bằng SQL Server</NoiDung>', '2023-09-18', 'Đã duyệt', 'CD013', 'TV002', 'QTV002');
+INSERT INTO BaiViet (MaBV, TieuDeBV, NoiDung, NgayDang, TrangThai, MaCD, MaTV) VALUES
+('BV001', N'Học lập trình Python cơ bản',N'<NoiDung>Bài viết về Python dành cho người mới bắt đầu</NoiDung>', '2023-09-01', 'Đã duyệt', 'CD001', 'TV001'),
+('BV002', N'Các phương pháp bảo mật mạng', N'<NoiDung>Những cách bảo vệ hệ thống mạng khỏi tấn công mạng</NoiDung>', '2023-09-10', 'Đã duyệt', 'CD005', 'TV002'),
+('BV003', N'Giới thiệu về Machine Learning', N'<NoiDung>Bài viết về Machine Learning cơ bản</NoiDung>', '2023-09-15', 'Đã duyệt', 'CD009', 'TV001'),
+('BV004', N'Quản trị SQL Server', N'<NoiDung>Cách quản trị cơ sở dữ liệu bằng SQL Server</NoiDung>', '2023-09-18', 'Đã duyệt', 'CD013', 'TV002');
 
 -- Dữ liệu cho bảng BinhLuan
-INSERT INTO BinhLuan (MaBL, NoiDung, NgayGui, TrangThai, MaBV, MaTV) VALUES
-('BL001',N'<NoiDung>Bài viết rất hữu ích</NoiDung>', '2023-09-02', N'Hiển thị', 'BV001', 'TV002'),
-('BL002', N'<NoiDung>Tôi đã học được nhiều điều mới</NoiDung>', '2023-09-11', N'Hiển thị', 'BV002', 'TV001');
+INSERT INTO BinhLuan (MaBL, IDCha, NoiDung, NgayGui, TrangThai, MaBV, MaTV) VALUES
+('BL001',null, N'<NoiDung>Bài viết rất hữu ích</NoiDung>', '2023-09-02', N'Hiển thị', 'BV001', 'TV002'),
+('BL002',null, N'<NoiDung>Tôi đã học được nhiều điều mới</NoiDung>', '2023-09-11', N'Hiển thị', 'BV002', 'TV001');
 
 -- Dữ liệu cho bảng GopY
 INSERT INTO GopY (NoiDung, NgayGui, MaTV) VALUES

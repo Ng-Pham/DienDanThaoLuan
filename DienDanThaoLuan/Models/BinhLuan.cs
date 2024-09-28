@@ -15,6 +15,7 @@ namespace DienDanThaoLuan.Models
     public partial class BinhLuan
     {
         public string MaBL { get; set; }
+        public string IDCha { get; set; }
         public string NoiDung { get; set; }
         public Nullable<System.DateTime> NgayGui { get; set; }
         public string TrangThai { get; set; }
