@@ -23,9 +23,7 @@ namespace DienDanThaoLuan.Models
         }
     
         public string MaTV { get; set; }
-        public string Ho { get; set; }
-        public string Lot { get; set; }
-        public string Ten { get; set; }
+        public string HoTen { get; set; }
         public string AnhDaiDien { get; set; }
         public string Email { get; set; }
         public string GioiTinh { get; set; }

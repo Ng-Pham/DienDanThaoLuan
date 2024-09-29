@@ -5,7 +5,7 @@
     <ul class="dropdown-menu">
         @foreach (var cd in Model)
         {
-            <li><a class="dropdown-item" href="#">@cd.TenLoai</a></li>
+            <li><a class="dropdown-item" href="@Url.Action("ChuDe", "DienDanThaoLuan", new {id = cd.MaLoai})">@cd.TenLoai</a></li>
         }
     </ul>
 </li>

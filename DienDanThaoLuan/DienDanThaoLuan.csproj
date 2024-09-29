@@ -122,13 +122,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DienDanThaoLuanController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BaiViet.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaiVietView.cs" />
     <Compile Include="Models\BinhLuan.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
@@ -333,6 +333,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Upload_images\Screenshot 2024-09-23 161151.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -344,9 +345,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Views\DienDanThaoLuan\Index.cshtml" />
     <Content Include="Views\Shared\_PartialMotSoCD.cshtml" />
@@ -370,6 +368,10 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\DienDanThaoLuan\Register.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\ChuDe.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\BaiVietTheoCD.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\ThemBV.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\NDBaiViet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
