@@ -63,7 +63,7 @@ body {
     text-align: left;
     background-color: #fff;
     background-image: url('/Images/bg.jpg');
-    overflow:hidden;
+    overflow: hidden;
 }
 
 [tabindex="-1"]:focus {
@@ -78,7 +78,7 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin-top: 0;
+    margin-top: -25px;
     margin-bottom: 0.5rem;
 }
 
@@ -9004,7 +9004,7 @@ button.bg-dark:focus {
 
 .mb-4,
 .my-4 {
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 3rem !important;
 }
 
 .ml-4,
