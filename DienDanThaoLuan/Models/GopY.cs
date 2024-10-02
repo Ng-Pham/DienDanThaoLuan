@@ -17,6 +17,7 @@ namespace DienDanThaoLuan.Models
         public int ID { get; set; }
         public string NoiDung { get; set; }
         public Nullable<System.DateTime> NgayGui { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
         public string MaTV { get; set; }
     
         public virtual ThanhVien ThanhVien { get; set; }

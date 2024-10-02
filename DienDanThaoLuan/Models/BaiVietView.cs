@@ -21,7 +21,6 @@ namespace DienDanThaoLuan.Models
         public string NDBL { get; set;}
         public DateTime NgayGui { get; set;}
         public string MaTVGui { get; set; }
-        public string TVGui { get; set; }
         public string avTvBl { get; set; }
     }
 }

@@ -221,3 +221,6 @@ footer {
     min-height: 200px;
     width: 1000px;
 }
+.border-custom {
+    border-right: 1px solid #535659;
+}

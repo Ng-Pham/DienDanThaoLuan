@@ -55,7 +55,7 @@ CREATE TABLE BaiViet
 	MaBV VARCHAR(15) PRIMARY KEY,
 	TieuDeBV NVARCHAR(30),
 	NoiDung xml,
-	NgayDang DATE,
+	NgayDang DATETIME,
 	TrangThai NVARCHAR(20),
 	MaCD VARCHAR(15) FOREIGN KEY (MaCD) REFERENCES ChuDe(MaCD),
 	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV)
@@ -66,7 +66,7 @@ CREATE TABLE BinhLuan
 	MaBL VARCHAR(15) PRIMARY KEY,
 	IDCha VARCHAR(15),
 	NoiDung xml,
-	NgayGui DATE,
+	NgayGui DATETIME,
 	TrangThai NVARCHAR(20),
 	MaBV VARCHAR(15) FOREIGN KEY (MaBV) REFERENCES BaiViet(MaBV),
 	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV)
@@ -76,7 +76,8 @@ CREATE TABLE GopY
 (
 	ID int PRIMARY KEY IDENTITY(1,1),
 	NoiDung xml,
-	NgayGui DATE,
+	NgayGui DATETIME,
+	TrangThai BIT,
 	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV)
 )
 
@@ -84,8 +85,12 @@ CREATE TABLE ThongBao
 (
 	MaTB VARCHAR(15) PRIMARY KEY,
 	NoiDung xml,
-	NgayTB DATE,
-	MaQTV VARCHAR(15) FOREIGN KEY (MaQTV) REFERENCES QuanTriVien(MaQTV)
+	NgayTB DATETIME,
+	LoaiTB NVARCHAR(30),
+	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV),
+	MaDoiTuong VARCHAR(15),
+	LoaiDoiTuong VARCHAR(50),
+	TrangThai BIT
 )
 
 -- Dữ liệu cho bảng QuanTriVien
@@ -147,22 +152,27 @@ INSERT INTO ChuDe (MaCD, TenCD, MaLoai) VALUES
 
 -- Dữ liệu cho bảng BaiViet
 INSERT INTO BaiViet (MaBV, TieuDeBV, NoiDung, NgayDang, TrangThai, MaCD, MaTV) VALUES
-('BV001', N'Học lập trình Python cơ bản',N'<NoiDung>Bài viết về Python dành cho người mới bắt đầu</NoiDung>', '2023-09-01', 'Đã duyệt', 'CD001', 'TV001'),
-('BV002', N'Các phương pháp bảo mật mạng', N'<NoiDung>Những cách bảo vệ hệ thống mạng khỏi tấn công mạng</NoiDung>', '2023-09-10', 'Đã duyệt', 'CD005', 'TV002'),
-('BV003', N'Giới thiệu về Machine Learning', N'<NoiDung>Bài viết về Machine Learning cơ bản</NoiDung>', '2023-09-15', 'Đã duyệt', 'CD009', 'TV001'),
-('BV004', N'Quản trị SQL Server', N'<NoiDung>Cách quản trị cơ sở dữ liệu bằng SQL Server</NoiDung>', '2023-09-18', 'Đã duyệt', 'CD013', 'TV002');
+('BV001', N'Học lập trình Python cơ bản',N'<NoiDung>Bài viết về Python dành cho người mới bắt đầu</NoiDung>', '2023-09-01', N'Đã duyệt', 'CD001', 'TV001'),
+('BV002', N'Các phương pháp bảo mật mạng', N'<NoiDung>Những cách bảo vệ hệ thống mạng khỏi tấn công mạng</NoiDung>', N'2023-09-10', 'Đã duyệt', 'CD005', 'TV002'),
+('BV003', N'Giới thiệu về Machine Learning', N'<NoiDung>Bài viết về Machine Learning cơ bản</NoiDung>', '2023-09-15', N'Đã duyệt', 'CD009', 'TV001'),
+('BV004', N'Quản trị SQL Server', N'<NoiDung>Cách quản trị cơ sở dữ liệu bằng SQL Server</NoiDung>', '2023-09-18', N'Đã duyệt', 'CD013', 'TV002');
 
 -- Dữ liệu cho bảng BinhLuan
 INSERT INTO BinhLuan (MaBL, IDCha, NoiDung, NgayGui, TrangThai, MaBV, MaTV) VALUES
 ('BL001',null, N'<NoiDung>Bài viết rất hữu ích</NoiDung>', '2023-09-02', N'Hiển thị', 'BV001', 'TV002'),
-('BL002',null, N'<NoiDung>Tôi đã học được nhiều điều mới</NoiDung>', '2023-09-11', N'Hiển thị', 'BV002', 'TV001');
+('BL002',null, N'<NoiDung>Tôi đã học được nhiều điều mới</NoiDung>', '2024-10-02', N'Hiển thị', 'BV002', 'TV001');
 
 -- Dữ liệu cho bảng GopY
-INSERT INTO GopY (NoiDung, NgayGui, MaTV) VALUES
-(N'<NoiDung>Giao diện trang web cần cải thiện</NoiDung>', '2023-09-05', 'TV001'),
-(N'<NoiDung>Tốc độ tải web cần được cải thiện</NoiDung>', '2023-09-12', 'TV002');
+INSERT INTO GopY (NoiDung, NgayGui, TrangThai, MaTV) VALUES
+(N'<NoiDung>Giao diện trang web cần cải thiện</NoiDung>', '2023-09-05', 1, 'TV001'),
+(N'<NoiDung>Tốc độ tải web cần được cải thiện</NoiDung>', '2023-09-12', 1, 'TV002');
 
 -- Dữ liệu cho bảng ThongBao
 INSERT INTO ThongBao (MaTB, NoiDung, NgayTB, MaQTV) VALUES
 ('TB001', N'<NoiDung>Chào mừng ngày 8/3</NoiDung>', '2023-08-03', 'QTV001'),
 ('TB002', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-01-01', 'QTV002');
+INSERT INTO ThongBao (MaTB, NoiDung, NgayTB, LoaiTB, MaTV, MaDoiTuong, LoaiDoiTuong, TrangThai)
+VALUES 
+('TB001', N'<NoiDung>Bài viết của bạn đã được duyệt</NoiDung>', '2024-10-01 10:00:00', N'Duyệt bài viết', 'TV001', 'BV001', N'BaiViet', 0),
+('TB002', N'<NoiDung>Có bình luận mới trên bài viết của bạn</NoiDung>', '2024-10-02 12:00:00', N'Bình luận', 'TV002', 'BL002', N'BinhLuan', 0),
+('TB003', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-10-02 13:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, 1).

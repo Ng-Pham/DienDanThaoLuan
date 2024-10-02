@@ -20,6 +20,7 @@ namespace DienDanThaoLuan.Models
             this.BaiViets = new HashSet<BaiViet>();
             this.BinhLuans = new HashSet<BinhLuan>();
             this.Gopies = new HashSet<GopY>();
+            this.ThongBaos = new HashSet<ThongBao>();
         }
     
         public string MaTV { get; set; }
@@ -39,5 +40,7 @@ namespace DienDanThaoLuan.Models
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GopY> Gopies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ThongBao> ThongBaos { get; set; }
     }
 }
