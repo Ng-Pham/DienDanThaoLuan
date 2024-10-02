@@ -14,12 +14,6 @@ namespace DienDanThaoLuan.Models
     
     public partial class QuanTriVien
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public QuanTriVien()
-        {
-            this.ThongBaos = new HashSet<ThongBao>();
-        }
-    
         public string MaQTV { get; set; }
         public string HoTen { get; set; }
         public string AnhDaiDien { get; set; }
@@ -28,8 +22,5 @@ namespace DienDanThaoLuan.Models
         public Nullable<System.DateTime> NgaySinh { get; set; }
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ThongBao> ThongBaos { get; set; }
     }
 }

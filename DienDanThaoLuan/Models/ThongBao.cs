@@ -17,8 +17,12 @@ namespace DienDanThaoLuan.Models
         public string MaTB { get; set; }
         public string NoiDung { get; set; }
         public Nullable<System.DateTime> NgayTB { get; set; }
-        public string MaQTV { get; set; }
+        public string LoaiTB { get; set; }
+        public string MaTV { get; set; }
+        public string MaDoiTuong { get; set; }
+        public string LoaiDoiTuong { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
     
-        public virtual QuanTriVien QuanTriVien { get; set; }
+        public virtual ThanhVien ThanhVien { get; set; }
     }
 }

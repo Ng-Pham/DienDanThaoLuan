@@ -21,7 +21,7 @@
 <!-- Main Post -->
 <div class="post-container">
     <div class="row">
-        <div class="col-2 d-flex flex-column align-items-center">
+        <div class="col-2 d-flex flex-column align-items-center border-custom">
             <!-- Avatar Placeholder -->
                 <div class="avatar">
                     <img src="~/Images/@ViewBag.TVVietBai.AnhDaiDien" alt="Avatar">
@@ -41,12 +41,12 @@
     <!-- Replies -->
     <div class="post-container">
         <div class="row">
-            <div class="col-2 d-flex flex-column align-items-center">
+            <div class="col-2 d-flex flex-column align-items-center border-custom">
                 <!-- Avatar Placeholder -->
                 <div class="avatar">
                     <img src="~/Images/@bl.avTvBl" alt="Avatar">
                 </div>
-                <div class="post-header pt-2">@bl.TVGui</div>
+                <div class="post-header pt-2">@bl.TenTV</div>
             </div>
             <div class="col-9">
                 <div class="post-date">@bl.NgayGui</div>
@@ -60,7 +60,7 @@
     <!-- Reply Box -->
     <div class="post-container">
         <div class="row">
-            <div class="col-2 d-flex flex-column align-items-center">
+            <div class="col-2 d-flex flex-column align-items-center border-custom">
                 <!-- Avatar Placeholder -->
                 @if(ViewBag.User!=null)
                 {

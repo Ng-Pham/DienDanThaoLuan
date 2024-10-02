@@ -10,6 +10,6 @@ namespace DienDanThaoLuan.Models
         public string NoiDung { get; set; }
         public DateTime? NgayTB { get; set; }
         public string MaTB { get; set; }
-        public string MaQTV { get; set; }
+        public string LoaiTB { get; set; }
     }
 }
