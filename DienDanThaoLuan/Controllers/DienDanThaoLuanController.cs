@@ -28,6 +28,15 @@ namespace DienDanThaoLuan.Controllers
         }
         public ActionResult _PartialMenu()
         {
+            var userId = Session["UserId"] as string;
+            if (userId != null)
+            {
+                var dstb = db.ThongBaos.Where(n => n.MaTV == userId).OrderByDescending(n => n.NgayTB).ToList();
+
+                var slchuadoc = dstb.Count(n => n.TrangThai == false);
+                if(slchuadoc !=0 )
+                    ViewBag.UnreadCount = slchuadoc;
+            }
             return PartialView();
         }
         public ActionResult _PartialChuDe()
@@ -100,7 +109,8 @@ namespace DienDanThaoLuan.Controllers
                 avTvBl = db.ThanhViens.Where(tv => tv.MaTV == bl.MaTV)
                                       .Select(tv => tv.AnhDaiDien)
                                       .FirstOrDefault(),
-                NgayGui = bl.NgayGui ?? DateTime.Now
+                NgayGui = bl.NgayGui ?? DateTime.Now,
+                MaBL = bl.MaBL
             }).OrderByDescending(bl => bl.NgayGui).ToList();
 
             foreach (var bl in dsbl)
@@ -244,13 +254,15 @@ namespace DienDanThaoLuan.Controllers
             return View(dsbv);
         }
 
-        public ActionResult Loc(string sortOrder, string maloai, string tenloai, string id)
+        public ActionResult Loc(string sortOrder, string tenloai, string id, bool isAllPosts = false)
         {
             ViewBag.NewestSort = sortOrder == "newest" ? "newest_desc" : "newest";
             ViewBag.OldestSort = sortOrder == "oldest" ? "oldest_desc" : "oldest";
-            var baiVietViewList = LayTatCaBaiViet()
-                .Where(b => b.MaCD == id)
-                .ToList();
+            var baiVietViewList = LayTatCaBaiViet();
+            if (!isAllPosts)
+            {
+                baiVietViewList = baiVietViewList.Where(b => b.MaCD == id).ToList();
+            }
             switch (sortOrder)
             {
                 case "newest":
@@ -271,18 +283,21 @@ namespace DienDanThaoLuan.Controllers
 
             if (!baiVietViewList.Any())
             {
-                var cd = db.ChuDes.FirstOrDefault(c => c.MaCD == id);
-                if (cd != null)
+                if (!isAllPosts)
                 {
-                    ViewBag.MaCD = cd.MaCD;
-                    ViewBag.TenCD = cd.TenCD;
-                    ViewBag.TenLoai = tenloai;
-                    ViewBag.MaLoai = cd.MaLoai;
+                    var cd = db.ChuDes.FirstOrDefault(c => c.MaCD == id);
+                    if (cd != null)
+                    {
+                        ViewBag.MaCD = cd.MaCD;
+                        ViewBag.TenCD = cd.TenCD;
+                        ViewBag.TenLoai = tenloai;
+                        ViewBag.MaLoai = cd.MaLoai;
+                    }
+                    ViewBag.Message = "Chưa có bài viết nào cho chủ đề này";
                 }
-                ViewBag.Message = "Chưa có bài viết nào cho chủ đề này";
             }
 
-            return View("BaiVietTheoCD", baiVietViewList);
+            return View(isAllPosts ? "BaiVietMoi" : "BaiVietTheoCD", baiVietViewList);
         }
         [Authorize]
         [HttpGet]
@@ -364,7 +379,7 @@ namespace DienDanThaoLuan.Controllers
             }
             return Json(new { error = "File upload failed." });
         }
-        public ActionResult NDBaiViet(string id, string maloai, string tenloai, string macd, string tencd)
+        public ActionResult NDBaiViet(string id)
         {
             var userId = Session["UserId"] as string;
             var nd = db.BaiViets.FirstOrDefault(ndct => ndct.MaBV == id);
@@ -377,10 +392,14 @@ namespace DienDanThaoLuan.Controllers
             var ngviet = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == nd.MaTV);
             ViewBag.TVVietBai = ngviet;
 
-            ViewBag.maloai = maloai;
-            ViewBag.tenloai = tenloai;
-            ViewBag.macd = macd;
-            ViewBag.tencd = tencd;
+            var chuDe = LayThongTinCD().Where(cd => cd.MaCD == nd.MaCD).SingleOrDefault();
+            if (chuDe != null)
+            {
+                ViewBag.maloai = chuDe.MaLoai;
+                ViewBag.tenloai = chuDe.TenLoai;
+                ViewBag.macd = chuDe.MaCD;
+                ViewBag.tencd = chuDe.TenCD;
+            }
             if (userId != null)
             {
                 var tk = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == userId);
@@ -389,6 +408,10 @@ namespace DienDanThaoLuan.Controllers
             else
             {
                 ViewBag.User = null;
+            }
+            if (TempData["BinhLuanId"] != null)
+            {
+                var binhLuanId = TempData["BinhLuanId"].ToString();
             }
 
             return View(nd);
@@ -433,7 +456,55 @@ namespace DienDanThaoLuan.Controllers
             }
             return View(tv); ;
         }
+        [Authorize]
+        public ActionResult ThongBao()
+        {
+            var userId = Session["UserId"] as string;
 
+            var dstb = db.ThongBaos.Where(n => n.MaTV == userId).OrderByDescending(n => n.NgayTB).ToList();
 
+            foreach (var thongBao in dstb)
+            {
+                if (!string.IsNullOrEmpty(thongBao.NoiDung))
+                {
+                    try
+                    {
+                        thongBao.NoiDung = XuLyNoiDungXML(thongBao.NoiDung);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+            if (!dstb.Any())
+                ViewBag.Message = "Không có thông báo nào gần đây";
+            return View(dstb);
+        }
+        public ActionResult MarkAsRead(string id)
+        {
+            var tb = db.ThongBaos.Find(id);
+            if (tb != null)
+            {
+                tb.TrangThai = true;
+                db.SaveChanges(); 
+            }
+            if (tb.LoaiDoiTuong == "BaiViet")
+            {
+                return RedirectToAction("NDBaiViet", new {id = tb.MaDoiTuong});
+            }
+            if(tb.LoaiDoiTuong == "BinhLuan")
+            {
+                var baiViet = db.BinhLuans.FirstOrDefault(bv => bv.MaBL == tb.MaDoiTuong);
+                TempData["BinhLuanId"] = tb.MaDoiTuong;
+                return RedirectToAction("NDBaiViet", new { id = baiViet.MaBV });
+            }
+            return RedirectToAction("ThongBao");
+        }
+        public ActionResult BaiVietMoi()
+        {
+            var dsbv = LayTatCaBaiViet().OrderByDescending(n => n.NgayDang).ToList();
+            return View(dsbv);
+        }
     }
 }

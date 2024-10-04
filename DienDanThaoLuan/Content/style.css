@@ -224,3 +224,28 @@ footer {
 .border-custom {
     border-right: 1px solid #535659;
 }
+.unread {
+    font-weight: bold;
+    color: #046491;
+}
+
+.read {
+    font-weight:normal;
+    color: black;
+}
+.badge-sm {
+    font-size: 0.74em; 
+    padding: 0.25em 0.4em; 
+}
+.position-relative {
+    position: relative;
+}
+.position-absolute {
+    position: absolute;
+}
+.start-100 {
+    left: 100%; 
+}
+.translate-middle {
+    transform: translate(-50%, -50%);
+}

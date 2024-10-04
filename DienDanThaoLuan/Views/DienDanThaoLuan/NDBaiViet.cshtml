@@ -23,10 +23,10 @@
     <div class="row">
         <div class="col-2 d-flex flex-column align-items-center border-custom">
             <!-- Avatar Placeholder -->
-                <div class="avatar">
-                    <img src="~/Images/@ViewBag.TVVietBai.AnhDaiDien" alt="Avatar">
-                </div>
-                <div class="post-header pt-2">@ViewBag.TVVietBai.TenDangNhap</div>
+            <div class="avatar">
+                <img src="~/Images/@ViewBag.TVVietBai.AnhDaiDien" alt="Avatar">
+            </div>
+            <div class="post-header pt-2">@ViewBag.TVVietBai.TenDangNhap</div>
         </div>
         <div class="col-9">
             <div class="post-date">@Model.NgayDang</div>
@@ -39,7 +39,7 @@
 @foreach (var bl in ViewBag.BinhLuans)
 {
     <!-- Replies -->
-    <div class="post-container">
+    <div id="bl-@bl.MaBL" class="post-container">
         <div class="row">
             <div class="col-2 d-flex flex-column align-items-center border-custom">
                 <!-- Avatar Placeholder -->
@@ -57,32 +57,54 @@
         </div>
     </div>
 }
-    <!-- Reply Box -->
-    <div class="post-container">
-        <div class="row">
-            <div class="col-2 d-flex flex-column align-items-center border-custom">
-                <!-- Avatar Placeholder -->
-                @if(ViewBag.User!=null)
-                {
-                    <div class="avatar">
-                        <img src="~/Images/@ViewBag.User.AnhDaiDien" alt="Avatar">
-                    </div>
-                    <div class="post-header pt-2">@ViewBag.User.TenDangNhap</div>
-                }
-                else
-                {
-                    <div class="avatar">
-                        <img src="https://via.placeholder.com/50" alt="Avatar">
-                    </div>
-                    <div class="post-header pt-2">Khách</div>
-                }
-            </div>
-            <div class="col-9">
-                <div class="reply-box mt-2">
-                    <textarea class="reply-input" placeholder="Nhập câu trả lời"></textarea>
-                    <button class="btn btn-primary float-end send-btn">Gửi</button>
+<!-- Reply Box -->
+<div class="post-container">
+    <div class="row">
+        <div class="col-2 d-flex flex-column align-items-center border-custom">
+            <!-- Avatar Placeholder -->
+            @if (ViewBag.User != null)
+            {
+                <div class="avatar">
+                    <img src="~/Images/@ViewBag.User.AnhDaiDien" alt="Avatar">
                 </div>
+                <div class="post-header pt-2">@ViewBag.User.TenDangNhap</div>
+            }
+            else
+            {
+                <div class="avatar">
+                    <img src="https://via.placeholder.com/50" alt="Avatar">
+                </div>
+                <div class="post-header pt-2">Khách</div>
+            }
+        </div>
+        <div class="col-9">
+            <div class="reply-box mt-2">
+                <textarea class="reply-input" placeholder="Nhập câu trả lời"></textarea>
+                <button class="btn btn-primary float-end send-btn">Gửi</button>
             </div>
         </div>
     </div>
+</div>
+
+@{
+    var blId = TempData["BinhLuanId"] as string;
+}
+
+<script>
+    $(window).on('load', function () {
+        var blId = '@blId';
+
+        if (blId) {
+            var commentElement = document.getElementById('bl-' + blId);
+            if (commentElement) {
+                commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                commentElement.style.backgroundColor = '#0c88c257';
+
+                setTimeout(function () {
+                    commentElement.style.backgroundColor = '';
+                }, 3000);
+            }
+        }
+    });
+</script>
 
