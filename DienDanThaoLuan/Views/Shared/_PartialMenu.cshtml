@@ -6,14 +6,52 @@
             <div class="container-fluid">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="@Url.Action("Index", "DienDanThaoLuan")">TRANG CHỦ</a>
+                        <a class="nav-link" href="@Url.Action("Index", "DienDanThaoLuan")">TRANG CHỦ</a>
                     </li>
-                    @Html.Action("_PartialChuDe","DienDanThaoLuan")
-                    <li class="nav-item"><a class="nav-link" href="#">BÀI VIẾT MỚI</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">GÓP Ý</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">THÔNG BÁO</a></li>
+                    @Html.Action("_PartialChuDe", "DienDanThaoLuan")
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("BaiVietMoi", "DienDanThaoLuan")">BÀI VIẾT MỚI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("GopY", "DienDanThaoLuan")">GÓP Ý</a>
+                    </li>
+                    <li class="nav-item">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a class="nav-link position-relative" href="@Url.Action("ThongBao", "DienDanThaoLuan")">THÔNG BÁO<span id="unreadCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-sm">@ViewBag.UnreadCount</span></a>
+                        }
+                        else
+                        {
+                            <a class="nav-link" href="@Url.Action("ThongBao", "DienDanThaoLuan")">THÔNG BÁO</a>
+                        }
+                    </li>
                 </ul>
             </div>
         </nav>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const path = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            const linkPath = new URL(link.href).pathname;
+
+            if (link.classList.contains('dropdown-toggle')) {
+                const dropdownItems = link.closest('li').querySelectorAll('.dropdown-item');
+
+                dropdownItems.forEach(item => {
+                    if (new URL(item.href).pathname === path) {
+                        link.classList.add('active');
+                        return;
+                    }
+                });
+                return; 
+            }
+            if (linkPath === path) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>

@@ -45,10 +45,10 @@
                             <div class="dropdown">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Lọc</button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "newest", @ten.MaLoai, @ten.TenLoai, id=@ten.MaCD})">Mới nhất</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "oldest", @ten.MaLoai, @ten.TenLoai, id=@ten.MaCD })">Lâu nhất</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "az", @ten.MaLoai, @ten.TenLoai, id=@ten.MaCD })">Tiêu đề bài viết từ A-Z</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "za", @ten.MaLoai, @ten.TenLoai,id= @ten.MaCD })">Tiêu đề bài viết từ Z-A</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "newest", @ten.TenLoai, id=@ten.MaCD})">Mới nhất</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "oldest", @ten.TenLoai, id=@ten.MaCD })">Lâu nhất</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "az", @ten.TenLoai, id=@ten.MaCD })">Tiêu đề bài viết từ A-Z</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "za", @ten.TenLoai,id= @ten.MaCD })">Tiêu đề bài viết từ Z-A</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -61,10 +61,10 @@
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Lọc</button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "newest", ViewBag.MaLoai, ViewBag.TenLoai,id= ViewBag.MaCD})">Mới nhất</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "oldest", ViewBag.MaLoai, ViewBag.TenLoai, id=ViewBag.MaCD })">Lâu nhất</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "az", ViewBag.MaLoai, ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ A-Z</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "za", ViewBag.MaLoai, ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ Z-A</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "newest", ViewBag.TenLoai,id= ViewBag.MaCD})">Mới nhất</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "oldest", ViewBag.TenLoai, id=ViewBag.MaCD })">Lâu nhất</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "az", ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ A-Z</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "za", ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ Z-A</a></li>
                         </ul>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                                 <div class="d-flex align-items-center">
                                     <img src="~/Images/avatar.jpg" alt="User Avatar" class="img-fluid rounded-circle" width="50">
                                     <div class="ms-3">
-                                        <h5 class="card-title mb-1"><a href="@Url.Action("NDBaiViet", "DienDanThaoLuan", new { id = t.MaBV, maloai = t.MaLoai, tenloai = t.TenLoai, macd = t.MaCD, tencd = t.TenCD })" class="text-decoration-none text-dark">@t.TieuDe</a></h5>
+                                        <h5 class="card-title mb-1"><a href="@Url.Action("NDBaiViet", "DienDanThaoLuan", new { id = t.MaBV })" class="text-decoration-none text-dark">@t.TieuDe</a></h5>
                                         <p class="text-muted">@t.TenTV</p>
                                     </div>
                                 </div>

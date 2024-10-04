@@ -168,11 +168,8 @@ INSERT INTO GopY (NoiDung, NgayGui, TrangThai, MaTV) VALUES
 (N'<NoiDung>Tốc độ tải web cần được cải thiện</NoiDung>', '2023-09-12', 1, 'TV002');
 
 -- Dữ liệu cho bảng ThongBao
-INSERT INTO ThongBao (MaTB, NoiDung, NgayTB, MaQTV) VALUES
-('TB001', N'<NoiDung>Chào mừng ngày 8/3</NoiDung>', '2023-08-03', 'QTV001'),
-('TB002', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-01-01', 'QTV002');
 INSERT INTO ThongBao (MaTB, NoiDung, NgayTB, LoaiTB, MaTV, MaDoiTuong, LoaiDoiTuong, TrangThai)
 VALUES 
 ('TB001', N'<NoiDung>Bài viết của bạn đã được duyệt</NoiDung>', '2024-10-01 10:00:00', N'Duyệt bài viết', 'TV001', 'BV001', N'BaiViet', 0),
 ('TB002', N'<NoiDung>Có bình luận mới trên bài viết của bạn</NoiDung>', '2024-10-02 12:00:00', N'Bình luận', 'TV002', 'BL002', N'BinhLuan', 0),
-('TB003', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-10-02 13:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, 1).
+('TB003', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-10-02 13:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, 1)
