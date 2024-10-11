@@ -121,7 +121,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DienDanThaoLuanController.cs" />
+    <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +195,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\avatar.jpg" />
+    <Content Include="Images\avatar2.jpg" />
     <Content Include="Images\bg.jpg" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Models\DbContext.Context.tt">
@@ -356,7 +359,7 @@
     <Content Include="Views\Shared\PartialQTV.cshtml" />
     <Content Include="Views\Shared\_PartialChuDe.cshtml" />
     <Content Include="Views\Shared\_PartialThongBao.cshtml" />
-    <Content Include="Views\DienDanThaoLuan\Login.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />
@@ -367,13 +370,16 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\DienDanThaoLuan\Register.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\DienDanThaoLuan\ChuDe.cshtml" />
     <Content Include="Views\DienDanThaoLuan\BaiVietTheoCD.cshtml" />
     <Content Include="Views\DienDanThaoLuan\ThemBV.cshtml" />
     <Content Include="Views\DienDanThaoLuan\NDBaiViet.cshtml" />
     <Content Include="Views\DienDanThaoLuan\ThongBao.cshtml" />
     <Content Include="Views\DienDanThaoLuan\BaiVietMoi.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\UserInfo\MemberInfo.cshtml" />
+    <Content Include="Views\UserInfo\AdminInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
