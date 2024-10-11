@@ -1,0 +1,72 @@
+﻿@model DienDanThaoLuan.Models.BaiViet
+@{
+    ViewBag.Title = "ChiTietBV";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    pre {
+        background-color: #282a36; /* Màu nền của theme Dacrula */
+        color: #f8f8f2; /* Màu chữ */
+        padding: 15px; /* Đệm xung quanh mã code */
+        border-radius: 5px; /* Bo tròn góc */
+        overflow-x: auto; /* Hiển thị thanh cuộn ngang nếu cần */
+        max-height: 400px; /* Chiều cao tối đa */
+        overflow-y: auto; /* Hiển thị thanh cuộn dọc nếu cần */
+        font-family: 'Courier New', Courier, monospace; /* Font chữ */
+    }
+
+    .hljs-keyword {
+        color: #ff79c6;
+    }
+    /* Màu cho từ khóa */
+    .hljs-string {
+        color: #50fa7b;
+    }
+    /* Màu cho chuỗi */
+    .hljs-variable {
+        color: #bd93f9;
+    }
+    /* Màu cho biến */
+    .hljs-function {
+        color: #66d9ef;
+    }
+    /* Màu cho hàm */
+    .hljs-comment {
+        color: #6272a4;
+        font-style: italic;
+    }
+    /* Định dạng cho mã bên trong */
+    code {
+        display: block; /* Chuyển thành khối */
+        white-space: pre; /* Giữ nguyên định dạng */
+    }
+    .code-container {
+        position: relative; /* Để nút copy có thể được định vị tương đối */
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container mt-4 mb-4">
+    <div class="card p-4">
+        <h5 class="mb-3"><strong>Tiêu đề:</strong> <i>@Model.TieuDeBV</i></h5>
+
+        <h5 class="mb-2"><strong>Nội dung:</strong></h5>
+        <div class="border p-3 rounded mb-4">
+            <p>@Html.Raw(ViewBag.NDVB)</p>
+        </div>
+
+        @if (!string.IsNullOrEmpty(ViewBag.Code))
+        {
+            <div class="code-container">
+                <pre>
+                <code class="language" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(ViewBag.Code))</code>
+                </pre>
+            </div>
+        }
+        <a href="@Url.Action("LuuBai","BaiViet", new {id = Model.MaBV})"  class="btn btn-primary float-end send-btn">Duyệt bài</a>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        hljs.highlightAll(); // Khởi tạo Highlight.js
+    });
+</script>

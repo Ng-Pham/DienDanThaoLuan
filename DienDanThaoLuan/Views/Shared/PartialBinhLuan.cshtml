@@ -1,0 +1,46 @@
+﻿@model DienDanThaoLuan.Models.ThanhVien
+<div class="post-container">
+    <div class="row">
+        <div class="col-2 d-flex flex-column align-items-center border-custom">
+            <!-- Avatar Placeholder -->
+            @if (Model != null)
+            {
+                <div class="avatar">
+                    <img src="~/Images/@Model.AnhDaiDien" alt="Avatar">
+                </div>
+                <div class="post-header pt-2">@Model.TenDangNhap</div>
+            }
+            else
+            {
+                <div class="avatar">
+                    <img src="https://via.placeholder.com/50" alt="Avatar">
+                </div>
+                <div class="post-header pt-2">Khách</div>
+            }
+        </div>
+        <div class="col-10">
+            @using (Html.BeginForm("ThemBL", "DienDanThaoLuan", FormMethod.Post))
+            {
+                if (!string.IsNullOrEmpty(TempData["Loi"]?.ToString())) // Kiểm tra thông báo lỗi
+                {
+                    <div class="response-message error">@TempData["Loi"]</div>
+                }
+                <input type="hidden" name="MaBV" value="@ViewBag.MaBV" />
+                <input type="hidden" name="IDCha" value="" />
+                <div class="reply-box mt-2">
+                    <textarea class="content reply-input" name="NoiDung" placeholder="Nhập câu trả lời"></textarea>
+                    <div class="form-group p-2">
+                        <button type="button" class="toggleCodeEditor btn btn-secondary">Hiển thị/Ẩn Mã Code</button>
+                    </div>
+                    <div class="codeEditorContainer" style="display: none;">
+                        <div class="form-group p-2">
+                            <textarea name="CodeContent" class="reply-input codeContent" placeholder="Nhập mã code"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-end send-btn">Gửi</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@Html.Partial("_EditorScripts")

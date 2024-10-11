@@ -42,7 +42,6 @@ namespace DienDanThaoLuan.Models
         public virtual ICollection<GopY> Gopies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ThongBao> ThongBaos { get; set; }
-
         public DateTime? LastPasswordResetRequest { get; set; }
     }
 }

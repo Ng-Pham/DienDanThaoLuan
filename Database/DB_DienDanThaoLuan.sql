@@ -59,7 +59,8 @@ CREATE TABLE BaiViet
 	NgayDang DATETIME,
 	TrangThai NVARCHAR(20),
 	MaCD VARCHAR(15) FOREIGN KEY (MaCD) REFERENCES ChuDe(MaCD),
-	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV)
+	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV),
+	MaQTV VARCHAR(15) FOREIGN KEY (MaQTV) REFERENCES QuanTriVien(MaQTV)
 )
 
 CREATE TABLE BinhLuan
@@ -70,7 +71,8 @@ CREATE TABLE BinhLuan
 	NgayGui DATETIME,
 	TrangThai NVARCHAR(20),
 	MaBV VARCHAR(15) FOREIGN KEY (MaBV) REFERENCES BaiViet(MaBV),
-	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV)
+	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV),
+	MaQTV VARCHAR(15) FOREIGN KEY (MaQTV) REFERENCES QuanTriVien(MaQTV)
 )
 
 CREATE TABLE GopY
@@ -155,7 +157,7 @@ INSERT INTO ChuDe (MaCD, TenCD, MaLoai) VALUES
 -- Dữ liệu cho bảng BaiViet
 INSERT INTO BaiViet (MaBV, TieuDeBV, NoiDung, NgayDang, TrangThai, MaCD, MaTV) VALUES
 ('BV001', N'Học lập trình Python cơ bản',N'<NoiDung>Bài viết về Python dành cho người mới bắt đầu</NoiDung>', '2023-09-01', N'Đã duyệt', 'CD001', 'TV001'),
-('BV002', N'Các phương pháp bảo mật mạng', N'<NoiDung>Những cách bảo vệ hệ thống mạng khỏi tấn công mạng</NoiDung>', N'2023-09-10', 'Đã duyệt', 'CD005', 'TV002'),
+('BV002', N'Các phương pháp bảo mật mạng', N'<NoiDung>Những cách bảo vệ hệ thống mạng khỏi tấn công mạng</NoiDung>', N'2023-09-10', N'Đã duyệt', 'CD005', 'TV002'),
 ('BV003', N'Giới thiệu về Machine Learning', N'<NoiDung>Bài viết về Machine Learning cơ bản</NoiDung>', '2023-09-15', N'Đã duyệt', 'CD009', 'TV001'),
 ('BV004', N'Quản trị SQL Server', N'<NoiDung>Cách quản trị cơ sở dữ liệu bằng SQL Server</NoiDung>', '2023-09-18', N'Đã duyệt', 'CD013', 'TV002');
 

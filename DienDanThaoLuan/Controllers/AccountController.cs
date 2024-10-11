@@ -82,6 +82,8 @@ namespace DienDanThaoLuan.Controllers
         //Chức năng Đăng xuất 
         public ActionResult Logout()
         {
+            Session["UserId"] = null;
+            Session["AdminId"] = null;
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "DienDanThaoLuan");
         }

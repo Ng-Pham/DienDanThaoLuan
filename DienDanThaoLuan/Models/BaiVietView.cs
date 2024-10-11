@@ -22,5 +22,9 @@ namespace DienDanThaoLuan.Models
         public DateTime NgayGui { get; set;}
         public string MaTVGui { get; set; }
         public string avTvBl { get; set; }
+        public string CodeContent { get; set; }
+        public string ReplyToContent { get; set; }
+        public string IDCha { get; set; }
+        public string TrangThaiBV { get; set; }
     }
 }

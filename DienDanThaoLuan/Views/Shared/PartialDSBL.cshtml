@@ -1,0 +1,182 @@
+﻿@model IEnumerable<DienDanThaoLuan.Models.BaiVietView>
+<style>
+    .reply-btn {
+        bottom: 10px; /* Align it to the top */
+        right: 20px; /* Align it to the right */
+        font-size: 16px;
+        position: absolute;
+    }
+
+    .reply-to-content {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-left: 4px solid #007bff;
+        margin-bottom: 10px;
+        margin-top:25px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+        .reply-to-content strong {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+    .original-comment {
+        color: #555;
+        font-style: italic;
+    }
+    div.reply-input {
+        height: auto;
+        margin-bottom:30px;
+    }
+
+        div.reply-input textarea {
+            overflow: auto;
+        }
+
+        div.reply-input .btn-success {
+            margin-top: 10px; /* Tạo khoảng cách giữa textarea và nút */
+            background-color: #206daa;
+        }
+    .limit-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        word-wrap: break-word; /* Tự động xuống dòng nếu nội dung quá dài */
+    }
+    .limit-line-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; /* Giới hạn tối đa 2 dòng */
+        word-wrap: break-word; /* Tự động xuống dòng nếu nội dung quá dài */
+        max-height: 3em; /* Đặt chiều cao tối đa cho 2 dòng */
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+@foreach (var bl in Model.Where(x => x.IDCha == null))
+{
+    <div class="post-container" id="bl-@bl.MaBL">
+        <div class="row">
+            <div class="col-2 d-flex flex-column align-items-center border-custom">
+                <div class="avatar">
+                    <img src="~/Images/@bl.avTvBl" alt="Avatar" />
+                </div>
+                <div class="post-header pt-2">@bl.TenTV</div>
+            </div>
+            <div class="col-10">
+                <div class="post-date">@bl.NgayGui</div>
+                <div class="reply-content limit-text">
+                    @Html.Raw(@bl.NDBL)
+
+                    @if (!string.IsNullOrEmpty(@bl.CodeContent))
+                    {
+                        <div class="code-container">
+                            <button class="copy-button" onclick="copyCode()">Copy</button>
+                            <pre><code class="language" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(@bl.CodeContent))</code></pre>
+                            <div class="copy-notification" id="copyNotification">Code copied to clipboard!</div>
+                        </div>
+                    }
+                </div>
+                <button class="btn btn-outline-primary btn-sm reply-btn" onclick="showReplyInput('@bl.MaBL')">Reply</button>
+                <div class="reply-input" id="reply-input-@bl.MaBL" style="display:none;">
+                    @using (Html.BeginForm("ThemBL", "DienDanThaoLuan", FormMethod.Post))
+                    {
+                        if (!string.IsNullOrEmpty(TempData["Loi"]?.ToString())) // Kiểm tra thông báo lỗi
+                        {
+                            <div class="response-message error">@TempData["Loi"]</div>
+                        }
+                        <input type="hidden" name="MaBV" value="@ViewBag.MaBV" />
+                        <input type="hidden" name="IDCha" value="@bl.MaBL" />
+                        <div class="reply-box mt-2">
+                            <textarea class="content reply-input" name="NoiDung" placeholder="Nhập câu trả lời"></textarea>
+                            <div class="form-group p-2">
+                                <button type="button" class="toggleCodeEditor btn btn-secondary">Hiển thị/Ẩn Mã Code</button>
+                            </div>
+                            <div class="codeEditorContainer" style="display: none;">
+                                <div class="form-group p-2">
+                                    <textarea name="CodeContent" class="reply-input codeContent" placeholder="Nhập mã code"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mx-2">Gửi</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    foreach (var reply in Model.Where(x => x.IDCha == bl.MaBL))
+    {
+        <div class="post-container" id="bl-@reply.MaBL">
+            <div class="row">
+                <div class="col-2 d-flex flex-column align-items-center border-custom">
+                    <div class="avatar">
+                        <img src="~/Images/@reply.avTvBl" alt="Avatar" />
+                    </div>
+                    <div class="post-header pt-2">@reply.TenTV</div>
+                </div>
+                <div class="col-10">
+                    @if (!string.IsNullOrEmpty(@reply.ReplyToContent))
+                    {
+                        <div class="reply-to-content">
+                            <strong>Replying to: ' @bl.TenTV '</strong>
+                            <div class="original-comment limit-text limit-line-text">
+                                @Html.Raw(@reply.ReplyToContent)
+                            </div>
+                        </div>
+                    }
+                    <div class="post-date">@reply.NgayGui</div>
+                    <div class="reply-content">
+                        @Html.Raw(@reply.NDBL)
+
+                        @if (!string.IsNullOrEmpty(@reply.CodeContent))
+                        {
+                            <div class="code-container">
+                                <button class="copy-button" onclick="copyCode()">Copy</button>
+                                <pre><code class="language" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(@reply.CodeContent))</code></pre>
+                                <div class="copy-notification" id="copyNotification">Code copied to clipboard!</div>
+                            </div>
+                        }
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm reply-btn" onclick="showReplyInput('@reply.MaBL')">Reply</button>
+                    <div class="reply-input" id="reply-input-@reply.MaBL" style="display:none;">
+                        @using (Html.BeginForm("ThemBL", "DienDanThaoLuan", FormMethod.Post))
+                        {
+                            if (!string.IsNullOrEmpty(TempData["Loi"]?.ToString())) // Kiểm tra thông báo lỗi
+                            {
+                                <div class="response-message error">@TempData["Loi"]</div>
+                            }
+                            <input type="hidden" name="MaBV" value="@ViewBag.MaBV" />
+                            <input type="hidden" name="IDCha" value="@reply.MaBL" />
+                            <div class="reply-box mt-2">
+                                <textarea class="content reply-input" name="NoiDung" placeholder="Nhập câu trả lời"></textarea>
+                                <div class="form-group p-2">
+                                    <button type="button" class="toggleCodeEditor btn btn-secondary">Hiển thị/Ẩn Mã Code</button>
+                                </div>
+                                <div class="codeEditorContainer" style="display: none;">
+                                    <div class="form-group p-2">
+                                        <textarea name="CodeContent" class="reply-input codeContent" placeholder="Nhập mã code"></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mx-2">Gửi</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<script>
+    function showReplyInput(maBL) {
+        document.querySelectorAll('.reply-input').forEach(replyInput => {
+            if (replyInput.id !== 'reply-input-' + maBL) {
+                // Ẩn tất cả các phần reply-input khác
+                replyInput.style.display = 'none';
+            }
+        });
+        var replyInput = document.getElementById('reply-input-' + maBL);
+        replyInput.style.display = replyInput.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
