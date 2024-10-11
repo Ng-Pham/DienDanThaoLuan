@@ -1,0 +1,151 @@
+﻿@model DienDanThaoLuan.Models.ThanhVien
+@{
+    ViewBag.Title = "MemberInfo";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<style type="text/css">
+    .profile-header {
+        background-color: #f8f9fa;
+        padding: 2rem 0px;
+        margin-bottom: 2rem;
+        margin-left: 2rem;
+        border-bottom: 1px solid #e9ecef;
+        border-radius: 10px;
+    }
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .card {
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+    }
+    .profile-img-small {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="profile-header text-center">
+    <img src="@Url.Content("~/Images/" + @Model.AnhDaiDien)" alt="Avatar" class="profile-img-small mb-3">
+    <h1 class="display-4">@Model.HoTen</h1>
+    <p class="lead text-muted">Thành viên</p>
+</div>
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6 mb-4" style="">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Thông tin cá nhân</h5>
+                    @using (Html.BeginForm("UpdateMember", "UserInfo", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.HiddenFor(m => m.MaTV)
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.HoTen, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.HoTen, new { @class = "form-control", required = "required" })
+                            <div class="invalid-feedback">Vui lòng nhập họ tên.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", required = "required" })
+                            <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.GioiTinh, new { @class = "form-label" })
+                            @{
+                                var gioiTinhList = new List<SelectListItem>
+                                {
+                                    new SelectListItem { Value = "", Text = "Chọn giới tính", Selected = string.IsNullOrEmpty(Model.GioiTinh) },
+                                    new SelectListItem { Value = "Nam", Text = "Nam", Selected = Model.GioiTinh == "Nam" },
+                                    new SelectListItem { Value = "Nữ", Text = "Nữ", Selected = Model.GioiTinh == "Nữ" },
+                                    new SelectListItem { Value = "Khác", Text = "Khác", Selected = Model.GioiTinh == "Khác" }
+                                };
+                            }
+                            @Html.DropDownListFor(m => m.GioiTinh, gioiTinhList, new { @class = "form-select", required = "required" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.SDT, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.SDT, new { @class = "form-control", type = "tel", required = "required" })
+                            <div class="invalid-feedback">Vui lòng nhập số điện thoại.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.NgaySinh, new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.NgaySinh, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                            <div class="invalid-feedback">Vui lòng chọn ngày sinh.</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+                     }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Đổi mật khẩu</h5>
+                    @using (Html.BeginForm("ChangePassword", "UserInfo", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                            <input type="password" name="currentPassword" class="form-control" required>
+                            <div class="invalid-feedback">Vui lòng nhập mật khẩu hiện tại.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                            <input type="password" name="newPassword" class="form-control" required>
+                            <div class="invalid-feedback">Vui lòng nhập mật khẩu mới.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                            <input type="password" name="confirmPassword" class="form-control" required>
+                            <div class="invalid-feedback">Vui lòng xác nhận mật khẩu mới.</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

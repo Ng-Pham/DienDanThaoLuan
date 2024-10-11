@@ -11,7 +11,7 @@
             <ol class="breadcrumb">
                 @foreach (var ten in Model)
                 {
-                    <li class="breadcrumb-item"><a href="@Url.Action("ChuDe", "DienDanThaoLuan", new {id = ten.MaLoai})">@ten.TenLoai</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("ChuDe", "DienDanThaoLuan", new {id = ten.MaLoai})" style="text-decoration: none; color: black; font-size: 22px">@ten.TenLoai</a></li>
                     break;
                 }
             </ol>

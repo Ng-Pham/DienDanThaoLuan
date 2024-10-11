@@ -17,6 +17,7 @@ CREATE TABLE QuanTriVien
 	HoTen NVARCHAR(80),
 	AnhDaiDien VARCHAR(50),
 	Email VARCHAR(30),
+	GioiTinh NVARCHAR(3),
 	SDT VARCHAR(11),
 	NgaySinh DATE,
 	TenDangNhap VARCHAR(15),
@@ -94,14 +95,15 @@ CREATE TABLE ThongBao
 )
 
 -- Dữ liệu cho bảng QuanTriVien
-INSERT INTO QuanTriVien (MaQTV, HoTen, AnhDaiDien, Email, SDT, NgaySinh, TenDangNhap, MatKhau) VALUES
-('QTV001', N'Nguyễn Văn A', N'avatar.jpg', 'nva@gmail.com', '0912345678', '1980-05-15', 'nguyenvana', 'ad123'),
-('QTV002', N'Trần Thị B', N'avatar.jpg', 'ttb@gmail.com', '0987654321', '1985-11-25', 'tranthib', 'ad456');
+INSERT INTO QuanTriVien (MaQTV, HoTen, AnhDaiDien, Email, GioiTinh, SDT, NgaySinh, TenDangNhap, MatKhau) VALUES
+('QTV001', N'Nguyễn Văn A', N'avatar.jpg', 'nva@gmail.com', N'Nam' ,'0912345678', '1980-05-15', 'nguyenvana', 'ad123'),
+('QTV002', N'Trần Thị B', N'avatar.jpg', 'ttb@gmail.com', N'Nữ','0987654321', '1985-11-25', 'tranthib', 'ad456');
 
 -- Dữ liệu cho bảng ThanhVien
 INSERT INTO ThanhVien (MaTV, HoTen, AnhDaiDien, Email, GioiTinh, SDT, NgaySinh, NgayThamGia, TenDangNhap, MatKhau) VALUES
-('TV001', N'Lê Văn C', N'avatar.jpg', 'lvc@gmail.com', 'Nam', '0911222333', '1999-03-21', '2023-01-01', 'levanc', '123'),
-('TV002', N'Phạm Thị D', N'avatar.jpg', 'ptd@gmail.com', 'Nữ', '0922333444', '2000-08-10', '2023-02-15', 'phamthid', '456');
+('TV001', N'Lê Văn C', N'avatar.jpg', 'lvc@gmail.com', N'Nam', '0911222333', '1999-03-21', '2023-01-01', 'levanc', '123'),
+('TV002', N'Phạm Thị D', N'avatar.jpg', 'ptd@gmail.com', N'Nữ', '0922333444', '2000-08-10', '2023-02-15', 'phamthid', '456'),
+('TV003', N'Tạ Gia Bảo', N'avatar2.jpg', 'baotg@gmail.com', N'Nam', '0909123456', '2003-01-01', '2023-04-22', 'banphuf29966', '123');
 
 -- Dữ liệu cho bảng LoaiCD
 INSERT INTO LoaiCD (MaLoai, TenLoai) VALUES

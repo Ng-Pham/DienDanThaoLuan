@@ -120,8 +120,6 @@ namespace DienDanThaoLuan.Controllers
 
             return dsbl;
         }
-
-
         public ActionResult _PartialCDThaoLuanNhieu()
         {
             var chuDeDuocThaoLuanNhieu = LayThongTinCD()
@@ -165,68 +163,6 @@ namespace DienDanThaoLuan.Controllers
         public ActionResult _PartialFooter()
         {
             return PartialView();
-        }
-        [HttpGet]
-        //Dang Nhap && Dang Ky
-        public ActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Login(string username, string password)
-        {
-            //check null tài khoản && mật khẩu
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-            {
-                ViewBag.error = "*Không được để trống tài khoản hoặc mật khẩu!!!";
-                return View();
-            }
-            //Lấy dữ liệu tài khoản mật khẩu
-            var memberAcc = db.ThanhViens.SingleOrDefault(m => m.TenDangNhap.ToLower() == username.ToLower());
-
-            //Check tồn tại tài khoản
-            if (memberAcc == null)
-            {
-                var adminAcc = db.QuanTriViens.SingleOrDefault(m => m.TenDangNhap.ToLower() == username.ToLower());
-
-                // Check tồn tại tài khoản trong bảng QuanTriVien
-                if (adminAcc == null)
-                {
-                    ViewBag.error = "Tài khoản không tồn tại!!";
-                    ViewBag.username = username;
-                    return View();
-                }
-
-                // Check đúng sai tài khoản mật khẩu của QuanTriVien
-                if (adminAcc.MatKhau != password)
-                {
-                    ViewBag.error = "Sai tên tài khoản hoặc mật khẩu!! Vui lòng thử lại";
-                    ViewBag.username = username;
-                    return View();
-                }
-
-                // Đăng nhập thành công với tài khoản QuanTriVien
-                FormsAuthentication.SetAuthCookie(username, false);
-                Session["AdminId"] = adminAcc.MaQTV;
-                return RedirectToAction("Index", "DienDanThaoLuan");
-            }
-            //Check đúng sai tài khoản mật khẩu
-            if (memberAcc.MatKhau != password || memberAcc.TenDangNhap != username)
-            {
-                ViewBag.error = "Sai tên tài khoản hoặc mật khẩu!! Vui lòng thử lại";
-                ViewBag.username = username;
-                return View();
-            }
-            //Đăng nhập thành công
-            FormsAuthentication.SetAuthCookie(username, false);
-            Session["UserId"] = memberAcc.MaTV;
-            return  RedirectToAction("Index");
-        }
-        //Đăng xuất 
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index");
         }
         public ActionResult ChuDe(string id)
         {
@@ -415,46 +351,6 @@ namespace DienDanThaoLuan.Controllers
             }
 
             return View(nd);
-        }
-        //Đăng ký
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Register(ThanhVien tv)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var lastTV = db.ThanhViens.OrderByDescending(t => t.MaTV).FirstOrDefault();
-                    string newMaTV = "TV" + (Convert.ToInt32(lastTV.MaTV.Substring(2)) + 1).ToString("D3");
-                    // Kiểm tra xem tên đăng nhập đã tồn tại chưa
-                    var existingUser = db.ThanhViens.FirstOrDefault(x => x.TenDangNhap == tv.TenDangNhap);
-                    if (existingUser != null)
-                    {
-                        ViewBag.error = "Tên đăng nhập đã tồn tại!! Vui lòng thử lại";
-                        ViewBag.tv.TenDangNhap = tv.TenDangNhap;
-                        return View(tv);
-                    }
-                    tv.NgayThamGia = DateTime.Now;
-                    tv.MaTV = newMaTV;
-                    tv.AnhDaiDien = "avatar.jpg";
-                    // Thêm thành viên mới vào database
-                    db.ThanhViens.Add(tv);
-                    db.SaveChanges();
-
-                    // Điều hướng đến trang thành công hoặc đăng nhập
-                    return RedirectToAction("Login", "DienDanThaoLuan");
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "Có lỗi xảy ra, vui lòng thử lại! " + ex.Message);
-                }
-            }
-            return View(tv); ;
         }
         [Authorize]
         public ActionResult ThongBao()

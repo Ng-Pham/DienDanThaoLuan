@@ -1,15 +1,14 @@
-﻿
+﻿@model DienDanThaoLuan.Models.ThanhVien
 @{
+    ViewBag.Title = "Register";
     Layout = null;
-    ViewBag.Title = "LoginForm";
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <title>Đăng nhập</title>
-    <!--required name="username"-->
+    <title>Đăng ký</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -17,48 +16,42 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="~/Content/loginFormStyle.css">
+    <link rel="stylesheet" href="~/Content/registerFormStyle.css">
 </head>
 <body>
     <section class="ftco-section">
+        <a href="@Url.Action("Index","DienDanThaoLuan")" style="font-weight: bold; font-size: 20px; color: lightgrey; position: relative; top: -80px">Quay lại</a>
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section" style="font-size:40px">IT Xperience</h2>
-                </div>
-            </div>
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <div class="login-wrap p-0">
-                        <h3 class="mb-4 text-center">LOGIN</h3>
-                        <form action="#" class="signin-form" method="post">
+                        <h3 class="mb-4 text-center">REGISTER</h3>
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+                        {
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Username" required name="username" value="@User.Identity.Name">
+                                @Html.TextBoxFor(m => m.TenDangNhap, new { @class = "form-control", @placeholder = "Username", required = "required", name = "username" })
                             </div>
                             <div class="form-group">
-                                <input id="password-field" type="password" class="form-control" placeholder="Password" required name="password">
+                                @Html.PasswordFor(m => m.MatKhau, new { @class = "form-control", @id = "password-field", @placeholder = "Password", required = "required", name = "password" })
                                 <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
+                                @Html.TextBoxFor(m => m.HoTen, new { @class = "form-control", @placeholder = "Fullname", required = "required", name = "fullname" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.SDT, new { @class = "form-control", @placeholder = "Phone Number", required = "required", name = "phonenumber" })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", required = "required", name = "email" })
                             </div>
                             <p style="color: white; font-size:14px">@ViewBag.error</p>
-                            <div class="form-group d-md-flex">
-                                <div class="w-50">
-                                    <label class="checkbox-wrap checkbox-primary">
-                                        Remember Me
-                                        <input type="checkbox" checked>
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="w-50 text-md-right">
-                                    <a href="#" style="color: #fff">Forgot Password</a>
-                                </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary submit px-3">Sign-up</button>
                             </div>
-                        </form>
-                        <p class="w-100 text-center">&mdash; Don't have an account? &mdash;</p>
+                        }
+                        <p class="w-100 text-center">&mdash; Already have an account? &mdash;</p>
                         <div class="social d-flex text-center">
-                            <a href="@Url.Action("Register","DienDanThaoLuan")" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Sign-up</a>
+                            <a href="@Url.Action("Login","Account")" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Sign-in</a>
                         </div>
                     </div>
                 </div>
@@ -89,5 +82,6 @@
             });
         });
     </script>
+
 </body>
 </html>

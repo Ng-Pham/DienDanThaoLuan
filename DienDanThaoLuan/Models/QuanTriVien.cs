@@ -22,5 +22,6 @@ namespace DienDanThaoLuan.Models
         public Nullable<System.DateTime> NgaySinh { get; set; }
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
+        public string GioiTinh { get; set; }
     }
 }
