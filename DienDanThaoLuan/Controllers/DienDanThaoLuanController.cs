@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Drawing;
 using DienDanThaoLuan.Models;
 using System.Web.Security;
+using System.Data.SqlClient;
 
 namespace DienDanThaoLuan.Controllers
 {
@@ -73,16 +74,25 @@ namespace DienDanThaoLuan.Controllers
                             ND = bv.NoiDung,
                             TenTV = db.ThanhViens.Where(tv => tv.MaTV == bv.MaTV).Select(tv => tv.TenDangNhap).FirstOrDefault(),
                             NgayDang = bv.NgayDang ?? DateTime.Now,
-                            SoBL = db.BinhLuans.Count(bl => bl.MaBV == bv.MaBV)
+                            SoBL = db.BinhLuans.Count(bl => bl.MaBV == bv.MaBV),
+                            TrangThaiBV = bv.TrangThai
                         })
                          .ToList();
 
             return dsbv; // Trả về danh sách bài viết
         }
-        private string XuLyNoiDungXML(string noiDungXml)
+        private (string vanBan, string codeContent) XuLyNoiDungXML(string noiDungXml)
         {
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(noiDungXml);
+
+            // Tìm mã code
+            var codeNode = xmlDoc.SelectSingleNode("//Code");
+            string codeContent = codeNode != null ? codeNode.InnerText : string.Empty;
+
+            // Lấy nội dung văn bản, bỏ phần mã code
+            var noiDungVanBanNode = xmlDoc.SelectSingleNode("//NoiDung");
+            string noiDungVanBan = noiDungVanBanNode != null ? noiDungVanBanNode.InnerXml : string.Empty;
             foreach (XmlNode imgNode in xmlDoc.SelectNodes("//img"))
             {
                 if (imgNode.Attributes["src"] != null)
@@ -95,31 +105,91 @@ namespace DienDanThaoLuan.Controllers
                     imgNode.Attributes["src"].Value = srcimg;
                 }
             }
-            return xmlDoc.SelectSingleNode("//NoiDung")?.InnerXml;
+            // Loại bỏ các thẻ <Code> khỏi nội dung văn bản
+            if (!string.IsNullOrEmpty(codeContent))
+            {
+                noiDungVanBan = noiDungVanBan.Replace(codeNode.OuterXml, string.Empty);
+            }
+            
+            return (noiDungVanBan, codeContent);
         }
+
         private List<BaiVietView> LayDanhSachBinhLuan(string maBV)
         {
-            var dsbl = db.BinhLuans.Where(bl => bl.MaBV == maBV)
-            .Select(bl => new BaiVietView
+            var blList = db.Database.SqlQuery<BinhLuan>(
+                @"WITH RecursiveComments AS (
+                    SELECT MaBL, IDCha, CAST(NoiDung AS NVARCHAR(MAX)) AS NoiDung, NgayGui, MaTV, MaBV, TrangThai
+                    FROM BinhLuan
+                    WHERE MaBV = @maBV AND IDCha IS NULL
+
+                    UNION ALL
+
+                    SELECT bl.MaBL, bl.IDCha, CAST(bl.NoiDung AS NVARCHAR(MAX)) AS NoiDung, bl.NgayGui, bl.MaTV, bl.MaBV, bl.TrangThai
+                    FROM BinhLuan bl
+                    INNER JOIN RecursiveComments rc ON bl.IDCha = rc.MaBL
+                )
+
+                SELECT MaBL, IDCha, NoiDung, NgayGui, MaTV, MaBV, TrangThai
+                FROM RecursiveComments
+                ",
+                new SqlParameter("@maBV", maBV)
+            ).ToList();
+            var dsbl = blList.Select(bl => new BaiVietView
             {
+                // Gán các giá trị cần thiết từ BinhLuan
+                MaBL = bl.MaBL,
                 NDBL = bl.NoiDung,
-                TenTV = db.ThanhViens.Where(tv => tv.MaTV == bl.MaTV)
-                                     .Select(tv => tv.TenDangNhap)
-                                     .FirstOrDefault(),
-                avTvBl = db.ThanhViens.Where(tv => tv.MaTV == bl.MaTV)
-                                      .Select(tv => tv.AnhDaiDien)
-                                      .FirstOrDefault(),
                 NgayGui = bl.NgayGui ?? DateTime.Now,
-                MaBL = bl.MaBL
-            }).OrderByDescending(bl => bl.NgayGui).ToList();
+                MaTVGui = bl.MaTV,
+                TenTV = db.ThanhViens.Where(tv => tv.MaTV == bl.MaTV)
+                             .Select(tv => tv.TenDangNhap)
+                             .FirstOrDefault(),
+                avTvBl = db.ThanhViens.Where(tv => tv.MaTV == bl.MaTV)
+                              .Select(tv => tv.AnhDaiDien)
+                              .FirstOrDefault(),
+                ReplyToContent = db.BinhLuans.Where(r => r.MaBL == bl.IDCha)
+                                     .Select(r => r.NoiDung)
+                                     .FirstOrDefault(),
+            // Các giá trị khác nếu cần thêm
+                MaBV = bl.MaBV,
+                IDCha = bl.IDCha
+            }).ToList();
 
             foreach (var bl in dsbl)
             {
-                bl.NDBL = XuLyNoiDungXML(bl.NDBL); 
+                var (noiDungVanBan, codeContent) = XuLyNoiDungXML(bl.NDBL);
+                bl.NDBL = noiDungVanBan;
+                bl.CodeContent = codeContent;
+                if (!string.IsNullOrEmpty(bl.ReplyToContent))
+                {
+                    var (noiDung, code) = XuLyNoiDungXML(bl.ReplyToContent);
+                    bl.ReplyToContent = noiDung;
+                }
             }
 
             return dsbl;
         }
+        public string XuLyNoiDung(string noiDung, string codeContent)
+        {
+            // Decode the content from the request
+            var decodedCodeContent = HttpUtility.UrlDecode(codeContent ?? string.Empty); // Ensure not null
+            var decodedNoiDung = HttpUtility.UrlDecode(noiDung);
+
+            string xmlString;
+            if (!string.IsNullOrEmpty(decodedCodeContent))
+            {
+                xmlString = $"<NoiDung>{HttpUtility.HtmlDecode(decodedNoiDung)}<Code><![CDATA[{decodedCodeContent}]]></Code></NoiDung>";
+            }
+            else
+            {
+                xmlString = $"<NoiDung>{HttpUtility.HtmlDecode(decodedNoiDung)}</NoiDung>";
+            }
+
+            // Parse the XML string
+            XElement xmlContent = XElement.Parse(xmlString);
+            return xmlContent.ToString(); // Return as string
+        }
+
         public ActionResult _PartialCDThaoLuanNhieu()
         {
             var chuDeDuocThaoLuanNhieu = LayThongTinCD()
@@ -131,7 +201,7 @@ namespace DienDanThaoLuan.Controllers
         }
         public ActionResult _PartialThongBao()
         {
-            var tb = db.ThongBaos
+            var tb = db.ThongBaos.Where(t => t.LoaiDoiTuong==null)
             .Select(t => new  ThongBaoView
             {
                 MaTB = t.MaTB,
@@ -249,28 +319,26 @@ namespace DienDanThaoLuan.Controllers
         public ActionResult ThemBV(BaiViet post)
         {
             var userId = Session["UserId"] as string;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(post.NoiDung))
             {
                 try
                 {
-                    // Chuyển đổi nội dung bài viết từ chuỗi sang XML
-                    XElement xmlContent = XElement.Parse(post.NoiDung); // Assuming NoiDung is a string containing valid XML
-                    // Gán nội dung XML vào thuộc tính NoiDung (nếu kiểu dữ liệu trong model là XML)
-                    post.NoiDung = xmlContent.ToString(); // Store as string in database
+                    
+                    var nd = XuLyNoiDung(post.NoiDung, Request.Unvalidated.Form["CodeContent"]); // Store as string in database
                                                           // Tạo mã bài viết tự động
                     var lastPost = db.BaiViets.OrderByDescending(b => b.MaBV).FirstOrDefault();
                     string newMaBV = "BV" + (Convert.ToInt32(lastPost.MaBV.Substring(2)) + 1).ToString("D3");
 
                     post.MaBV = newMaBV; // Gán mã bài viết mới
                     post.NgayDang = DateTime.Now; // Gán ngày đăng bài viết
-                    post.TrangThai = "Đã duyệt"; // Gán trạng thái bài viết
+                    post.TrangThai = "Chờ duyệt"; // Gán trạng thái bài viết
                     post.MaTV = userId; // Gán mã thành viên
-                    post.NoiDung = $"<NoiDung>{post.NoiDung}</NoiDung>";
+                    post.NoiDung = nd;
 
                     db.BaiViets.Add(post);
                     db.SaveChanges();
 
-                    TempData["SuccessMessage"] = "Bài viết đã được thêm thành công!";
+                    TempData["SuccessMessage"] = "Bài viết đã được gửi chờ xét duyệt thành công!";
 
                     // Quay lại trang trước đó (nếu có)
                     if (Request.UrlReferrer != null)
@@ -289,8 +357,11 @@ namespace DienDanThaoLuan.Controllers
                     ModelState.AddModelError("", "Có lỗi xảy ra trong quá trình lưu bài viết: " + ex.Message);
                 }
             }
-
+            ViewBag.Loi = "Vui lòng điền đầy đủ thông tin!";
+            
             // Nếu model không hợp lệ hoặc có lỗi, quay lại view
+            var cd = db.ChuDes.ToList();
+            ViewBag.MaCD = new SelectList(cd, "MaCD", "TenCD");
             return View(post);
         }
         [HttpPost]
@@ -317,14 +388,13 @@ namespace DienDanThaoLuan.Controllers
         }
         public ActionResult NDBaiViet(string id)
         {
-            var userId = Session["UserId"] as string;
             var nd = db.BaiViets.FirstOrDefault(ndct => ndct.MaBV == id);
-            
-            ViewBag.NoiDung = XuLyNoiDungXML(nd.NoiDung);
+            var (noiDungVanBan, codeContent) = XuLyNoiDungXML(nd.NoiDung);
 
-            var dsbl = LayDanhSachBinhLuan(id).OrderByDescending(bl => bl.NgayGui).ToList();
-            ViewBag.BinhLuans = dsbl;
-
+            // Lưu nội dung vào ViewBag
+            ViewBag.NoiDungVanBan = noiDungVanBan;
+            ViewBag.CodeContent = codeContent; 
+           
             var ngviet = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == nd.MaTV);
             ViewBag.TVVietBai = ngviet;
 
@@ -336,28 +406,19 @@ namespace DienDanThaoLuan.Controllers
                 ViewBag.macd = chuDe.MaCD;
                 ViewBag.tencd = chuDe.TenCD;
             }
-            if (userId != null)
-            {
-                var tk = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == userId);
-                ViewBag.User = tk;
-            }
-            else
-            {
-                ViewBag.User = null;
-            }
-            if (TempData["BinhLuanId"] != null)
-            {
-                var binhLuanId = TempData["BinhLuanId"].ToString();
-            }
-
             return View(nd);
         }
         [Authorize]
         public ActionResult ThongBao()
         {
-            var userId = Session["UserId"] as string;
+            string Id;
+            Id = Session["UserId"] as string;
+            if(string.IsNullOrEmpty(Id))
+            {
+                Id = Session["AdminId"] as string;
+            }
 
-            var dstb = db.ThongBaos.Where(n => n.MaTV == userId).OrderByDescending(n => n.NgayTB).ToList();
+            var dstb = db.ThongBaos.Where(n => n.MaTV == Id).OrderByDescending(n => n.NgayTB).ToList();
 
             foreach (var thongBao in dstb)
             {
@@ -365,7 +426,10 @@ namespace DienDanThaoLuan.Controllers
                 {
                     try
                     {
-                        thongBao.NoiDung = XuLyNoiDungXML(thongBao.NoiDung);
+                        var (noiDungVanBan, codeContent) = XuLyNoiDungXML(thongBao.NoiDung);
+
+                        // Lưu nội dung vào ViewBag
+                        thongBao.NoiDung = noiDungVanBan;
                     }
                     catch (Exception ex)
                     {
@@ -399,8 +463,152 @@ namespace DienDanThaoLuan.Controllers
         }
         public ActionResult BaiVietMoi()
         {
-            var dsbv = LayTatCaBaiViet().OrderByDescending(n => n.NgayDang).ToList();
+            var dsbv = LayTatCaBaiViet().Where(bv => bv.TrangThaiBV == "Đã duyệt").OrderByDescending(n => n.NgayDang).ToList();
             return View(dsbv);
+        }
+        public ActionResult PartialBinhLuan(string id)
+        {
+            var userId = Session["UserId"] as string;
+            ViewBag.MaBV = id;
+            if (userId == null)
+            {
+                ViewBag.User = null;
+                return PartialView();
+            }
+            var tk = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == userId);
+
+            return PartialView(tk);
+        }
+        public ActionResult PartialDSBL(string id)
+        {
+            var dsbl = LayDanhSachBinhLuan(id).OrderByDescending(bl => bl.NgayGui).ToList();
+            ViewBag.MaBV = id;
+            return PartialView(dsbl);
+        }
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        public ActionResult ThemBL(BinhLuan bl)
+        {
+            var userId = Session["UserId"] as string;
+            if (ModelState.IsValid && !string.IsNullOrEmpty(bl.NoiDung))
+            {
+                try
+                {
+                    var nd = XuLyNoiDung(bl.NoiDung, Request.Unvalidated.Form["CodeContent"]); // Store as string in database
+                                                                                               // Tạo mã bài viết tự động
+                    var lastCmt = db.BinhLuans.OrderByDescending(c => c.MaBL).FirstOrDefault();
+                    string newMaBL = "BL" + (Convert.ToInt32(lastCmt.MaBL.Substring(2)) + 1).ToString("D3");
+
+                    bl.MaBL = newMaBL; // Gán mã bài viết mới
+                    bl.NgayGui = DateTime.Now; // Gán ngày đăng bài viết
+                    bl.TrangThai = "Hiển thị"; // Gán trạng thái bài viết
+                    bl.MaTV = userId; // Gán mã thành viên
+                    bl.NoiDung = nd;
+                    if (string.IsNullOrEmpty(bl.IDCha))
+                    {
+                        bl.IDCha = null;
+                    }
+                    else
+                    {
+                        bl.IDCha = bl.IDCha;
+                    }
+                    bl.MaBV = bl.MaBV;
+
+                    db.BinhLuans.Add(bl);
+                    db.SaveChanges();
+
+                    var maTV = db.BaiViets.Where(bv => bv.MaBV == bl.MaBV).Select(bv => bv.MaTV).FirstOrDefault();
+                    GuiThongBao("Bình luận", maTV, bl.MaBL, "BinhLuan");
+                }
+                catch (Exception ex)
+                {
+                    // Nếu có lỗi trong quá trình xử lý XML hoặc lưu vào database
+                    ModelState.AddModelError("", "Có lỗi xảy ra trong quá trình lưu: " + ex.Message);
+                }
+            }
+            else
+            {
+                TempData["Loi"] = "Vui lòng điền đầy đủ thông tin!";
+            }
+            return RedirectToAction("NDBaiViet", new { id = bl.MaBV });
+        }
+        public void GuiThongBao(string loaitb,string maTVNhan, string maDoiTuong, string loaidt)
+        {
+            var lastTB = db.ThongBaos.OrderByDescending(c => c.MaTB).FirstOrDefault();
+            string newMaTB = "TB" + (Convert.ToInt32(lastTB.MaTB.Substring(2)) + 1).ToString("D3");
+            // Tạo thông báo
+            ThongBao thongBao = new ThongBao
+            {
+                MaTB = newMaTB,
+                NgayTB = DateTime.Now,
+                LoaiTB = loaitb,
+                MaTV = maTVNhan,
+                MaDoiTuong = maDoiTuong,
+                LoaiDoiTuong = loaidt,
+                TrangThai = false
+            };
+            if( loaidt == "BinhLuan")
+            {
+                var maBaiViet = db.BinhLuans.Where(bl => bl.MaBL == maDoiTuong).Select(bl => bl.MaBV).FirstOrDefault();
+                var tieuDeBV = db.BaiViets.Where(bv => bv.MaBV == maBaiViet).Select(bv => bv.TieuDeBV).FirstOrDefault();
+                thongBao.NoiDung = $"<NoiDung>Bài viết '{tieuDeBV}' của bạn vừa có bình luận mới.</NoiDung>";
+                db.SaveChanges();
+                var idCha = db.BinhLuans.Where(bl => bl.MaBL == maDoiTuong).Select(bl => bl.IDCha).FirstOrDefault();
+                if (!string.IsNullOrEmpty(idCha))
+                {
+                    var replyTV = db.BinhLuans.Where(bl => bl.MaBL == idCha).Select(bl => bl.MaTV).FirstOrDefault();
+                    ThongBao replyThongBao = new ThongBao
+                    {
+                        MaTB = "TB" + (Convert.ToInt32(lastTB.MaTB.Substring(2)) + 2).ToString("D3"), // Tạo mã TB mới cho người reply
+                        NgayTB = DateTime.Now,
+                        LoaiTB = loaitb,
+                        MaTV = replyTV,
+                        MaDoiTuong = maDoiTuong,
+                        LoaiDoiTuong = loaidt,
+                        NoiDung = $"<NoiDung>Bình luận của bạn ở bài viết '{tieuDeBV}' đã có phản hồi mới.</NoiDung>",
+                        TrangThai = false
+                    };
+                    db.ThongBaos.Add(replyThongBao);
+                }
+            }    
+            else if(loaidt == "BaiViet")
+            {
+                var tieuDeBV = db.BaiViets.Where(bv => bv.MaBV == maDoiTuong).Select(bv => bv.TieuDeBV).FirstOrDefault();
+                thongBao.NoiDung = $"<NoiDung>Bài viết '{tieuDeBV}' của bạn đã được phê duyệt.</NoiDung>";
+            }    
+            // Lưu thông báo vào cơ sở dữ liệu
+            db.ThongBaos.Add(thongBao);
+            db.SaveChanges();
+        }
+        [HttpGet]
+        [Authorize]
+        public ActionResult GopY()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult GopY(GopY gopY)
+        {
+            var userId = Session["UserId"] as string;
+            if (ModelState.IsValid && !string.IsNullOrEmpty(gopY.NoiDung))
+            {
+                var nd = XuLyNoiDung(gopY.NoiDung, null);
+
+                gopY.NoiDung = nd;
+                gopY.NgayGui = DateTime.Now;
+                gopY.MaTV = userId;
+                gopY.TrangThai = false;
+
+                db.Gopies.Add(gopY);
+                db.SaveChanges();
+                ViewBag.ThongBao = "Đã gửi góp ý! Cảm ơn bạn đã gửi góp ý!";
+            }
+            else
+            {
+                ViewBag.Loi = "Vui lòng điền đầy đủ thông tin!";
+            }    
+            return View();
         }
     }
 }

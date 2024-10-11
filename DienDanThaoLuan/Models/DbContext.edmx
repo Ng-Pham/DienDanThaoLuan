@@ -96,7 +96,7 @@
           <Property Name="LoaiDoiTuong" Type="varchar" MaxLength="50" />
           <Property Name="TrangThai" Type="bit" />
         </EntityType>
-        <Association Name="FK__BaiViet__MaCD__52593CB8">
+        <Association Name="FK__BaiViet__MaCD__403A8C7D">
           <End Role="ChuDe" Type="Self.ChuDe" Multiplicity="0..1" />
           <End Role="BaiViet" Type="Self.BaiViet" Multiplicity="*" />
           <ReferentialConstraint>
@@ -108,7 +108,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BaiViet__MaTV__534D60F1">
+        <Association Name="FK__BaiViet__MaTV__412EB0B6">
           <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="0..1" />
           <End Role="BaiViet" Type="Self.BaiViet" Multiplicity="*" />
           <ReferentialConstraint>
@@ -120,7 +120,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__MaBV__5629CD9C">
+        <Association Name="FK__BinhLuan__MaBV__440B1D61">
           <End Role="BaiViet" Type="Self.BaiViet" Multiplicity="0..1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -132,7 +132,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__MaTV__571DF1D5">
+        <Association Name="FK__BinhLuan__MaTV__44FF419A">
           <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="0..1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -144,7 +144,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ChuDe__MaLoai__4F7CD00D">
+        <Association Name="FK__ChuDe__MaLoai__3D5E1FD2">
           <End Role="LoaiCD" Type="Self.LoaiCD" Multiplicity="0..1" />
           <End Role="ChuDe" Type="Self.ChuDe" Multiplicity="*" />
           <ReferentialConstraint>
@@ -156,7 +156,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__GopY__MaTV__59FA5E80">
+        <Association Name="FK__GopY__MaTV__47DBAE45">
           <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="0..1" />
           <End Role="GopY" Type="Self.GopY" Multiplicity="*" />
           <ReferentialConstraint>
@@ -168,7 +168,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThongBao__MaTV__5CD6CB2B">
+        <Association Name="FK__ThongBao__MaTV__4AB81AF0">
           <End Role="ThanhVien" Type="Self.ThanhVien" Multiplicity="0..1" />
           <End Role="ThongBao" Type="Self.ThongBao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -189,31 +189,31 @@
           <EntitySet Name="QuanTriVien" EntityType="Self.QuanTriVien" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ThanhVien" EntityType="Self.ThanhVien" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ThongBao" EntityType="Self.ThongBao" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__BaiViet__MaCD__52593CB8" Association="Self.FK__BaiViet__MaCD__52593CB8">
+          <AssociationSet Name="FK__BaiViet__MaCD__403A8C7D" Association="Self.FK__BaiViet__MaCD__403A8C7D">
             <End Role="ChuDe" EntitySet="ChuDe" />
             <End Role="BaiViet" EntitySet="BaiViet" />
           </AssociationSet>
-          <AssociationSet Name="FK__BaiViet__MaTV__534D60F1" Association="Self.FK__BaiViet__MaTV__534D60F1">
+          <AssociationSet Name="FK__BaiViet__MaTV__412EB0B6" Association="Self.FK__BaiViet__MaTV__412EB0B6">
             <End Role="ThanhVien" EntitySet="ThanhVien" />
             <End Role="BaiViet" EntitySet="BaiViet" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__MaBV__5629CD9C" Association="Self.FK__BinhLuan__MaBV__5629CD9C">
+          <AssociationSet Name="FK__BinhLuan__MaBV__440B1D61" Association="Self.FK__BinhLuan__MaBV__440B1D61">
             <End Role="BaiViet" EntitySet="BaiViet" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__MaTV__571DF1D5" Association="Self.FK__BinhLuan__MaTV__571DF1D5">
+          <AssociationSet Name="FK__BinhLuan__MaTV__44FF419A" Association="Self.FK__BinhLuan__MaTV__44FF419A">
             <End Role="ThanhVien" EntitySet="ThanhVien" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__ChuDe__MaLoai__4F7CD00D" Association="Self.FK__ChuDe__MaLoai__4F7CD00D">
+          <AssociationSet Name="FK__ChuDe__MaLoai__3D5E1FD2" Association="Self.FK__ChuDe__MaLoai__3D5E1FD2">
             <End Role="LoaiCD" EntitySet="LoaiCD" />
             <End Role="ChuDe" EntitySet="ChuDe" />
           </AssociationSet>
-          <AssociationSet Name="FK__GopY__MaTV__59FA5E80" Association="Self.FK__GopY__MaTV__59FA5E80">
+          <AssociationSet Name="FK__GopY__MaTV__47DBAE45" Association="Self.FK__GopY__MaTV__47DBAE45">
             <End Role="ThanhVien" EntitySet="ThanhVien" />
             <End Role="GopY" EntitySet="GopY" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThongBao__MaTV__5CD6CB2B" Association="Self.FK__ThongBao__MaTV__5CD6CB2B">
+          <AssociationSet Name="FK__ThongBao__MaTV__4AB81AF0" Association="Self.FK__ThongBao__MaTV__4AB81AF0">
             <End Role="ThanhVien" EntitySet="ThanhVien" />
             <End Role="ThongBao" EntitySet="ThongBao" />
           </AssociationSet>

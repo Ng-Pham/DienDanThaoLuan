@@ -25,6 +25,12 @@
                             <a class="nav-link" href="@Url.Action("ThongBao", "DienDanThaoLuan")">THÔNG BÁO</a>
                         }
                     </li>
+                    <li class="nav-item">
+                        @if (Session["AdminId"] != null)
+                        {
+                            <a class="nav-link" href="@Url.Action("DuyetBai", "BaiViet", new { area = "Admin" })">DUYỆT BÀI</a>
+                        }
+                    </li>
                 </ul>
             </div>
         </nav>

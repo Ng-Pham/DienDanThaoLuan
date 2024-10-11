@@ -13,11 +13,11 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!--Header-->
-    @Html.Action("_PartialHeader", "DienDanThaoLuan")
+    @Html.Action("_PartialHeader", "DienDanThaoLuan", new { area = "" })
     <!--Menu-->
-    @Html.Action("_PartialMenu", "DienDanThaoLuan")
+    @Html.Action("_PartialMenu", "DienDanThaoLuan", new { area = "" })
 
-    @Html.Action("_PartialThongBao", "DienDanThaoLuan")
+    @Html.Action("_PartialThongBao", "DienDanThaoLuan", new { area = "" })
 
     @RenderSection("breadcrumb", required: false)
     <div class="container">
@@ -30,7 +30,7 @@
     </div>
     <!-- Footer Section -->
     <footer class="text-center py-3 text-white">
-        @Html.Action("_PartialFooter", "DienDanThaoLuan")
+        @Html.Action("_PartialFooter", "DienDanThaoLuan", new { area = "" })
     </footer>
 
     <!-- Bootstrap JS -->

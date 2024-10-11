@@ -1,0 +1,26 @@
+﻿@model IEnumerable < DienDanThaoLuan.Models.BaiViet>
+@{
+    ViewBag.Title = "DuyetBai";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="list-group m-3 pt-2 pb-2">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">@ViewBag.Message</div>
+    }
+    else
+    {
+        foreach (var bv in Model)
+        {
+            <div class="list-group-item  d-flex justify-content-between align-items-center">
+                <div>
+                    @Html.Action("PartialThongTinTV", "BaiViet", new {id = bv.MaTV})
+                    <h6><i>"@bv.TieuDeBV"</i></h6>
+                    <small>Lúc @bv.NgayDang</small>
+                </div>
+                <a href="@Url.Action("ChiTietBV","BaiViet",new {id = bv.MaBV})" class="btn bg-custom rounded-pill" style="color:white">Chi tiết</a>
+            </div>
+        }
+    }
+</div>
