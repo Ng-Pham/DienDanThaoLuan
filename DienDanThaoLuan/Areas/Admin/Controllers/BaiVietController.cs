@@ -66,7 +66,7 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
                 tb.TrangThai = "Đã duyệt";
                 db.SaveChanges();
             }
-            return RedirectToAction("ThongBao");
+            return RedirectToAction("DuyetBai");
         }
         public ActionResult PartialThongTinTV(string id)
         {
@@ -82,15 +82,120 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
             ViewBag.Code = codeContent;
             return View(ttbv);
         }
-        public ActionResult LuuBai(string id)
+        public ActionResult LuuTTBai(string id, string trangthai, string lydo)
         {
             var baiviet = db.BaiViets.Find(id);
-            var diendanController = new DienDanThaoLuanController();
-            baiviet.TrangThai = "Đã duyệt";
+            if (trangthai == "duyet")
+            {
+                baiviet.TrangThai = "Đã duyệt";
+            }
+            else if(trangthai == "tuChoi")
+            {
+                baiviet.TrangThai = "Từ chối";
+                TempData["LyDoTuChoi"] = lydo;
+                var idTV = db.BaiViets.Where(bv => bv.MaBV == id).Select(bv => bv.MaTV).FirstOrDefault();
+                GuiThongBao("Từ chối bài viết", idTV, id, "BaiViet");
+                return RedirectToAction("DuyetBai");
+            }    
             db.SaveChanges();
             var maTV = db.BaiViets.Where(bv => bv.MaBV == id).Select(bv => bv.MaTV).FirstOrDefault();
-            diendanController.GuiThongBao("Bài viết", maTV, id, "BaiViet");
+            GuiThongBao("Bài viết", maTV, id, "BaiViet");
             return RedirectToAction("DuyetBai");
+        }
+        public void GuiThongBao(string loaitb, string maTVNhan, string maDoiTuong, string loaidt)
+        {
+            var lastTB = db.ThongBaos.OrderByDescending(c => c.MaTB).FirstOrDefault();
+            string newMaTB = "TB" + (Convert.ToInt32(lastTB.MaTB.Substring(2)) + 1).ToString("D3");
+            // Tạo thông báo
+            ThongBao thongBao = new ThongBao
+            {
+                MaTB = newMaTB,
+                NgayTB = DateTime.Now,
+                LoaiTB = loaitb,
+                MaTV = maTVNhan,
+                MaDoiTuong = maDoiTuong,
+                LoaiDoiTuong = loaidt,
+                TrangThai = false
+            };
+            if (loaidt == "BinhLuan")
+            {
+                if(loaitb == "Xóa bình luận")
+                {
+                    var lyDoXoa = TempData["lydoxoa"] as string;
+                    var maBV = db.BinhLuans.Where(bl => bl.MaBL == maDoiTuong).Select(bl => bl.MaBV).FirstOrDefault();
+                    var tieuDeBV = db.BaiViets.Where(bv => bv.MaBV == maBV).Select(bv => bv.TieuDeBV).FirstOrDefault();
+                    thongBao.NoiDung = $"<NoiDung>Có bình luận của bạn ở bài viết '{tieuDeBV}' đã bị xóa vì {lyDoXoa}.</NoiDung>";
+                    db.SaveChanges();
+                } 
+                else
+                {
+                    var maBaiViet = db.BinhLuans.Where(bl => bl.MaBL == maDoiTuong).Select(bl => bl.MaBV).FirstOrDefault();
+                    var tieuDeBV = db.BaiViets.Where(bv => bv.MaBV == maBaiViet).Select(bv => bv.TieuDeBV).FirstOrDefault();
+                    thongBao.NoiDung = $"<NoiDung>Bài viết '{tieuDeBV}' của bạn vừa có bình luận mới.</NoiDung>";
+                    db.SaveChanges();
+                    var idCha = db.BinhLuans.Where(bl => bl.MaBL == maDoiTuong).Select(bl => bl.IDCha).FirstOrDefault();
+                    if (!string.IsNullOrEmpty(idCha))
+                    {
+                        var replyTV = db.BinhLuans.Where(bl => bl.MaBL == idCha).Select(bl => bl.MaTV).FirstOrDefault();
+                        ThongBao replyThongBao = new ThongBao
+                        {
+                            MaTB = "TB" + (Convert.ToInt32(lastTB.MaTB.Substring(2)) + 2).ToString("D3"), // Tạo mã TB mới cho người reply
+                            NgayTB = DateTime.Now,
+                            LoaiTB = loaitb,
+                            MaTV = replyTV,
+                            MaDoiTuong = maDoiTuong,
+                            LoaiDoiTuong = loaidt,
+                            NoiDung = $"<NoiDung>Bình luận của bạn ở bài viết '{tieuDeBV}' đã có phản hồi mới.</NoiDung>",
+                            TrangThai = false
+                        };
+                        db.ThongBaos.Add(replyThongBao);
+                    }
+                }    
+            }
+            else if (loaidt == "BaiViet")
+            {
+                var tieuDeBV = db.BaiViets.Where(bv => bv.MaBV == maDoiTuong).Select(bv => bv.TieuDeBV).FirstOrDefault();
+                if (loaitb == "Bài viết")
+                {
+                    thongBao.NoiDung = $"<NoiDung>Bài viết '{tieuDeBV}' của bạn đã được phê duyệt.</NoiDung>";
+                }
+                else if (loaitb == "Từ chối bài viết")
+                {
+                    var lyDoTuChoi = TempData["LyDoTuChoi"] as string;
+                    thongBao.NoiDung = $"<NoiDung>Bài viết '{tieuDeBV}' của bạn đã bị từ chối vì '{lyDoTuChoi}'</NoiDung>";
+                }
+                else if(loaitb == "Xóa bài viết")
+                {
+                    var lyDoXoaBai = TempData["lydoxoa"] as string;
+                    thongBao.NoiDung = $"<NoiDung>Bài viết '{tieuDeBV}' của bạn đã bị xóa vì '{lyDoXoaBai}'</NoiDung>";
+                }    
+
+            }
+            // Lưu thông báo vào cơ sở dữ liệu
+            db.ThongBaos.Add(thongBao);
+            db.SaveChanges();
+        }
+        public ActionResult XoaBV_BL(string IdDoiTuong, string LyDoXoa)
+        {
+            TempData["lydoxoa"] = LyDoXoa;
+            string idTV;
+            var bv = db.BaiViets.Find(IdDoiTuong);
+            if (bv == null)
+            {
+                var bl = db.BinhLuans.Find(IdDoiTuong);
+                bl.TrangThai = "Đã xóa";
+                idTV = db.BinhLuans.Where(b => b.MaBL == IdDoiTuong).Select(b => b.MaTV).FirstOrDefault();
+                GuiThongBao("Xóa bình luận", idTV, IdDoiTuong, "BinhLuan");
+                return RedirectToAction("NDBaiViet", "DienDanThaoLuan", new { id = bl.MaBV, area = "" });
+            }
+            else
+            {
+                bv.TrangThai = "Đã xóa";
+                idTV = db.BaiViets.Where(b => b.MaBV == IdDoiTuong).Select(b => b.MaTV).FirstOrDefault();
+                GuiThongBao("Xóa bài viết", idTV, IdDoiTuong, "BaiViet");
+            } 
+            db.SaveChanges();
+            return RedirectToAction("BaiVietMoi", "DienDanThaoLuan", new { area = "" });
         }
     }
 }

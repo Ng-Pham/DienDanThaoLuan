@@ -1,14 +1,24 @@
-﻿@model DienDanThaoLuan.Models.ThanhVien
+﻿@model DienDanThaoLuan.Models.ThanhVien_QuanTriVien
 <div class="post-container">
     <div class="row">
         <div class="col-2 d-flex flex-column align-items-center border-custom">
             <!-- Avatar Placeholder -->
             @if (Model != null)
             {
-                <div class="avatar">
-                    <img src="~/Images/@Model.AnhDaiDien" alt="Avatar">
-                </div>
-                <div class="post-header pt-2">@Model.TenDangNhap</div>
+                if (Model.ThanhVien != null)
+                {
+                    <div class="avatar">
+                        <img src="~/Images/@Model.ThanhVien.AnhDaiDien" alt="Avatar">
+                    </div>
+                    <div class="post-header pt-2">@Model.ThanhVien.TenDangNhap</div>
+                }
+                else if (@Model.QuanTriVien != null)
+                {
+                    <div class="avatar">
+                        <img src="~/Images/@Model.QuanTriVien.AnhDaiDien" alt="Avatar">
+                    </div>
+                    <div class="post-header pt-2">@Model.QuanTriVien.TenDangNhap</div>
+                }
             }
             else
             {

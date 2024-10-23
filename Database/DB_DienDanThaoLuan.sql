@@ -91,6 +91,7 @@ CREATE TABLE ThongBao
 	NgayTB DATETIME,
 	LoaiTB NVARCHAR(30),
 	MaTV VARCHAR(15) FOREIGN KEY (MaTV) REFERENCES ThanhVien(MaTV),
+	MaQTV VARCHAR(15) FOREIGN KEY (MaQTV) REFERENCES QuanTriVien(MaQTV),
 	MaDoiTuong VARCHAR(15),
 	LoaiDoiTuong VARCHAR(50),
 	TrangThai BIT
@@ -172,8 +173,8 @@ INSERT INTO GopY (NoiDung, NgayGui, TrangThai, MaTV) VALUES
 (N'<NoiDung>Tốc độ tải web cần được cải thiện</NoiDung>', '2023-09-12', 1, 'TV002');
 
 -- Dữ liệu cho bảng ThongBao
-INSERT INTO ThongBao (MaTB, NoiDung, NgayTB, LoaiTB, MaTV, MaDoiTuong, LoaiDoiTuong, TrangThai)
+INSERT INTO ThongBao (MaTB, NoiDung, NgayTB, LoaiTB, MaTV, MaQTV, MaDoiTuong, LoaiDoiTuong, TrangThai)
 VALUES 
-('TB001', N'<NoiDung>Bài viết của bạn đã được duyệt</NoiDung>', '2024-10-01 10:00:00', N'Duyệt bài viết', 'TV001', 'BV001', N'BaiViet', 0),
-('TB002', N'<NoiDung>Có bình luận mới trên bài viết của bạn</NoiDung>', '2024-10-02 12:00:00', N'Bình luận', 'TV002', 'BL002', N'BinhLuan', 0),
-('TB003', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-10-02 13:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, 1)
+('TB001', N'<NoiDung>Bài viết của bạn đã được duyệt</NoiDung>', '2024-10-01 10:00:00', N'Duyệt bài viết', 'TV001', NULL, 'BV001', N'BaiViet', 0),
+('TB002', N'<NoiDung>Có bình luận mới trên bài viết của bạn</NoiDung>', '2024-10-02 12:00:00', N'Bình luận', 'TV002', NULL, 'BL002', N'BinhLuan', 0),
+('TB003', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-10-02 13:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, NULL, 1)

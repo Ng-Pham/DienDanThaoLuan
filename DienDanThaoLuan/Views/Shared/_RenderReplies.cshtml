@@ -1,0 +1,77 @@
+﻿@model IEnumerable<DienDanThaoLuan.Models.BaiVietView>
+@{
+    string parentId = ViewBag.ParentId as string;
+}
+
+@foreach (var reply in Model.Where(x => x.IDCha == parentId))
+{
+    <div class="post-container @(reply.IsAdmin ? "admin" : "")" id="bl-@reply.MaBL">
+        <div class="row">
+            <div class="col-2 d-flex flex-column align-items-center border-custom">
+                <div class="avatar">
+                    <img src="~/Images/@reply.avatarNguoiBL" alt="Avatar" />
+                </div>
+                <div class="post-header pt-2">@reply.TenNguoiViet</div>
+            </div>
+            <div class="col-10">
+                @if (!string.IsNullOrEmpty(@reply.ReplyToContent))
+                {
+                    <div class="reply-to-content">
+                        <strong>Replying to: '@reply.TenNguoiViet'</strong>
+                        <div class="original-comment limit-text limit-line-text">
+                            @Html.Raw(@reply.ReplyToContent)
+                        </div>
+                    </div>
+                }
+                <div class="post-date">@reply.NgayGui</div>
+                <div class="reply-content limit-text mb-4">
+                    @Html.Raw(@reply.NDBL)
+                    @if (!string.IsNullOrEmpty(@reply.CodeContent))
+                    {
+                        <div class="code-container">
+                            <button class="copy-button" onclick="copyCode()">Copy</button>
+                            <pre><code class="language" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(@reply.CodeContent))</code></pre>
+                            <div class="copy-notification" id="copyNotification">Code copied to clipboard!</div>
+                        </div>
+                    }
+                </div>
+                <button class="btn btn-outline-primary btn-sm reply-btn" onclick="showReplyInput('@reply.MaBL')">Reply</button>
+                @if (Session["UserId"] != null)
+                {
+                    <button class="report-button right-btn" onclick="showModal('@reply.MaBL')">Tố cáo</button>
+                }
+                else if (Session["AdminId"] != null)
+                {
+                    <button class="report-button right-btn" onclick="showXacNhan('@reply.MaBL')">Xóa</button>
+
+                }
+                <div class="reply-input" id="reply-input-@reply.MaBL" style="display:none;">
+                    @using (Html.BeginForm("ThemBL", "DienDanThaoLuan", FormMethod.Post))
+                    {
+                        if (!string.IsNullOrEmpty(TempData["Loi"]?.ToString())) // Kiểm tra thông báo lỗi
+                        {
+                            <div class="response-message error">@TempData["Loi"]</div>
+                        }
+                        <input type="hidden" name="MaBV" value="@ViewData["MaBV"]" />
+                        <input type="hidden" name="IDCha" value="@reply.MaBL" />
+                        <div class="reply-box mt-2">
+                            <textarea class="content reply-input" name="NoiDung" placeholder="Nhập câu trả lời"></textarea>
+                            <div class="form-group p-2">
+                                <button type="button" class="toggleCodeEditor btn btn-secondary">Hiển thị/Ẩn Mã Code</button>
+                            </div>
+                            <div class="codeEditorContainer" style="display: none;">
+                                <div class="form-group p-2">
+                                    <textarea name="CodeContent" class="reply-input codeContent" placeholder="Nhập mã code"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mx-2">Gửi</button>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @* Đệ quy: Gọi lại partial view để hiển thị các reply của reply *@
+    @Html.Partial("_RenderReplies", Model, new ViewDataDictionary { { "ParentId", reply.MaBL }, { "MaBV", ViewData["MaBV"] } })
+}

@@ -44,10 +44,13 @@
         position: relative; /* Để nút copy có thể được định vị tương đối */
         margin-bottom: 20px;
     }
+    
+
 </style>
 <div class="container mt-4 mb-4">
     <div class="card p-4">
-        <h5 class="mb-3"><strong>Tiêu đề:</strong> <i>@Model.TieuDeBV</i></h5>
+        <h5 class="mb-3"><strong>Chủ đề:</strong> <i>@Model.ChuDe.TenCD</i></h5>
+        <h5 class="mb-3"><strong>Tiêu đề bài viết:</strong> <i>@Model.TieuDeBV</i></h5>
 
         <h5 class="mb-2"><strong>Nội dung:</strong></h5>
         <div class="border p-3 rounded mb-4">
@@ -62,11 +65,46 @@
                 </pre>
             </div>
         }
-        <a href="@Url.Action("LuuBai","BaiViet", new {id = Model.MaBV})"  class="btn btn-primary float-end send-btn">Duyệt bài</a>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Nút từ chối -->
+                <a href="javascript:void(0);" id="btnTuChoi" class="btn btn-danger w-100">Từ chối</a>
+            </div>
+            <div class="col-md-6">
+                <!-- Nút duyệt -->
+                <a href="@Url.Action("LuuTTBai", "BaiViet", new { id = Model.MaBV, trangThai = "duyet" })" class="btn btn-primary w-100">Duyệt bài</a>
+            </div>
+        </div>
+
+        <!-- Phần nhập lý do từ chối, ẩn mặc định -->
+        <form id="formTuChoi" action="@Url.Action("LuuTTBai", "BaiViet")" method="post">
+            <div id="lyDoTuChoiSection" style="display:none; margin-top: 20px;">
+                <div id="customNotification" class="alert alert-danger" style="display:none;" role="alert"></div>
+
+                <label for="lyDoTuChoi" class="mb-2" style="font-size: 20px; font-weight: bold;">Lý do từ chối:</label>
+                <textarea id="lyDoTuChoi" name="lydo" class="form-control" rows="3" placeholder="Nhập lý do từ chối bài viết" required></textarea>
+
+                <input type="hidden" name="id" value="@Model.MaBV" />
+                <input type="hidden" name="trangThai" value="tuChoi" />
+
+                <!-- Nút gửi lý do từ chối -->
+                <button type="submit" class="btn btn-danger mt-2">Xác nhận</button>
+            </div>
+        </form>
+
     </div>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         hljs.highlightAll(); // Khởi tạo Highlight.js
     });
+</script>
+<script>
+    // Khi nhấn vào nút "Từ chối"
+    document.getElementById("btnTuChoi").addEventListener("click", function() {
+        // Hiển thị phần nhập lý do từ chối
+        document.getElementById("lyDoTuChoiSection").style.display = "block";
+    });
+    
+
 </script>
