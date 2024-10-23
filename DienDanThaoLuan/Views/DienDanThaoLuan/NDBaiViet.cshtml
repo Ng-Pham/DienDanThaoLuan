@@ -138,7 +138,7 @@
         </div>
         <div class="col-10">
             <div class="post-date">@Model.NgayDang</div>
-            <div class="post-content limit-text">
+            <div class="post-content limit-text resize-img">
                 @Html.Raw(ViewBag.NoiDungVanBan)
                 @if (!string.IsNullOrEmpty(ViewBag.CodeContent))
                 {
@@ -209,5 +209,30 @@
     }
     document.addEventListener("DOMContentLoaded", function () {
         hljs.highlightAll(); // Khởi tạo Highlight.js
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const maxWidth = 800;  // Chiều rộng tối đa
+        const maxHeight = 600;  // Chiều cao tối đa
+
+        const images = document.querySelectorAll('.resize-img img');  // Chọn tất cả hình ảnh trong phần có class 'resize-img'
+
+        images.forEach(img => {
+            const originalWidth = img.naturalWidth;
+            const originalHeight = img.naturalHeight;
+
+            // Tính toán tỷ lệ khung hình
+            const aspectRatio = originalWidth / originalHeight;
+
+            // Điều chỉnh kích thước nếu cần thiết
+            if (originalWidth > maxWidth || originalHeight > maxHeight) {
+                if (aspectRatio > 1) {  // Ảnh ngang
+                    img.width = maxWidth;
+                    img.height = Math.round(maxWidth / aspectRatio);
+                } else {  // Ảnh dọc
+                    img.height = maxHeight;
+                    img.width = Math.round(maxHeight * aspectRatio);
+                }
+            }
+        });
     });
 </script>

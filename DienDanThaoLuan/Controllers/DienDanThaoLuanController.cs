@@ -108,21 +108,19 @@ namespace DienDanThaoLuan.Controllers
             var codeNode = xmlDoc.SelectSingleNode("//Code");
             string codeContent = codeNode != null ? codeNode.InnerText : string.Empty;
 
-            // Lấy nội dung văn bản, bỏ phần mã code
-            var noiDungVanBanNode = xmlDoc.SelectSingleNode("//NoiDung");
-            string noiDungVanBan = noiDungVanBanNode != null ? noiDungVanBanNode.InnerXml : string.Empty;
             foreach (XmlNode imgNode in xmlDoc.SelectNodes("//img"))
             {
                 if (imgNode.Attributes["src"] != null)
                 {
                     var srcimg = imgNode.Attributes["src"].Value;
-                    if (srcimg.StartsWith(".."))
-                    {
-                        srcimg = srcimg.Substring(2);
-                    }
-                    imgNode.Attributes["src"].Value = srcimg;
+                    // Thay thế đường dẫn để đảm bảo không có ký tự ".."
+                    srcimg = srcimg.Replace("../", ""); // Loại bỏ dấu ".." từ đường dẫn
+                    imgNode.Attributes["src"].Value = Url.Content("/" + srcimg);
                 }
             }
+            // Lấy nội dung văn bản, bỏ phần mã code
+            var noiDungVanBanNode = xmlDoc.SelectSingleNode("//NoiDung");
+            string noiDungVanBan = noiDungVanBanNode != null ? noiDungVanBanNode.InnerXml : string.Empty;
             // Loại bỏ các thẻ <Code> khỏi nội dung văn bản
             if (!string.IsNullOrEmpty(codeContent))
             {
@@ -419,20 +417,10 @@ namespace DienDanThaoLuan.Controllers
         {
             if (file != null && file.ContentLength > 0)
             {
-                using (var img = Image.FromStream(file.InputStream))
-                {
-                    int maxWidth = 800; // Chiều rộng tối đa
-                    int maxHeight = 600;  // Chiều cao tối đa
-
-                    if (img.Width > maxWidth || img.Height > maxHeight)
-                    {
-                        return Json(new { error = $"Kích thước hình ảnh vượt quá giới hạn ({maxWidth}x{maxHeight}px)." });
-                    }
-                }
                 var fileName = Path.GetFileName(file.FileName);
-                var path = Path.Combine(Server.MapPath("/Upload_images/"), fileName);
+                var path = Path.Combine(Server.MapPath("~/Upload_images/"), fileName);
                 file.SaveAs(path);
-                return Json(new { location = Url.Content("/Upload_images/" + fileName) });
+                return Json(new { location = Url.Content("~/Upload_images/" + fileName) });
             }
             return Json(new { error = "File upload failed." });
         }
