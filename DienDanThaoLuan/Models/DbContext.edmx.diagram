@@ -20,6 +20,9 @@
         <AssociationConnector Association="DienDanThaoLuanModel.FK__ChuDe__MaLoai__3D5E1FD2" ManuallyRouted="false" />
         <AssociationConnector Association="DienDanThaoLuanModel.FK__GopY__MaTV__4D94879B" ManuallyRouted="false" />
         <AssociationConnector Association="DienDanThaoLuanModel.FK__ThongBao__MaTV__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__BaiViet__MaQTV__4222D4EF" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__BinhLuan__MaQTV__46E78A0C" />
+        <AssociationConnector Association="DienDanThaoLuanModel.FK__ThongBao__MaQTV__52593CB8" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

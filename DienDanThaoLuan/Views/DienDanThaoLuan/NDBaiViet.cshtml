@@ -41,9 +41,10 @@
         display: block; /* Chuyển thành khối */
         white-space: pre; /* Giữ nguyên định dạng */
     }
+
     .code-container {
         position: relative; /* Để nút copy có thể được định vị tương đối */
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
 
     /* CSS cho nút copy */
@@ -80,6 +81,34 @@
         transition: opacity 0.5s ease; /* Hiệu ứng mờ dần */
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Đổ bóng cho thông báo */
     }
+    /* CSS cho nút tố cáo */
+    .report-button {
+        background-color: white;
+        color: #ff4d4d;
+        border-width: 1px;
+        border-color: #ff4d4d;
+        padding: 4px 8px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 10px;
+        bottom: 10px; /* Align it to the top */
+        right: 90px; /* Align it to the right */
+        font-size: 16px;
+        position: absolute;
+    }
+
+        .report-button:hover {
+            background-color: #ff4d4d;
+            color: white;
+        }
+    .post {
+        background-color: #e7f3ff; /* Màu nền bài viết */
+        border: 1px solid #007bff; /* Đường viền màu xanh đậm */
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4); /* Đổ bóng nổi bật */
+        border-radius: 8px; /* Bo góc */
+    }
 </style>
 
 @section breadcrumb{
@@ -98,18 +127,18 @@
 </div>
 
 <!-- Main Post -->
-<div class="post-container">
+<div class="post-container post">
     <div class="row">
         <div class="col-2 d-flex flex-column align-items-center border-custom">
             <!-- Avatar Placeholder -->
             <div class="avatar">
-                <img src="~/Images/@ViewBag.TVVietBai.AnhDaiDien" alt="Avatar">
+                <img src="~/Images/@ViewBag.NguoiVietBai.AnhDaiDien" alt="Avatar">
             </div>
-            <div class="post-header pt-2">@ViewBag.TVVietBai.TenDangNhap</div>
+            <div class="post-header pt-2">@ViewBag.NguoiVietBai.TenDangNhap</div>
         </div>
         <div class="col-10">
             <div class="post-date">@Model.NgayDang</div>
-            <div class="post-content">
+            <div class="post-content limit-text">
                 @Html.Raw(ViewBag.NoiDungVanBan)
                 @if (!string.IsNullOrEmpty(ViewBag.CodeContent))
                 {
@@ -119,14 +148,23 @@
                         <div class="copy-notification" id="copyNotification">Code copied to clipboard!</div>
                     </div>
                 }
+                @if (Session["UserId"] != null)
+                {
+                    <button class="report-button right-btn" style="bottom: 10px; right: 20px;" onclick="showModal('@Model.MaBV')">Tố cáo</button>
+                }
+                else if (Session["AdminId"] != null)
+                {
+                    <button class="report-button right-btn" style="bottom: 10px; right: 20px;" onclick="showXacNhan('@Model.MaBV')">Xóa</button>
+                }
             </div>
         </div>
     </div>
 </div>
-@Html.Action("PartialDSBL","DienDanThaoLuan", new {id = @Model.MaBV})
+@Html.Action("PartialDSBL", "DienDanThaoLuan", new { id = @Model.MaBV })
 <!-- Reply Box -->
-@Html.Action("PartialBinhLuan","DienDanThaoLuan", new { id = @Model.MaBV })
+@Html.Action("PartialBinhLuan", "DienDanThaoLuan", new { id = @Model.MaBV })
 
+@Html.Partial("_PartialModal", "DienDanThaoLuan")
 @{
     var blId = TempData["BinhLuanId"] as string;
 }

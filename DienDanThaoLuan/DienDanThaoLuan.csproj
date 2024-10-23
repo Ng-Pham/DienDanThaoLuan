@@ -123,6 +123,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaiVietController.cs" />
+    <Compile Include="Areas\Admin\Controllers\QLChuDeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DienDanThaoLuanController.cs" />
     <Compile Include="Controllers\UserInfoController.cs" />
@@ -133,6 +134,7 @@
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BaiVietView.cs" />
+    <Compile Include="Models\BaiViet_BinhLuan.cs" />
     <Compile Include="Models\BinhLuan.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
@@ -167,6 +169,8 @@
     <Compile Include="Models\ThanhVien.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LyDoTuChoiBai.cs" />
+    <Compile Include="Models\ThanhVien_QuanTriVien.cs" />
     <Compile Include="Models\ThongBao.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
@@ -259,6 +263,12 @@
     <Content Include="Areas\Admin\Views\BaiViet\DuyetBai.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\PartialThongTinTV.cshtml" />
     <Content Include="Areas\Admin\Views\BaiViet\ChiTietBV.cshtml" />
+    <Content Include="Areas\Admin\Views\QLChuDe\QLLoaiCD.cshtml" />
+    <Content Include="Areas\Admin\Views\QLChuDe\TaoLoaiCD.cshtml" />
+    <Content Include="Areas\Admin\Views\QLChuDe\SuaLoaiCD.cshtml" />
+    <Content Include="Areas\Admin\Views\QLChuDe\ChuDe.cshtml" />
+    <Content Include="Areas\Admin\Views\QLChuDe\SuaCD.cshtml" />
+    <Content Include="Areas\Admin\Views\QLChuDe\ThemCD.cshtml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -387,10 +397,14 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\UserInfo\MemberInfo.cshtml" />
     <Content Include="Views\UserInfo\AdminInfo.cshtml" />
-    <Content Include="Views\Shared\PartialBinhLuan.cshtml" />
     <Content Include="Views\Shared\PartialDSBL.cshtml" />
     <Content Include="Views\Shared\_EditorScripts.cshtml" />
     <Content Include="Views\DienDanThaoLuan\GopY.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\ChinhSuaBV.cshtml" />
+    <Content Include="Views\Shared\_RenderReplies.cshtml" />
+    <Content Include="Views\Shared\_PartialModal.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\XemLai.cshtml" />
+    <Content Include="Views\Shared\PartialBinhLuan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

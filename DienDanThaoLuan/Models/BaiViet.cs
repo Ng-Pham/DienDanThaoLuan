@@ -27,10 +27,12 @@ namespace DienDanThaoLuan.Models
         public string TrangThai { get; set; }
         public string MaCD { get; set; }
         public string MaTV { get; set; }
+        public string MaQTV { get; set; }
     
         public virtual ChuDe ChuDe { get; set; }
         public virtual ThanhVien ThanhVien { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+        public virtual QuanTriVien QuanTriVien { get; set; }
     }
 }

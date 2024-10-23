@@ -21,8 +21,10 @@ namespace DienDanThaoLuan.Models
         public string TrangThai { get; set; }
         public string MaBV { get; set; }
         public string MaTV { get; set; }
+        public string MaQTV { get; set; }
     
         public virtual BaiViet BaiViet { get; set; }
         public virtual ThanhVien ThanhVien { get; set; }
+        public virtual QuanTriVien QuanTriVien { get; set; }
     }
 }

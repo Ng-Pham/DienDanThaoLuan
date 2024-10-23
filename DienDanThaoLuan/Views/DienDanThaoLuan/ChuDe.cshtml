@@ -14,6 +14,10 @@
                     <li class="breadcrumb-item"><a href="@Url.Action("ChuDe", "DienDanThaoLuan", new {id = ten.MaLoai})" style="text-decoration: none; color: black; font-size: 22px">@ten.TenLoai</a></li>
                     break;
                 }
+                @if (!Model.Any())
+                {
+                    <li class="breadcrumb-item"><a href="@Url.Action("ChuDe", "DienDanThaoLuan", new {id = @ViewBag.MaLoai})" style="text-decoration: none; color: black; font-size: 22px">@ViewBag.TenLoai</a></li>
+                }
             </ol>
         </nav>
     </div>    
@@ -22,6 +26,10 @@
     <!-- Left Column -->
     <div class="col-md-8">
         <div class="card mb-4">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-warning m-2">@ViewBag.Message</div>
+            }
             <ul class="list-group list-group-flush">
                 @foreach (var cd in Model)
                 {

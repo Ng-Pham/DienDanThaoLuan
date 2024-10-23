@@ -21,14 +21,19 @@
                     <h5 class="mb-1">@tb.NoiDung</h5>
                     <small>Lúc @tb.NgayTB</small>
                 </div>
-                <span class="badge bg-custom rounded-pill">
-                    @if (tb.LoaiDoiTuong == "BinhLuan")
+                <span class="badge rounded-pill
+                      @(tb.LoaiTB == "Tố cáo" ? "bg-danger" : "bg-custom")">
+                    @if (tb.LoaiTB == "Bình luận" || tb.LoaiTB == "Xóa bình luận")
                     {
                         <text>Bình luận</text>;
                     }
-                    else if (tb.LoaiDoiTuong == "BaiViet")
+                    else if (tb.LoaiTB == "Bài viết" || tb.LoaiTB == "Duyệt bài viết" || tb.LoaiTB == "Xóa bài viết")
                     {
                         <text>Bài viết</text>;
+                    }
+                    else if (tb.LoaiTB == "Tố cáo" && Session["AdminId"] != null) // Chỉ hiển thị cho quản trị viên
+                    {
+                        <text>Tố cáo</text>;
                     }
                 </span>
             </a>
