@@ -17,14 +17,14 @@
                 @if (!string.IsNullOrEmpty(@reply.ReplyToContent))
                 {
                     <div class="reply-to-content">
-                        <strong>Replying to: '@reply.TenNguoiViet'</strong>
-                        <div class="original-comment limit-text limit-line-text">
+                        <strong>Replying to: '@ViewBag.replyTV'</strong>
+                        <div class="original-comment limit-text limit-line-text resize-img">
                             @Html.Raw(@reply.ReplyToContent)
                         </div>
                     </div>
                 }
                 <div class="post-date">@reply.NgayGui</div>
-                <div class="reply-content limit-text mb-4">
+                <div class="reply-content limit-text mb-4 resize-img">
                     @Html.Raw(@reply.NDBL)
                     @if (!string.IsNullOrEmpty(@reply.CodeContent))
                     {
@@ -73,5 +73,5 @@
         </div>
     </div>
     @* Đệ quy: Gọi lại partial view để hiển thị các reply của reply *@
-    @Html.Partial("_RenderReplies", Model, new ViewDataDictionary { { "ParentId", reply.MaBL }, { "MaBV", ViewData["MaBV"] } })
+    @Html.Partial("_RenderReplies", Model, new ViewDataDictionary { { "ParentId", reply.MaBL }, { "MaBV", ViewData["MaBV"] }, { "replyTV", reply.TenNguoiViet } })
 }

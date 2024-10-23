@@ -78,7 +78,7 @@
             </div>
             <div class="col-10">
                 <div class="post-date">@bl.NgayGui</div>
-                <div class="reply-content limit-text">
+                <div class="reply-content limit-text resize-img">
                     @Html.Raw(@bl.NDBL)
                     @if (!string.IsNullOrEmpty(@bl.CodeContent))
                     {
@@ -126,7 +126,7 @@
     </div>
 
     @* Gọi partial view để hiển thị các reply của bình luận này *@
-    @Html.Partial("_RenderReplies", Model, new ViewDataDictionary { { "ParentId", bl.MaBL }, { "MaBV", ViewData["MaBV"] } })
+    @Html.Partial("_RenderReplies", Model, new ViewDataDictionary { { "ParentId", bl.MaBL }, { "MaBV", ViewData["MaBV"] }, { "replyTV", @bl.TenNguoiViet }})
 }
 <script>
     function showReplyInput(maBL) {
