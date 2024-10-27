@@ -119,7 +119,7 @@ namespace DienDanThaoLuan.Controllers
                     db.SaveChanges();
 
                     // Điều hướng đến trang thành công hoặc đăng nhập
-                    return RedirectToAction("Login", "DienDanThaoLuan");
+                    return RedirectToAction("Login", "Account");
                 }
                 catch (Exception ex)
                 {

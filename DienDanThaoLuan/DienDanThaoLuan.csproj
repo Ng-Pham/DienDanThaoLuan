@@ -203,6 +203,7 @@
     <Content Include="Images\avatar.jpg" />
     <Content Include="Images\avatar2.jpg" />
     <Content Include="Images\bg.jpg" />
+    <Content Include="Images\default-bg.jpg" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Models\DbContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -364,7 +365,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Views\DienDanThaoLuan\Index.cshtml" />
     <Content Include="Views\Shared\_PartialMotSoCD.cshtml" />

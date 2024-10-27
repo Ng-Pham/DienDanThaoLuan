@@ -5,11 +5,12 @@
 }
 
 <style type="text/css">
-    .profile-header {
+    /*.profile-header {
         background-color: #f8f9fa;
         padding: 2rem 0px;
         margin-bottom: 2rem;
-        margin-left: 2rem;
+        margin-left: 12px;
+        margin-right: 37px;
         border-bottom: 1px solid #e9ecef;
         border-radius: 10px;
     }
@@ -36,19 +37,191 @@
         border-radius: 50%;
         border: 3px solid #fff;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        /*css for avatar change/
+        .avatar-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .avatar-upload-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+        .avatar-upload-icon:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.1);
+        }
+
+        .avatar-upload-icon i {
+            color: #3b82f6;
+            font-size: 14px;
+        }
+    }*/
+
+    /*css for cover change*/
+
+    .cover-container {
+        position: relative;
+        height: 350px;
+        background-color: #f0f2f5;
+        margin-bottom: 60px;
+        margin-left: 12px;
+        margin-right: 37px;
+        
+    }
+
+    .cover-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .cover-upload-icon {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background-color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+    }
+
+        .cover-upload-icon:hover {
+            background-color: #f0f2f5;
+        }
+
+    .profile-section {
+        position: relative;
+        max-width: 1000px;
+        margin: -135px 20px 0px 30px;
+        padding: 0 20px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .profile-img-container {
+        position: relative;
+        margin-right: 20px;
+    }
+
+    .profile-img-large {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 6px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        object-fit: cover;
+    }
+
+    .profile-info {
+        margin: 30px 0px;
+    }
+
+    .profile-info h1{
+        font-size: 35px;
+    }
+
+    .profile-name {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 0;
+        color: #1c1e21;
+    }
+
+    .profile-role {
+        font-size: 15px;
+        color: #65676B;
+        margin-top: 5px;
     }
 </style>
 
-<div class="profile-header text-center">
-    <img src="@Url.Content("~/Images/" + @Model.AnhDaiDien)" alt="Avatar" class="profile-img-small mb-3">
-    <h1 class="display-4">@Model.HoTen</h1>
+<!--<div class="profile-header text-center">
+    <div class="avatar-container">
+        <img src="$Url.Content("~/Images/" + $Model.AnhDaiDien)" alt="Avatar" class="profile-img-small mb-3">
+        <label for="avatar" class="avatar-upload-icon">
+            <i class="fas fa-camera"></i>
+            $using (Html.BeginForm("ChangeAvatar", "UserInfo", FormMethod.Post, new { enctype = "multipart/form-data", id = "avatarForm" }))
+            {
+                <input type="file"
+                       id="avatar"
+                       name="avatar"
+                       accept="image/*"
+                       class="d-none"
+                       onchange="handleAvatarChange(this);">
+            }
+        </label>
+    </div>
+    <h1 class="display-4">$Model.HoTen</h1>
     <p class="lead text-muted">Thành viên</p>
+</div> -->
+
+<div class="cover-container">
+    <img src="@Url.Content("~/Images/" + (Model.AnhBia ?? "default-bg.jpg"))" alt="Cover" class="cover-image" style=" border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+    <label for="cover" class="cover-upload-icon">
+        <i class="fas fa-camera"></i>
+        <span>Chỉnh sửa ảnh bìa</span>
+        @using (Html.BeginForm("ChangeCover", "UserInfo", FormMethod.Post, new { enctype = "multipart/form-data", id = "coverForm" }))
+        {
+            <input type="file"
+                   id="cover"
+                   name="cover"
+                   accept="image/*"
+                   class="d-none"
+                   onchange="handleCoverChange(this);">
+        }
+    </label>
+</div>
+
+<div class="profile-section">
+    <div class="profile-header">
+        <div class="profile-img-container">
+            <img src="@Url.Content("~/Images/" + Model.AnhDaiDien)" alt="Avatar" class="profile-img-large">
+            <label for="avatar" class="avatar-upload-icon">
+                <i class="fas fa-camera"></i>
+                @using (Html.BeginForm("ChangeAvatar", "UserInfo", FormMethod.Post, new { enctype = "multipart/form-data", id = "avatarForm" }))
+                {
+                    <input type="file"
+                           id="avatar"
+                           name="avatar"
+                           accept="image/*"
+                           class="d-none"
+                           onchange="handleAvatarChange(this);">
+                }
+            </label>
+        </div>
+        <div class="profile-info">
+            <h1 class="profile-name">@Model.HoTen</h1>
+            <div class="profile-role">Thành viên</div>
+        </div>
+    </div>
 </div>
 
 <div class="container">
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="width: 98%">
             @TempData["SuccessMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -56,7 +229,7 @@
 
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 98%">
             @TempData["ErrorMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -72,22 +245,22 @@
                         @Html.HiddenFor(m => m.MaTV)
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.HoTen, new { @class = "form-label" })
+                            <p>Họ và tên: </p>
                             @Html.TextBoxFor(m => m.HoTen, new { @class = "form-control", required = "required" })
                             <div class="invalid-feedback">Vui lòng nhập họ tên.</div>
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                            <p>Email: </p>
                             @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", required = "required" })
                             <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.GioiTinh, new { @class = "form-label" })
+                            <p>Giới tính: </p>
                             @{
                                 var gioiTinhList = new List<SelectListItem>
-                                {
+                                                                {
                                     new SelectListItem { Value = "", Text = "Chọn giới tính", Selected = string.IsNullOrEmpty(Model.GioiTinh) },
                                     new SelectListItem { Value = "Nam", Text = "Nam", Selected = Model.GioiTinh == "Nam" },
                                     new SelectListItem { Value = "Nữ", Text = "Nữ", Selected = Model.GioiTinh == "Nữ" },
@@ -98,19 +271,19 @@
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.SDT, new { @class = "form-label" })
+                            <p>Số điện thoại: </p>
                             @Html.TextBoxFor(m => m.SDT, new { @class = "form-control", type = "tel", required = "required" })
                             <div class="invalid-feedback">Vui lòng nhập số điện thoại.</div>
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.NgaySinh, new { @class = "form-label" })
+                            <p>Ngày sinh: </p>
                             @Html.TextBoxFor(m => m.NgaySinh, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
                             <div class="invalid-feedback">Vui lòng chọn ngày sinh.</div>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
-                     }
+                    }
                 </div>
             </div>
         </div>
@@ -147,5 +320,66 @@
     </div>
 </div>
 
+<!--script thay đổi avatar-->
+<script>
+    function handleAvatarChange(input) {
+        if (input.files && input.files[0]) {
+            // Kiểm tra kích thước file
+            if (input.files[0].size > 5 * 1024 * 1024) {
+                alert('File quá lớn. Vui lòng chọn file có kích thước nhỏ hơn 5MB.');
+                input.value = '';
+                return;
+            }
+
+            // Preview ảnh
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.querySelector('.profile-img-large').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+
+            // Tự động submit form
+            document.getElementById('avatarForm').submit();
+        }
+    }
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!--script tắt alert sau 10s-->
+<script>
+    // Đợi 10 giây (10000 milliseconds) và sau đó xóa các thẻ thông báo khỏi DOM
+    setTimeout(function () {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function (alert) {
+            //alert.remove(); // Xóa thẻ div thông báo
+            alert.classList.remove('show'); // Xóa lớp 'show' để bắt đầu hiệu ứng fade-out
 
 
+            // Chờ thêm 500ms để hoàn thành hiệu ứng fade-out rồi xóa thẻ khỏi DOM
+            setTimeout(function () {
+                alert.remove();
+            }, 500); // Thời gian phù hợp với hiệu ứng fade-out
+        });
+    }, 10000); // Thời gian 10 giây
+</script>
+
+<!--script thay đổi ảnh bìa-->
+<script>
+    function handleCoverChange(input) {
+        if (input.files && input.files[0]) {
+            if (input.files[0].size > 5 * 1024 * 1024) {
+                alert('File quá lớn. Vui lòng chọn file có kích thước nhỏ hơn 5MB.');
+                input.value = '';
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.querySelector('.cover-image-large').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+
+            document.getElementById('coverForm').submit();
+        }
+    }
+</script>

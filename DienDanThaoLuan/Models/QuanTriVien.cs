@@ -31,6 +31,7 @@ namespace DienDanThaoLuan.Models
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
         public string GioiTinh { get; set; }
+        public string AnhBia { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BaiViet> BaiViets { get; set; }
