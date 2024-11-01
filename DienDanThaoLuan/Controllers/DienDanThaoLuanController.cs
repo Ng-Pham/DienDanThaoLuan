@@ -12,6 +12,8 @@ using System.Drawing;
 using DienDanThaoLuan.Models;
 using System.Web.Security;
 using System.Data.SqlClient;
+using PagedList;
+using System.Web.UI;
 
 namespace DienDanThaoLuan.Controllers
 {
@@ -52,6 +54,10 @@ namespace DienDanThaoLuan.Controllers
                 var slchuaduyet = tb.Count();
                 if (slchuaduyet != 0)
                     ViewBag.SLBV = slchuaduyet;
+                var dsgy = db.Gopies.Where(l => l.TrangThai == false).OrderByDescending(l => l.NgayGui).ToList();
+                var slgy = dsgy.Count();
+                if (slgy != 0)
+                    ViewBag.SLGY = slgy;
             }
             return PartialView();
         }
@@ -249,12 +255,17 @@ namespace DienDanThaoLuan.Controllers
         }
         public ActionResult _PartialMotSoCD()
         {
-            var loaiChuDeIds = db.LoaiCDs
-            .Where(l => l.TenLoai == "Ngôn ngữ lập trình" || l.TenLoai == "Bảo mật và an ninh mạng")
-            .Select(l => l.MaLoai).ToList();
+            var listloaicd = LayThongTinCD().GroupBy(cd => cd.MaLoai)
+                            .Select(group => new
+                            {
+                                MaLoai = group.Key,
+                                SoBaiTrongLoaiCD = group.Sum(cd => cd.SoBai)
+                            })
+                            .OrderByDescending(t => t.SoBaiTrongLoaiCD).Take(2).ToList();
+            var lstloaicdtop2 = LayThongTinCD().Where(l => listloaicd.Any(top2 => top2.MaLoai == l.MaLoai)).ToList();
 
-            var c = LayThongTinCD().Where(cd => loaiChuDeIds.Contains(cd.MaLoai)).ToList();
-            return PartialView(c);
+
+            return PartialView(lstloaicdtop2);
         }
         public ActionResult PartialQTV()
         {
@@ -265,41 +276,41 @@ namespace DienDanThaoLuan.Controllers
         {
             return PartialView();
         }
-        public ActionResult ChuDe(string id)
+        public ActionResult ChuDe(int? page, string id)
         {
             var dscd = LayThongTinCD().Where(cd => cd.MaLoai == id).OrderBy(cd => cd.TenCD).ToList();
             if (!dscd.Any()) 
             {
                 ViewBag.Message = "Chưa có chủ đề nào cho loại chủ đề này";
-                var cd = db.LoaiCDs.Where(l => l.MaLoai == id).FirstOrDefault();
-                ViewBag.MaLoai = cd.MaLoai;
-                ViewBag.TenLoai = cd.TenLoai;
             }
-                
-            return View(dscd);
+            var ttcd = db.LoaiCDs.Where(l => l.MaLoai == id).FirstOrDefault();
+            ViewBag.MaLoai = ttcd.MaLoai;
+            ViewBag.TenLoai = ttcd.TenLoai;
+            int iSize = 14;
+            int iPageNumber = (page ?? 1);
+            return View(dscd.ToPagedList(iPageNumber, iSize));
         }
         [HttpGet]
-        public ActionResult BaiVietTheoCD(string id, string tenloai)
+        public ActionResult BaiVietTheoCD(int? page, string id, string tenloai)
         {
             var dsbv = LayTatCaBaiViet().Where(bv => bv.MaCD == id)
             .OrderByDescending(bv => bv.NgayDang)
             .ToList();
             if (!dsbv.Any())
-            {
-                var cd = db.ChuDes.FirstOrDefault(c => c.MaCD == id);
-                if (cd != null)
-                {
-                    ViewBag.MaCD = cd.MaCD;
-                    ViewBag.TenCD = cd.TenCD;
-                    ViewBag.TenLoai = tenloai;
-                    ViewBag.MaLoai= cd.MaLoai;
-                }
+            {                
                 ViewBag.Message = "Chưa có bài viết nào cho chủ đề này";
             }
-            return View(dsbv);
+            var cd = db.ChuDes.FirstOrDefault(c => c.MaCD == id);
+            ViewBag.MaCD = cd.MaCD;
+            ViewBag.TenCD = cd.TenCD;
+            ViewBag.TenLoai = tenloai;
+            ViewBag.MaLoai = cd.MaLoai;
+            int iSize = 14;
+            int iPageNumber = (page ?? 1);
+            return View(dsbv.ToPagedList(iPageNumber, iSize));
         }
 
-        public ActionResult Loc(string sortOrder, string tenloai, string id, bool isAllPosts = false)
+        public ActionResult Loc(int? page, string sortOrder, string tenloai, string id, bool isAllPosts = false)
         {
             ViewBag.NewestSort = sortOrder == "newest" ? "newest_desc" : "newest";
             ViewBag.OldestSort = sortOrder == "oldest" ? "oldest_desc" : "oldest";
@@ -341,8 +352,9 @@ namespace DienDanThaoLuan.Controllers
                     ViewBag.Message = "Chưa có bài viết nào cho chủ đề này";
                 }
             }
-
-            return View(isAllPosts ? "BaiVietMoi" : "BaiVietTheoCD", baiVietViewList);
+            int iSize = 8;
+            int iPageNumber = (page ?? 1);
+            return View(isAllPosts ? "BaiVietMoi" : "BaiVietTheoCD", baiVietViewList.ToPagedList(iPageNumber, iSize));
         }
         [Authorize]
         [HttpGet]
@@ -454,7 +466,7 @@ namespace DienDanThaoLuan.Controllers
             return View(nd);
         }
         [Authorize]
-        public ActionResult ThongBao()
+        public ActionResult ThongBao(int? page)
         {
             string Id;
             List <ThongBao> dstb;
@@ -485,9 +497,11 @@ namespace DienDanThaoLuan.Controllers
                     }
                 }
             }
+            int iSize = 10;
+            int iPageNumber = (page ?? 1);
             if (!dstb.Any())
                 ViewBag.Message = "Không có thông báo nào gần đây";
-            return View(dstb);
+            return View(dstb.ToPagedList(iPageNumber, iSize));
         } 
         public ActionResult MarkAsRead(string id)
         {
@@ -525,10 +539,12 @@ namespace DienDanThaoLuan.Controllers
             }
             return RedirectToAction("ThongBao");
         }
-        public ActionResult BaiVietMoi()
+        public ActionResult BaiVietMoi(int? page)
         {
             var dsbv = LayTatCaBaiViet().Where(bv => bv.TrangThaiBV.Contains("Đã duyệt")).OrderByDescending(n => n.NgayDang).ToList();
-            return View(dsbv);
+            int iSize = 8;
+            int iPageNumber = (page ?? 1);
+            return View(dsbv.ToPagedList(iPageNumber, iSize));
         }
         public ActionResult PartialBinhLuan(string id)
         {
@@ -552,11 +568,13 @@ namespace DienDanThaoLuan.Controllers
             }
             return PartialView(tk);
         }
-        public ActionResult PartialDSBL(string id)
+        public ActionResult PartialDSBL(int? page, string id)
         {
             var dsbl = LayDanhSachBinhLuan(id).OrderByDescending(bl => bl.NgayGui).ToList();
             ViewData["MaBV"] = id;
-            return PartialView(dsbl);
+            int iSize = 6;
+            int iPageNumber = (page ?? 1);
+            return PartialView(dsbl.ToPagedList(iPageNumber, iSize));
         }
         [HttpPost]
         [Authorize]

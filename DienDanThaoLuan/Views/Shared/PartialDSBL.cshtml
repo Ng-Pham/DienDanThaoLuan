@@ -1,4 +1,7 @@
-﻿@model IEnumerable<DienDanThaoLuan.Models.BaiVietView>
+﻿
+@using DienDanThaoLuan.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<BaiVietView>
 <style>
     .reply-btn {
         bottom: 10px; /* Align it to the top */
@@ -56,6 +59,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     .admin {
         background-color: #e7f3ff; /* Màu nền nhẹ */
         border-left: 2px solid #007bff; /* Đường viền bên trái màu xanh */
@@ -126,8 +130,11 @@
     </div>
 
     @* Gọi partial view để hiển thị các reply của bình luận này *@
-    @Html.Partial("_RenderReplies", Model, new ViewDataDictionary { { "ParentId", bl.MaBL }, { "MaBV", ViewData["MaBV"] }, { "replyTV", @bl.TenNguoiViet }})
+    @Html.Partial("_RenderReplies", Model, new ViewDataDictionary { { "ParentId", bl.MaBL }, { "MaBV", ViewData["MaBV"] }, { "replyTV", @bl.TenNguoiViet } })
 }
+<div class="MenuTrang mb-4">
+    @Html.PagedListPager(Model, page => Url.Action("NDBaiViet", new { page = page, id = ViewData["MaBV"] }))
+</div>
 <script>
     function showReplyInput(maBL) {
         document.querySelectorAll('.reply-input').forEach(replyInput => {

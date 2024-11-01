@@ -1,5 +1,7 @@
-﻿@model IEnumerable<DienDanThaoLuan.Models.ThongBao>
-
+﻿
+@using DienDanThaoLuan.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<ThongBao>
 @{
     ViewBag.Title = "ThongBao";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
@@ -39,4 +41,7 @@
             </a>
         }
     }
+    <div class="MenuTrang">
+        @Html.PagedListPager(Model, page => Url.Action("ThongBao", new { page = page }))
     </div>
+</div>

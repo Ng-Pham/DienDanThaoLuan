@@ -333,6 +333,58 @@ div.feedback-container div.form-group textarea:focus {
         background-color: #f8d7da;
         color: #721c24;
     }
+.MenuTrang {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.pagination-container {
+    display: inline-flex;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+    .pagination-container .pagination {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+.pagination li {
+    display: inline;
+    background-color: white;
+}
+
+    .pagination li a {
+        display: inline-block;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #0c88c2;
+        border-right: 1px solid #ddd;
+        transition: background-color 0.2s;
+    }
+
+    .pagination li:last-child a {
+        border-right: none;
+    }
+
+    .pagination li a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .pagination li.active a {
+        background-color: #0c88c2;
+        color: white;
+        border: none;
+    }
+
+        .pagination li.active a:hover {
+            background-color: #0c88c2;
+            color: white;
+        }
 
 /* Media Queries */
 @media (max-width: 768px) {

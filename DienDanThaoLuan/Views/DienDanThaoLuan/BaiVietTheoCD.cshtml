@@ -1,5 +1,7 @@
-﻿@model List<DienDanThaoLuan.Models.BaiVietView>
-
+﻿
+@using DienDanThaoLuan.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<BaiVietView>
 @{
     ViewBag.Title = "BaiVietTheoCD";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
@@ -66,19 +68,19 @@
                 }
                 else
                 {
-                <div>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Lọc</button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "newest", ViewBag.TenLoai,id= ViewBag.MaCD})">Mới nhất</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "oldest", ViewBag.TenLoai, id=ViewBag.MaCD })">Lâu nhất</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "az", ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ A-Z</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "za", ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ Z-A</a></li>
-                        </ul>
+                    <div>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Lọc</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "newest", ViewBag.TenLoai,id= ViewBag.MaCD})">Mới nhất</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "oldest", ViewBag.TenLoai, id=ViewBag.MaCD })">Lâu nhất</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "az", ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ A-Z</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Loc", "DienDanThaoLuan", new { sortOrder = "za", ViewBag.TenLoai, id=ViewBag.MaCD })">Tiêu đề bài viết từ Z-A</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
                 }
-                
+
             </div>
             <!-- Post Items -->
             @if (!Model.Any())
@@ -108,6 +110,9 @@
                     </div>
                 }
             }
+        </div>
+        <div class="MenuTrang">
+            @Html.PagedListPager(Model, page => Url.Action("BaiVietTheoCD", new { page = page, id = ViewBag.MaCD, tenloai = ViewBag.TenLoai }))
         </div>
     </div>
 

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Xml;
 using DienDanThaoLuan.Controllers;
 using DienDanThaoLuan.Models;
+using PagedList;
 
 
 namespace DienDanThaoLuan.Areas.Admin.Controllers
@@ -51,12 +52,14 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
             return (noiDungVanBan, codeContent);
         }
         [HttpGet]
-        public ActionResult DuyetBai()
+        public ActionResult DuyetBai(int? page)
         {
             var dsbv = db.BaiViets.Where(bv => bv.TrangThai == "Chờ duyệt").OrderByDescending(n => n.NgayDang).ToList();
+            int iSize = 10;
+            int iPageNumber = (page ?? 1);
             if (!dsbv.Any())
                 ViewBag.Message = "Không có bài viết chờ duyệt nào gần đây";
-            return View(dsbv);
+            return View(dsbv.ToPagedList(iPageNumber, iSize));
         }
         public ActionResult MarkAsRead(string id)
         {
