@@ -56,7 +56,7 @@ CREATE TABLE ChuDe
 CREATE TABLE BaiViet
 (
 	MaBV VARCHAR(15) PRIMARY KEY,
-	TieuDeBV NVARCHAR(30),
+	TieuDeBV NVARCHAR(60),
 	NoiDung xml,
 	NgayDang DATETIME,
 	TrangThai NVARCHAR(20),
@@ -177,12 +177,46 @@ INSERT INTO BaiViet (MaBV, TieuDeBV, NoiDung, NgayDang, TrangThai, MaCD, MaTV) V
 ('BV001', N'Học lập trình Python cơ bản',N'<NoiDung>Bài viết về Python dành cho người mới bắt đầu</NoiDung>', '2023-09-01', N'Đã duyệt', 'CD001', 'TV001'),
 ('BV002', N'Các phương pháp bảo mật mạng', N'<NoiDung>Những cách bảo vệ hệ thống mạng khỏi tấn công mạng</NoiDung>', N'2023-09-10', N'Đã duyệt', 'CD005', 'TV002'),
 ('BV003', N'Giới thiệu về Machine Learning', N'<NoiDung>Bài viết về Machine Learning cơ bản</NoiDung>', '2023-09-15', N'Đã duyệt', 'CD009', 'TV001'),
-('BV004', N'Quản trị SQL Server', N'<NoiDung>Cách quản trị cơ sở dữ liệu bằng SQL Server</NoiDung>', '2023-09-18', N'Đã duyệt', 'CD013', 'TV002');
+('BV004', N'Quản trị SQL Server', N'<NoiDung>Cách quản trị cơ sở dữ liệu bằng SQL Server</NoiDung>', '2023-09-18', N'Đã duyệt', 'CD013', 'TV002'),
+('BV005', N'Tối ưu hóa mã Python', N'<NoiDung>Các phương pháp tối ưu hóa mã Python</NoiDung>', '2023-09-20', N'Đã duyệt', 'CD001', 'TV003'),
+('BV006', N'Java cơ bản cho người mới', N'<NoiDung>Giới thiệu ngôn ngữ lập trình Java cơ bản</NoiDung>', '2023-09-25', N'Đã duyệt', 'CD002', 'TV004'),
+('BV007', N'Hệ thống bảo mật mạng', N'<NoiDung>Chiến lược bảo mật cho mạng doanh nghiệp</NoiDung>', '2023-09-30', N'Đã duyệt', 'CD005', 'TV005'),
+('BV008', N'Học C++ qua các ví dụ', N'<NoiDung>Ví dụ minh họa cho người học C++</NoiDung>', '2023-10-05', N'Đã duyệt', 'CD003', 'TV006'),
+('BV009', N'Các Nguyên Tắc Thiết Kế Cơ Sở Dữ Liệu', N'<NoiDung>Hướng dẫn thiết kế cơ sở dữ liệu hiệu quả</NoiDung>', '2023-10-07', N'Đã duyệt', 'CD016', 'TV007'),
+('BV010', N'Quản lý dự án Agile', N'<NoiDung>Áp dụng phương pháp Agile trong phát triển phần mềm</NoiDung>', '2023-10-10', N'Đã duyệt', 'CD017', 'TV008'),
+('BV011', N'Xử lý ngôn ngữ tự nhiên', N'<NoiDung>Tìm hiểu về xử lý ngôn ngữ tự nhiên</NoiDung>', '2023-10-15', N'Đã duyệt', 'CD011', 'TV009'),
+('BV012', N'Cảm biến trong IoT', N'<NoiDung>Các loại cảm biến sử dụng trong IoT</NoiDung>', '2023-10-20', N'Đã duyệt', 'CD021', 'TV010'),
+('BV013', N'Kỹ thuật phòng thủ mạng nâng cao', N'<NoiDung>Kỹ thuật phòng thủ mạng cho doanh nghiệp</NoiDung>', '2023-10-25', N'Đã duyệt', 'CD007', 'TV001'),
+('BV014', N'Kiểm thử phần mềm với JUnit', N'<NoiDung>Hướng dẫn kiểm thử phần mềm bằng JUnit</NoiDung>', '2023-10-28', N'Đã duyệt', 'CD020', 'TV002'),
+('BV015', N'Lập trình JavaScript cơ bản', N'<NoiDung>Những khái niệm cơ bản về JavaScript</NoiDung>', '2023-11-01', N'Đã duyệt', 'CD004', 'TV003'),
+('BV016', N'Quản trị NoSQL', N'<NoiDung>Hướng dẫn quản trị cơ sở dữ liệu NoSQL</NoiDung>', '2023-11-05', N'Đã duyệt', 'CD014', 'TV004'),
+('BV017', N'Trung tâm dữ liệu thời gian thực', N'<NoiDung>Xây dựng trung tâm dữ liệu hiệu quả</NoiDung>', '2023-11-08', N'Đã duyệt', 'CD012', 'TV005'),
+('BV018', N'Giới thiệu về TensorFlow', N'<NoiDung>Bài viết giới thiệu TensorFlow</NoiDung>', '2023-11-10', N'Đã duyệt', 'CD010', 'TV006'),
+('BV019', N'Lập trình Arduino cơ bản', N'<NoiDung>Hướng dẫn lập trình với Arduino cho người mới</NoiDung>', '2023-11-15', N'Đã duyệt', 'CD024', 'TV007'),
+('BV020', N'Kỹ thuật tối ưu SQL', N'<NoiDung>Các kỹ thuật tối ưu truy vấn SQL</NoiDung>', '2023-11-18', N'Đã duyệt', 'CD015', 'TV008'),
+('BV021', N'Phân tích dữ liệu với Python', N'<NoiDung>Những công cụ phân tích dữ liệu Python</NoiDung>', '2023-11-20', N'Đã duyệt', 'CD001', 'TV009'),
+('BV022', N'Tự động hóa kiểm thử phần mềm', N'<NoiDung>Cách sử dụng công cụ kiểm thử tự động</NoiDung>', '2023-11-22', N'Đã duyệt', 'CD020', 'TV010'),
+('BV023', N'An toàn hệ thống với Firewall', N'<NoiDung>Cấu hình và bảo vệ hệ thống với Firewall</NoiDung>', '2023-11-25', N'Đã duyệt', 'CD008', 'TV001'),
+('BV024', N'Học sâu cơ bản', N'<NoiDung>Những kiến thức cơ bản về học sâu</NoiDung>', '2023-11-28', N'Đã duyệt', 'CD010', 'TV002');
 
 -- Dữ liệu cho bảng BinhLuan
 INSERT INTO BinhLuan (MaBL, IDCha, NoiDung, NgayGui, TrangThai, MaBV, MaTV) VALUES
 ('BL001',null, N'<NoiDung>Bài viết rất hữu ích</NoiDung>', '2023-09-02', N'Hiển thị', 'BV001', 'TV002'),
-('BL002',null, N'<NoiDung>Tôi đã học được nhiều điều mới</NoiDung>', '2024-10-02', N'Hiển thị', 'BV002', 'TV001');
+('BL002',null, N'<NoiDung>Tôi đã học được nhiều điều mới</NoiDung>', '2024-10-02', N'Hiển thị', 'BV002', 'TV001'),
+('BL003', NULL, N'<NoiDung>Tôi đồng ý với quan điểm của bạn</NoiDung>', '2023-09-03', N'Hiển thị', 'BV001', 'TV003'),
+('BL004', NULL, N'<NoiDung>Những kiến thức này rất hữu ích</NoiDung>', '2023-09-04', N'Hiển thị', 'BV002', 'TV004'),
+('BL005', NULL, N'<NoiDung>Tôi cần tìm hiểu thêm về chủ đề này</NoiDung>', '2023-09-05', N'Hiển thị', 'BV003', 'TV005'),
+('BL006', NULL, N'<NoiDung>Cảm ơn bạn vì thông tin hữu ích</NoiDung>', '2023-09-06', N'Hiển thị', 'BV004', 'TV006'),
+('BL007', NULL, N'<NoiDung>Rất bổ ích!</NoiDung>', '2023-09-07', N'Hiển thị', 'BV001', 'TV007'),
+('BL008', NULL, N'<NoiDung>Những điểm này cần bổ sung thêm</NoiDung>', '2023-09-08', N'Hiển thị', 'BV002', 'TV008'),
+('BL009', NULL, N'<NoiDung>Chờ đợi những phần tiếp theo</NoiDung>', '2023-09-09', N'Hiển thị', 'BV003', 'TV009'),
+('BL010', NULL, N'<NoiDung>Bài viết rất chi tiết và dễ hiểu</NoiDung>', '2023-09-10', N'Hiển thị', 'BV004', 'TV010'),
+('BL011', NULL, N'<NoiDung>Bài viết này đã giải đáp thắc mắc của tôi</NoiDung>', '2023-09-11', N'Hiển thị', 'BV001', 'TV002'),
+('BL012', NULL, N'<NoiDung>Học hỏi được nhiều điều qua bài viết</NoiDung>', '2023-09-12', N'Hiển thị', 'BV002', 'TV001'),
+('BL013', NULL, N'<NoiDung>Tôi rất thích cách diễn đạt của bạn</NoiDung>', '2023-09-13', N'Hiển thị', 'BV003', 'TV003'),
+('BL014', NULL, N'<NoiDung>Cần thêm nhiều ví dụ minh hoạ</NoiDung>', '2023-09-14', N'Hiển thị', 'BV004', 'TV004'),
+('BL015', NULL, N'<NoiDung>Chủ đề này rất hay</NoiDung>', '2023-09-15', N'Hiển thị', 'BV001', 'TV005'),
+('BL016', NULL, N'<NoiDung>Hy vọng có thêm nhiều bài viết về chủ đề này</NoiDung>', '2024-10-02', N'Hiển thị', 'BV004', 'TV006');
 
 -- Dữ liệu cho bảng GopY
 INSERT INTO GopY (NoiDung, NgayGui, TrangThai, MaTV) VALUES
