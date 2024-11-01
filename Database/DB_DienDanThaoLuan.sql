@@ -101,14 +101,29 @@ CREATE TABLE ThongBao
 
 -- Dữ liệu cho bảng QuanTriVien
 INSERT INTO QuanTriVien (MaQTV, HoTen, AnhDaiDien, AnhBia, Email, GioiTinh, SDT, NgaySinh, TenDangNhap, MatKhau) VALUES
-('QTV001', N'Nguyễn Văn A', N'avatar.jpg', N'bg.jpg','nva@gmail.com', N'Nam' ,'0912345678', '1980-05-15', 'nguyenvana', 'ad123'),
-('QTV002', N'Trần Thị B', N'avatar.jpg', N'bg.jpg','ttb@gmail.com', N'Nữ','0987654321', '1985-11-25', 'tranthib', 'ad456');
+('QTV001', N'Nguyễn Văn A', N'avatar.jpg', N'default-bg.jpg','nva@gmail.com', N'Nam' ,'0912345678', '1980-05-15', 'nguyenvana', 'ad123'),
+('QTV002', N'Trần Thị B', N'avatar.jpg', N'default-bg.jpg','ttb@gmail.com', N'Nữ','0987654321', '1985-11-25', 'tranthib', 'ad456'),
+('QTV003', N'Lê Quốc Cường', N'avatar.jpg', N'default-bg.jpg', 'lqc@gmail.com', N'Nam', '0912233445', '1975-02-20', 'lequocc', 'ad123'),
+('QTV004', N'Nguyễn Thị Thanh', N'avatar.jpg', N'default-bg.jpg', 'ntt@gmail.com', N'Nữ', '0912345690', '1982-07-15', 'nguyentt', 'ad123'),
+('QTV005', N'Phạm Quang Huy', N'avatar.jpg', N'default-bg.jpg', 'pqh@gmail.com', N'Nam', '0923456781', '1979-03-19', 'phamqh', 'ad123'),
+('QTV006', N'Ngô Mỹ Dung', N'avatar.jpg', N'default-bg.jpg', 'nmd@gmail.com', N'Nữ', '0934567892', '1983-12-01', 'ngomy', 'ad123'),
+('QTV007', N'Vũ Quốc Tuấn', N'avatar.jpg', N'default-bg.jpg', 'vqt@gmail.com', N'Nam', '0945678903', '1977-05-05', 'vuqt', 'ad123'),
+('QTV008', N'Hồ Ngọc Minh', N'avatar.jpg', N'default-bg.jpg', 'hnm@gmail.com', N'Nam', '0956789012', '1986-08-20', 'hongocminh', 'ad123'),
+('QTV009', N'Tran Bảo Trân', N'avatar.jpg', N'default-bg.jpg', 'tbt@gmail.com', N'Nữ', '0967890123', '1989-11-30', 'tranbao', 'ad123'),
+('QTV010', N'Bùi Văn Đông', N'avatar.jpg', N'default-bg.jpg', 'bvd@gmail.com', N'Nam', '0978901234', '1988-09-25', 'buivd', 'ad123');
 
 -- Dữ liệu cho bảng ThanhVien
 INSERT INTO ThanhVien (MaTV, HoTen, AnhDaiDien, AnhBia, Email, GioiTinh, SDT, NgaySinh, NgayThamGia, TenDangNhap, MatKhau) VALUES
-('TV001', N'Lê Văn C', N'avatar.jpg', N'bg.jpg','lvc@gmail.com', N'Nam', '0911222333', '1999-03-21', '2023-01-01', 'levanc', '123'),
-('TV002', N'Phạm Thị D', N'avatar.jpg', N'bg.jpg','ptd@gmail.com', N'Nữ', '0922333444', '2000-08-10', '2023-02-15', 'phamthid', '456'),
-('TV003', N'Tạ Gia Bảo', N'avatar2.jpg', N'bg.jpg','baotg@gmail.com', N'Nam', '0909123456', '2003-01-01', '2023-04-22', 'banphuf29966', '123');
+('TV001', N'Lê Văn C', N'avatar.jpg', N'default-bg.jpg','lvc@gmail.com', N'Nam', '0911222333', '1999-03-21', '2023-01-01', 'levanc', '123'),
+('TV002', N'Phạm Thị D', N'avatar.jpg', N'default-bg.jpg','ptd@gmail.com', N'Nữ', '0922333444', '2000-08-10', '2023-02-15', 'phamthid', '123'),
+('TV003', N'Tạ Gia Bảo', N'avatar2.jpg', N'default-bg.jpg','baotg@gmail.com', N'Nam', '0909123456', '2003-01-01', '2023-04-22', 'banphuf29966', '123'),
+('TV004', N'Nguyễn Văn Phong', N'avatar.jpg', N'default-bg.jpg', 'nvp@gmail.com', N'Nam', '0931234567', '2001-06-05', '2023-03-10', 'nguyenphong', '23'),
+('TV005', N'Hoàng Thị Vân', N'avatar.jpg', N'default-bg.jpg', 'htv@gmail.com', N'Nữ', '0932345678', '1998-09-09', '2023-04-05', 'hoangtv', '123'),
+('TV006', N'Lê Minh Tuấn', N'avatar.jpg', N'default-bg.jpg', 'lmt@gmail.com', N'Nam', '0933456789', '1997-07-19', '2023-05-02', 'leminht', '123'),
+('TV007', N'Phạm Văn Hậu', N'avatar.jpg', N'default-bg.jpg', 'pvh@gmail.com', N'Nam', '0934567890', '2002-05-22', '2023-06-15', 'phamvh', '123'),
+('TV008', N'Võ Thị Hồng', N'avatar.jpg', N'default-bg.jpg', 'vth@gmail.com', N'Nữ', '0935678901', '2000-10-10', '2023-07-08', 'vothong', '123'),
+('TV009', N'Nguyễn Nhật Nam', N'avatar.jpg', N'default-bg.jpg', 'nnn@gmail.com', N'Nam', '0936789012', '2002-12-12', '2023-08-03', 'nguyennn', '123'),
+('TV010', N'Phạm Thuỳ Linh', N'avatar.jpg', N'default-bg.jpg', 'ptl@gmail.com', N'Nữ', '0937890123', '2003-01-01', '2023-09-14', 'phamlinh', '123');
 
 -- Dữ liệu cho bảng LoaiCD
 INSERT INTO LoaiCD (MaLoai, TenLoai) VALUES
@@ -179,4 +194,5 @@ INSERT INTO ThongBao (MaTB, NoiDung, NgayTB, LoaiTB, MaTV, MaQTV, MaDoiTuong, Lo
 VALUES 
 ('TB001', N'<NoiDung>Bài viết của bạn đã được duyệt</NoiDung>', '2024-10-01 10:00:00', N'Duyệt bài viết', 'TV001', NULL, 'BV001', N'BaiViet', 0),
 ('TB002', N'<NoiDung>Có bình luận mới trên bài viết của bạn</NoiDung>', '2024-10-02 12:00:00', N'Bình luận', 'TV002', NULL, 'BL002', N'BinhLuan', 0),
-('TB003', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-10-02 13:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, NULL, 1)
+('TB003', N'<NoiDung>Chúc mừng năm mới 2024</NoiDung>', '2024-10-02 13:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, NULL, 0),
+('TB004', N'<NoiDung>Thầy cho nhóm em 10 điểm nha </NoiDung>', '2024-11-01 09:00:00', N'Thông báo hệ thống', NULL, NULL, NULL, NULL, 1);

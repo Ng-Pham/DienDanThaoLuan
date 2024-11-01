@@ -1,5 +1,38 @@
-﻿
-<div id="header">
+﻿<style type="text/css">
+    .christmas-button {
+    background-color: red;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+    animation: blink 1s infinite;
+    }
+
+    @@keyframes blink {
+    0%, 100% { background-color: red; }
+    50% { background-color: green; }
+    }
+
+    .gradient-button {
+        padding: 10px 20px;
+        font-size: 1.2em;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        background: linear-gradient(45deg, #ff6f61, #f0a202);
+        cursor: pointer;
+        transition: background 0.5s ease;
+    }
+
+    .gradient-button:hover {
+        background: linear-gradient(45deg, #f0a202, #ff6f61);
+    }
+
+</style>
+
+<div id="header" class="christmas-lights">
     <!-- Container for the entire layout -->
     <div class="container">
         <!-- Header Section -->
@@ -25,10 +58,11 @@
                 else
                 {
                     <!-- Show login and register buttons if user is not authenticated -->
-                    <a href="@Url.Action("Login","Account")" class="btn btn-primary me-2">Đăng nhập</a>
-                    <a href="@Url.Action("Register","Account")" class="btn btn-outline-primary">Đăng ký</a>
+                    <a href="@Url.Action("Login","Account")" class="btn btn-primary me-2 christmas-button" style="color: white">Đăng nhập</a>
+                    <a href="@Url.Action("Register","Account")" class="btn btn-outline-primary christmas-button" style="color: white">Đăng ký</a>
                 }
             </div>
         </header>
     </div>
 </div>
+

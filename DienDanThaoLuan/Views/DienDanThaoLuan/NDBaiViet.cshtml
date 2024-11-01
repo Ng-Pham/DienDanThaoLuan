@@ -109,6 +109,45 @@
         box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4); /* Đổ bóng nổi bật */
         border-radius: 8px; /* Bo góc */
     }
+
+    /*share button*/
+    .share-buttons {
+        position: absolute;
+        bottom: 10px;
+        right: 20px; /* Tăng khoảng cách sang phải */
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .share-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 9999px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .share-btn.facebook {
+        background-color: #1877f2;
+        color: white;
+    }
+
+    .share-btn.facebook:hover {
+        background-color: #166fe5;
+    }
+
+    .share-btn.twitter {
+        background-color: #1da1f2;
+        color: white;
+    }
+
+    .share-btn.twitter:hover {
+        background-color: #1a8cd8;
+    }
 </style>
 
 @section breadcrumb{
@@ -150,11 +189,27 @@
                 }
                 @if (Session["UserId"] != null)
                 {
+                    <div class="share-buttons">
+                        <button class="share-btn facebook" onclick="shareOnFacebook()">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button class="share-btn twitter" onclick="shareOnTwitter()">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                    </div>
                     <button class="report-button right-btn" style="bottom: 10px; right: 20px;" onclick="showModal('@Model.MaBV')">Tố cáo</button>
                 }
                 else if (Session["AdminId"] != null)
                 {
-                    <button class="report-button right-btn" style="bottom: 10px; right: 20px;" onclick="showXacNhan('@Model.MaBV')">Xóa</button>
+                    <div class="share-buttons">
+                        <button class="share-btn facebook" onclick="shareOnFacebook()">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button class="share-btn twitter" onclick="shareOnTwitter()">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                    </div>
+                    <button class="report-button right-btn" style="bottom: 10px; right: 120px;" onclick="showXacNhan('@Model.MaBV')">Xóa</button>
                 }
             </div>
         </div>
@@ -170,8 +225,9 @@
 }
 
 <script>
+    /*share button */
     $(window).on('load', function () {
-        var blId = '@blId';
+    var blId = '@blId';
 
         if (blId) {
             var commentElement = document.getElementById('bl-' + blId);
@@ -185,9 +241,21 @@
             }
         }
     });
-</script>
 
-<script>
+    function shareOnFacebook() {
+    const postUrl = window.location.href;
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
+    window.open(facebookUrl, '_blank', 'width=600,height=400');
+    }
+
+    function shareOnTwitter() {
+        const postUrl = window.location.href;
+        const postTitle = document.querySelector('.post-title').innerText;
+        const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}&text=${encodeURIComponent(postTitle)}`;
+        window.open(twitterUrl, '_blank', 'width=600,height=400');
+    }
+
+    /*code ban đầu */
     function copyCode() {
         // Lấy nội dung của code
         const code = document.getElementById("codeBlock").innerText;

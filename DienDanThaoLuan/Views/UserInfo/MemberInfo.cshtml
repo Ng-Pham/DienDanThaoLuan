@@ -295,19 +295,19 @@
                     @using (Html.BeginForm("ChangePassword", "UserInfo", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
                     {
                         <div class="mb-3">
-                            <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                            <label for="currentPassword" class="form-label" style="margin-bottom: 1rem">Mật khẩu hiện tại</label>
                             <input type="password" name="currentPassword" class="form-control" required>
                             <div class="invalid-feedback">Vui lòng nhập mật khẩu hiện tại.</div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                            <label for="newPassword" class="form-label" style="margin-bottom: 1rem">Mật khẩu mới</label>
                             <input type="password" name="newPassword" class="form-control" required>
                             <div class="invalid-feedback">Vui lòng nhập mật khẩu mới.</div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                            <label for="confirmPassword" class="form-label" style="margin-bottom: 1rem">Xác nhận mật khẩu mới</label>
                             <input type="password" name="confirmPassword" class="form-control" required>
                             <div class="invalid-feedback">Vui lòng xác nhận mật khẩu mới.</div>
                         </div>
