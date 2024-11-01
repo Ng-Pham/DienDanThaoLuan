@@ -1,5 +1,7 @@
-﻿@model IEnumerable<DienDanThaoLuan.Models.LoaiCD>
-
+﻿
+@using DienDanThaoLuan.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<LoaiCD>
 @{
     ViewBag.Title = "ChuDe";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -48,7 +50,7 @@
                             <td rowspan="@count" style="vertical-align: middle; text-align: center;">
                                 <strong>@loai.TenLoai</strong>
                             </td>
- <!-- Tên loại gộp dòng -->
+                            <!-- Tên loại gộp dòng -->
                             firstItem = false;
                         }
 
@@ -70,3 +72,6 @@
         }
     </tbody>
 </table>
+<div class="MenuTrang mb-5">
+    @Html.PagedListPager(Model, page => Url.Action("ChuDe", new { page = page}))
+</div>

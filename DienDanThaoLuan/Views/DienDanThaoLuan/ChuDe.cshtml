@@ -1,5 +1,7 @@
-﻿@model List<DienDanThaoLuan.Models.SoBaiChuDe>
-
+﻿
+@using DienDanThaoLuan.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<SoBaiChuDe>
 @{
     ViewBag.Title = "ChuDe";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
@@ -20,7 +22,7 @@
                 }
             </ol>
         </nav>
-    </div>    
+    </div>
 }
 <div class="row my-5">
     <!-- Left Column -->
@@ -39,6 +41,9 @@
                     </li>
                 }
             </ul>
+        </div>
+        <div class="MenuTrang">
+            @Html.PagedListPager(Model, page => Url.Action("ChuDe", new { page = page, id = ViewBag.MaLoai }))
         </div>
     </div>
 

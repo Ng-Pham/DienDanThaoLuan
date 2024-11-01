@@ -1,5 +1,7 @@
-﻿@model IEnumerable<DienDanThaoLuan.Models.LoaiCD>
-
+﻿
+@using DienDanThaoLuan.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<LoaiCD>
 @{
     ViewBag.Title = "QLLoaiCD";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -29,6 +31,7 @@
         display: flex;
         justify-content: center; /* Căn giữa */
     }
+
         .action-cell a {
             margin-left: 10px; /* Thêm khoảng cách trước mỗi nút */
             margin-right: 10px; /* Thêm khoảng cách sau mỗi nút */
@@ -55,8 +58,8 @@
         </tr>
     </thead>
     <tbody>
-        @{ 
-             int i = 0;
+        @{
+            int i = 0;
         }
         @foreach (var item in Model)
         {
@@ -66,9 +69,12 @@
                     @Html.DisplayFor(modelItem => item.TenLoai)
                 </td>
                 <td class="action-cell">
-                    @Html.ActionLink("Sửa", "SuaLoaiCD", new { id = item.MaLoai }, new { @class = "btn custom-edit-btn btn-sm" }) 
+                    @Html.ActionLink("Sửa", "SuaLoaiCD", new { id = item.MaLoai }, new { @class = "btn custom-edit-btn btn-sm" })
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<div class="MenuTrang mb-5">
+    @Html.PagedListPager(Model, page => Url.Action("QLLoaiCD", new { page = page }))
+</div>

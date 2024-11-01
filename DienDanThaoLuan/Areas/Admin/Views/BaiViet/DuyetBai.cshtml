@@ -1,4 +1,7 @@
-﻿@model IEnumerable <DienDanThaoLuan.Models.BaiViet>
+﻿
+@using DienDanThaoLuan.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<BaiViet>
 @{
     ViewBag.Title = "DuyetBai";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -15,7 +18,7 @@
         {
             <div class="list-group-item  d-flex justify-content-between align-items-center">
                 <div>
-                    @Html.Action("PartialThongTinTV", "BaiViet", new {id = bv.MaTV})
+                    @Html.Action("PartialThongTinTV", "BaiViet", new { id = bv.MaTV })
                     <h6><i>"@bv.TieuDeBV"</i></h6>
                     <small>Lúc @bv.NgayDang</small>
                 </div>
@@ -23,4 +26,7 @@
             </div>
         }
     }
+    <div class="MenuTrang">
+        @Html.PagedListPager(Model, page => Url.Action("DuyetBai", new { page = page }))
+    </div>
 </div>

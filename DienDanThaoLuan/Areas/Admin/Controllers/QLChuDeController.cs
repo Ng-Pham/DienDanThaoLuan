@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace DienDanThaoLuan.Areas.Admin.Controllers
 {
@@ -11,10 +12,13 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
     {
         DienDanThaoLuanEntities db = new DienDanThaoLuanEntities();
         // GET: Admin/QLChuDe
-        public ActionResult QLLoaiCD()
+        public ActionResult QLLoaiCD(int? page)
         {
             var ds = db.LoaiCDs.OrderBy(l => l.TenLoai).ToList();
-            return View(ds);
+            int iSize = 10;
+            int iPageNumber = (page ?? 1);
+
+            return View(ds.ToPagedList(iPageNumber, iSize));
         }
         [HttpGet]
         public ActionResult TaoLoaiCD()
@@ -80,10 +84,12 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
             return View(lcd);
         }
 
-        public ActionResult ChuDe()
+        public ActionResult ChuDe(int? page)
         {
             var ds = db.LoaiCDs.OrderByDescending(l => l.TenLoai).ToList();
-            return View(ds);
+            int iSize = 3;
+            int iPageNumber = (page ?? 1);
+            return View(ds.ToPagedList(iPageNumber, iSize));
         }
         [HttpGet]
         public ActionResult SuaCD(string id)

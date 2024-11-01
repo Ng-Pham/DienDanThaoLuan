@@ -67,6 +67,13 @@ namespace DienDanThaoLuan.Controllers
                 Session["AdminId"] = adminAcc.MaQTV;
                 return RedirectToAction("Index", "DienDanThaoLuan");
             }
+
+            if (memberAcc.MatKhau == null)
+            {
+                ViewBag.error = "Tài khoản này đã bị khóa!!";
+                ViewBag.username = username;
+                return View();
+            }
             //Check đúng sai tài khoản mật khẩu
             if (memberAcc.MatKhau != password || memberAcc.TenDangNhap != username)
             {
@@ -149,6 +156,10 @@ namespace DienDanThaoLuan.Controllers
                 return Json(new { success = false, message = "Email không tồn tại trong hệ thống!" });
             }
 
+            if (user.MatKhau == null)
+            {
+                return Json(new { success = false, message = "Tài khoản với email này đã bị khóa!!" });
+            }
             // Kiểm tra thời gian từ lần gửi yêu cầu cuối cùng
             if (user.LastPasswordResetRequest.HasValue &&
                 (DateTime.Now - user.LastPasswordResetRequest.Value).TotalSeconds < 30)
