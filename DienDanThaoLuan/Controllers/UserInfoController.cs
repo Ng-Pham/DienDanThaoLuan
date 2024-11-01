@@ -120,6 +120,7 @@ namespace DienDanThaoLuan.Controllers
             }
             return RedirectToAction("Index");
         }
+
         //Thay đổi ảnh đại diện (Avatar)
         [Authorize]
         [HttpPost]
@@ -157,7 +158,7 @@ namespace DienDanThaoLuan.Controllers
                         string path = Path.Combine(Server.MapPath("~/Images"), fileName);
 
                         // Xóa ảnh cũ nếu có
-                        if (!string.IsNullOrEmpty(member.AnhDaiDien))
+                        if (!string.IsNullOrEmpty(member.AnhDaiDien) && member.AnhDaiDien != "avatar.jpg")
                         {
                             string oldPath = Path.Combine(Server.MapPath("~/Images"), member.AnhDaiDien);
                             if (System.IO.File.Exists(oldPath))
@@ -182,7 +183,7 @@ namespace DienDanThaoLuan.Controllers
                             string path = Path.Combine(Server.MapPath("~/Images"), fileName);
 
                             // Xóa ảnh cũ nếu có
-                            if (!string.IsNullOrEmpty(admin.AnhDaiDien))
+                            if (!string.IsNullOrEmpty(admin.AnhDaiDien) && admin.AnhDaiDien != "avatar.jpg")
                             {
                                 string oldPath = Path.Combine(Server.MapPath("~/Images"), admin.AnhDaiDien);
                                 if (System.IO.File.Exists(oldPath))
@@ -219,6 +220,7 @@ namespace DienDanThaoLuan.Controllers
         {
             if (cover != null && cover.ContentLength > 0)
             {
+                // Kiểm tra định dạng file
                 var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
                 var fileExtension = Path.GetExtension(cover.FileName).ToLower();
 
@@ -228,6 +230,7 @@ namespace DienDanThaoLuan.Controllers
                     return RedirectToAction("Index");
                 }
 
+                // Kiểm tra kích thước file (giới hạn 5MB)
                 if (cover.ContentLength > 5 * 1024 * 1024)
                 {
                     TempData["ErrorMessage"] = "Kích thước file không được vượt quá 5MB";
@@ -242,10 +245,12 @@ namespace DienDanThaoLuan.Controllers
 
                     if (member != null)
                     {
+                        // Xử lý cho Thành viên
                         fileName = $"cover_member_{member.MaTV}_{DateTime.Now.Ticks}{fileExtension}";
                         string path = Path.Combine(Server.MapPath("~/Images"), fileName);
 
-                        if (!string.IsNullOrEmpty(member.AnhBia))
+                        // Xóa ảnh cũ nếu có
+                        if (!string.IsNullOrEmpty(member.AnhBia) && member.AnhBia != "defaulth-bg.jpg")
                         {
                             string oldPath = Path.Combine(Server.MapPath("~/Images"), member.AnhBia);
                             if (System.IO.File.Exists(oldPath))
@@ -254,18 +259,22 @@ namespace DienDanThaoLuan.Controllers
                             }
                         }
 
+                        // Lưu file mới
                         cover.SaveAs(path);
                         member.AnhBia = fileName;
                     }
                     else
                     {
+                        // Kiểm tra nếu là Admin
                         var admin = db.QuanTriViens.SingleOrDefault(a => a.TenDangNhap.ToLower() == username.ToLower());
                         if (admin != null)
                         {
+                            // Xử lý cho Quản trị viên
                             fileName = $"cover_admin_{admin.MaQTV}_{DateTime.Now.Ticks}{fileExtension}";
                             string path = Path.Combine(Server.MapPath("~/Images"), fileName);
 
-                            if (!string.IsNullOrEmpty(admin.AnhBia))
+                            // Xóa ảnh cũ nếu có
+                            if (!string.IsNullOrEmpty(admin.AnhBia) && admin.AnhBia != "defaulth-bg.jpg")
                             {
                                 string oldPath = Path.Combine(Server.MapPath("~/Images"), admin.AnhBia);
                                 if (System.IO.File.Exists(oldPath))
@@ -274,6 +283,7 @@ namespace DienDanThaoLuan.Controllers
                                 }
                             }
 
+                            // Lưu file mới
                             cover.SaveAs(path);
                             admin.AnhBia = fileName;
                         }
