@@ -75,7 +75,7 @@ namespace DienDanThaoLuan.Controllers
                 TenLoai = loai.TenLoai,
                 TenCD = cd.TenCD,
                 MaCD = cd.MaCD,
-                SoBai = db.BaiViets.Count(bv => bv.MaCD == cd.MaCD)
+                SoBai = db.BaiViets.Where(bv => bv.TrangThai.Contains("Đã duyệt")).Count(bv => bv.MaCD == cd.MaCD)
             }).ToList();
             return dsttcd;
         }
@@ -292,7 +292,7 @@ namespace DienDanThaoLuan.Controllers
         [HttpGet]
         public ActionResult BaiVietTheoCD(int? page, string id, string tenloai)
         {
-            var dsbv = LayTatCaBaiViet().Where(bv => bv.MaCD == id)
+            var dsbv = LayTatCaBaiViet().Where(bv => bv.MaCD == id && bv.TrangThaiBV.Contains("Đã duyệt"))
             .OrderByDescending(bv => bv.NgayDang)
             .ToList();
             if (!dsbv.Any())
@@ -808,8 +808,6 @@ namespace DienDanThaoLuan.Controllers
                     BinhLuan = bl,
                     BaiViet = baiVietLienQuan // Gán bài viết liên quan
                 };
-
-                
                 return View(model);
             }
             else
@@ -824,7 +822,33 @@ namespace DienDanThaoLuan.Controllers
                 ViewBag.Code = codeContent;
                 return View(model);
             }
+        }
+        [HttpPost]
+        public ActionResult XoaBai(string maBV)
+        {
+            var baiViet = db.BaiViets.SingleOrDefault(b => b.MaBV.Contains(maBV));
+            if (baiViet != null)
+            {
+                db.BaiViets.Remove(baiViet);
 
+                var tb = db.ThongBaos.Where(t => t.MaDoiTuong.Contains(maBV)).ToList();
+                if (tb.Any())
+                {
+                    db.ThongBaos.RemoveRange(tb); 
+                }
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ThongBao");
+        }
+        [HttpPost]
+        public ActionResult XoaThongBao(string MaThongBao)
+        {
+            var tb = db.ThongBaos.Where(t => t.MaTB.Contains(MaThongBao)).SingleOrDefault();
+            db.ThongBaos.Remove(tb);
+            db.SaveChanges();
+            return RedirectToAction("ThongBao");
         }
     }
 }

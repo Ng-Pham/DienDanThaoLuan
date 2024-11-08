@@ -8,7 +8,7 @@
 }
 
 <h2 style="text-align: center;" class="p-2">Danh Sách Chủ Đề</h2>
-
+<div style="background-color:white; border-radius:5px;">
 <table class="table table-bordered" style="background-color: #ffffff; border: 2px solid #333333;">
     <thead style="background-color: #0078d4; color: white;">
         <tr>
@@ -71,7 +71,7 @@
             }
         }
     </tbody>
-</table>
+</table></div>
 <div class="MenuTrang mb-5">
     @Html.PagedListPager(Model, page => Url.Action("ChuDe", new { page = page}))
 </div>

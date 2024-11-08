@@ -19,25 +19,38 @@
             <a href="@Url.Action("MarkAsRead", "DienDanThaoLuan", new { id = tb.MaTB })"
                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center
                   @(tb.TrangThai.GetValueOrDefault() ? "read" : "unread")">
-                <div>
-                    <h5 class="mb-1">@tb.NoiDung</h5>
-                    <small>Lúc @tb.NgayTB</small>
+                <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <h5 class="mb-1">@tb.NoiDung</h5>
+                        <small class="text-muted">Lúc @tb.NgayTB</small>
+                    </div>
                 </div>
-                <span class="badge rounded-pill
-                      @(tb.LoaiTB == "Tố cáo" ? "bg-danger" : "bg-custom")">
-                    @if (tb.LoaiTB == "Bình luận" || tb.LoaiTB == "Xóa bình luận")
+                <div class="d-flex justify-content-end w-100">
+                    <span class="badge rounded-pill @(tb.LoaiTB == "Tố cáo" ? "bg-danger" : "bg-custom")">
+                        @if (tb.LoaiTB == "Bình luận" || tb.LoaiTB == "Xóa bình luận")
+                        {
+                            <text>Bình luận</text>;
+                        }
+                        else if (tb.LoaiTB == "Bài viết" || tb.LoaiTB == "Duyệt bài viết" || tb.LoaiTB == "Xóa bài viết" || tb.LoaiTB == "Từ chối bài viết")
+                        {
+                            <text>Bài viết</text>;
+                        }
+                        else if (tb.LoaiTB == "Tố cáo" && Session["AdminId"] != null) // Chỉ hiển thị cho quản trị viên
+                        {
+                            <text>Tố cáo</text>;
+                        }
+                    </span>   
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                    @using (Html.BeginForm("XoaThongBao", "DienDanThaoLuan", FormMethod.Post))
                     {
-                        <text>Bình luận</text>;
+                        <input type="hidden" name="MaThongBao" value="@tb.MaTB" />
+                        <button type="submit" id="btnDelete" class="badge rounded-pill bg-warning text-dark ms-2 mb-2">
+                            Xóa
+                        </button>
                     }
-                    else if (tb.LoaiTB == "Bài viết" || tb.LoaiTB == "Duyệt bài viết" || tb.LoaiTB == "Xóa bài viết")
-                    {
-                        <text>Bài viết</text>;
-                    }
-                    else if (tb.LoaiTB == "Tố cáo" && Session["AdminId"] != null) // Chỉ hiển thị cho quản trị viên
-                    {
-                        <text>Tố cáo</text>;
-                    }
-                </span>
+                </div>
+        
             </a>
         }
     }

@@ -10,7 +10,7 @@
             <PropertyRef Name="MaBV" />
           </Key>
           <Property Name="MaBV" Type="varchar" MaxLength="15" Nullable="false" />
-          <Property Name="TieuDeBV" Type="nvarchar" MaxLength="30" />
+          <Property Name="TieuDeBV" Type="nvarchar" MaxLength="60" />
           <Property Name="NoiDung" Type="xml" />
           <Property Name="NgayDang" Type="datetime" />
           <Property Name="TrangThai" Type="nvarchar" MaxLength="20" />
@@ -280,7 +280,7 @@
             <PropertyRef Name="MaBV" />
           </Key>
           <Property Name="MaBV" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TieuDeBV" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TieuDeBV" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NgayDang" Type="DateTime" Precision="3" />
           <Property Name="TrangThai" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
