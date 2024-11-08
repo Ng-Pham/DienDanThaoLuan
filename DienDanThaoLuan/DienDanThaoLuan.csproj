@@ -132,6 +132,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\QLChuDeController.cs" />
     <Compile Include="Areas\Admin\Controllers\QLThanhVienController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ThongBaoTongController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DienDanThaoLuanController.cs" />
     <Compile Include="Controllers\UserInfoController.cs" />
@@ -281,6 +282,7 @@
     <Content Include="Areas\Admin\Views\QLChuDe\ThemCD.cshtml" />
     <Content Include="Areas\Admin\Views\Home\GopY.cshtml" />
     <Content Include="Areas\Admin\Views\QLThanhVien\QLThanhVien.cshtml" />
+    <Content Include="Areas\Admin\Views\ThongBaoTong\Index.cshtml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
