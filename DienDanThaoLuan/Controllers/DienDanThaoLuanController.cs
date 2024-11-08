@@ -264,7 +264,6 @@ namespace DienDanThaoLuan.Controllers
                             .OrderByDescending(t => t.SoBaiTrongLoaiCD).Take(2).ToList();
             var lstloaicdtop2 = LayThongTinCD().Where(l => listloaicd.Any(top2 => top2.MaLoai == l.MaLoai)).ToList();
 
-
             return PartialView(lstloaicdtop2);
         }
         public ActionResult PartialQTV()
@@ -439,6 +438,8 @@ namespace DienDanThaoLuan.Controllers
         public ActionResult NDBaiViet(string id)
         {
             var nd = db.BaiViets.FirstOrDefault(ndct => ndct.MaBV == id);
+            ViewBag.PostTitle = nd.TieuDeBV;
+            ViewBag.PostURL = Request.Url.AbsoluteUri;
             var (noiDungVanBan, codeContent) = XuLyNoiDungXML(nd.NoiDung);
 
             // Lưu nội dung vào ViewBag

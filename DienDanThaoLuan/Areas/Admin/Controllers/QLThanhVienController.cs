@@ -52,7 +52,7 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
             {
                 ds.MatKhau = null;
                 db.SaveChanges();
-                TempData["ThongBao"] = "Đã xóa tài khoản";
+                TempData["ThongBao"] = "Đã khóa tài khoản";
             }
             else
             {

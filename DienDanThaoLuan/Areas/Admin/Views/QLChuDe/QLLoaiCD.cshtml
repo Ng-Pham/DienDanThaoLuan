@@ -44,37 +44,39 @@
 </p>
 
 
-
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th style="text-align: center;font-size: 18px;">
-                STT
-            </th>
-            <th style="font-size: 18px;">
-                Tên loại chủ đề
-            </th>
-            <th class="action-cell" style="font-size: 18px">Tùy chỉnh</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int i = 0;
-        }
-        @foreach (var item in Model)
-        {
+<div style="background-color: white; border-radius: 15px; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);">
+    <table class="table table-striped table-bordered">
+        <thead>
             <tr>
-                <td style="text-align: center;">@(++i)</td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TenLoai)
-                </td>
-                <td class="action-cell">
-                    @Html.ActionLink("Sửa", "SuaLoaiCD", new { id = item.MaLoai }, new { @class = "btn custom-edit-btn btn-sm" })
-                </td>
+                <th style="text-align: center; font-size: 18px; padding-top: 15px;">
+                    STT
+                </th>
+                <th style="font-size: 18px; padding-top: 15px;">
+                    Tên loại chủ đề
+                </th>
+                <th class="action-cell" style="font-size: 18px; padding-top: 15px;">Tùy chỉnh</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @{
+                int i = 0;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center;">@(++i)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TenLoai)
+                    </td>
+                    <td class="action-cell">
+                        @Html.ActionLink("Sửa", "SuaLoaiCD", new { id = item.MaLoai }, new { @class = "btn custom-edit-btn btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 <div class="MenuTrang mb-5">
     @Html.PagedListPager(Model, page => Url.Action("QLLoaiCD", new { page = page }))
 </div>
