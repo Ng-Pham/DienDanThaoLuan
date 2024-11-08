@@ -112,10 +112,17 @@ namespace DienDanThaoLuan.Controllers
                     string newMaTV = "TV" + (Convert.ToInt32(lastTV.MaTV.Substring(2)) + 1).ToString("D3");
                     // Kiểm tra xem tên đăng nhập đã tồn tại chưa
                     var existingUser = db.ThanhViens.FirstOrDefault(x => x.TenDangNhap == tv.TenDangNhap);
+                    var existingEmail = db.ThanhViens.FirstOrDefault(x => x.Email == tv.Email);
                     if (existingUser != null)
                     {
                         ViewBag.error = "Tên đăng nhập đã tồn tại!! Vui lòng thử lại";
                         ViewBag.tv.TenDangNhap = tv.TenDangNhap;
+                        return View(tv);
+                    }
+                    else if (existingEmail != null)
+                    {
+                        ViewBag.error = "Email đã được sử dụng!! Vui lòng thử lại";
+                        ViewBag.tv.Email = tv.Email;
                         return View(tv);
                     }
                     tv.NgayThamGia = DateTime.Now;

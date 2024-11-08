@@ -155,27 +155,24 @@
         color: #65676B;
         margin-top: 5px;
     }
-</style>
 
-<!--<div class="profile-header text-center">
-    <div class="avatar-container">
-        <img src="$Url.Content("~/Images/" + $Model.AnhDaiDien)" alt="Avatar" class="profile-img-small mb-3">
-        <label for="avatar" class="avatar-upload-icon">
-            <i class="fas fa-camera"></i>
-            $using (Html.BeginForm("ChangeAvatar", "UserInfo", FormMethod.Post, new { enctype = "multipart/form-data", id = "avatarForm" }))
-            {
-                <input type="file"
-                       id="avatar"
-                       name="avatar"
-                       accept="image/*"
-                       class="d-none"
-                       onchange="handleAvatarChange(this);">
-            }
-        </label>
-    </div>
-    <h1 class="display-4">$Model.HoTen</h1>
-    <p class="lead text-muted">Thành viên</p>
-</div> -->
+    .avatar-upload-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
 
 <div class="cover-container">
     <img src="@Url.Content("~/Images/" + (Model.AnhBia ?? "default-bg.jpg"))" alt="Cover" class="cover-image" style=" border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
@@ -261,10 +258,9 @@
                             @{
                                 var gioiTinhList = new List<SelectListItem>
                                                                 {
-                                    new SelectListItem { Value = "", Text = "Chọn giới tính", Selected = string.IsNullOrEmpty(Model.GioiTinh) },
+                                    new SelectListItem { Value = "", Text = "Chọn giới tính", Disabled = true, Selected = string.IsNullOrEmpty(Model.GioiTinh) },
                                     new SelectListItem { Value = "Nam", Text = "Nam", Selected = Model.GioiTinh == "Nam" },
-                                    new SelectListItem { Value = "Nữ", Text = "Nữ", Selected = Model.GioiTinh == "Nữ" },
-                                    new SelectListItem { Value = "Khác", Text = "Khác", Selected = Model.GioiTinh == "Khác" }
+                                    new SelectListItem { Value = "Nữ", Text = "Nữ", Selected = Model.GioiTinh == "Nữ" }
                                 };
                             }
                             @Html.DropDownListFor(m => m.GioiTinh, gioiTinhList, new { @class = "form-select", required = "required" })

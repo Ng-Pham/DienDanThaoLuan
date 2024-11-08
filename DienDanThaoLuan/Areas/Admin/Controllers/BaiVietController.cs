@@ -28,21 +28,19 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
             var codeNode = xmlDoc.SelectSingleNode("//Code");
             string codeContent = codeNode != null ? codeNode.InnerText : string.Empty;
 
-            // Lấy nội dung văn bản, bỏ phần mã code
-            var noiDungVanBanNode = xmlDoc.SelectSingleNode("//NoiDung");
-            string noiDungVanBan = noiDungVanBanNode != null ? noiDungVanBanNode.InnerXml : string.Empty;
             foreach (XmlNode imgNode in xmlDoc.SelectNodes("//img"))
             {
                 if (imgNode.Attributes["src"] != null)
                 {
                     var srcimg = imgNode.Attributes["src"].Value;
-                    if (srcimg.StartsWith(".."))
-                    {
-                        srcimg = srcimg.Substring(2);
-                    }
-                    imgNode.Attributes["src"].Value = srcimg;
+                    // Thay thế đường dẫn để đảm bảo không có ký tự ".."
+                    srcimg = srcimg.Replace("../", ""); // Loại bỏ dấu ".." từ đường dẫn
+                    imgNode.Attributes["src"].Value = Url.Content("/" + srcimg);
                 }
             }
+            // Lấy nội dung văn bản, bỏ phần mã code
+            var noiDungVanBanNode = xmlDoc.SelectSingleNode("//NoiDung");
+            string noiDungVanBan = noiDungVanBanNode != null ? noiDungVanBanNode.InnerXml : string.Empty;
             // Loại bỏ các thẻ <Code> khỏi nội dung văn bản
             if (!string.IsNullOrEmpty(codeContent))
             {

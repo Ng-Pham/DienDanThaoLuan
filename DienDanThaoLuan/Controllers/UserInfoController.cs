@@ -37,6 +37,12 @@ namespace DienDanThaoLuan.Controllers
             if (ModelState.IsValid)
             {
                 var member = db.ThanhViens.Find(model.MaTV);
+                var existingEmail = db.ThanhViens.Where(m => m.Email == model.Email).FirstOrDefault();
+                if (existingEmail != null)
+                {
+                    TempData["SuccessMessage"] = "Email đã được sử dụng!! Vui lòng thử lại";
+                    return RedirectToAction("Index");
+                }
                 if (member != null)
                 {
                     member.HoTen = model.HoTen;
@@ -250,7 +256,7 @@ namespace DienDanThaoLuan.Controllers
                         string path = Path.Combine(Server.MapPath("~/Images"), fileName);
 
                         // Xóa ảnh cũ nếu có
-                        if (!string.IsNullOrEmpty(member.AnhBia) && member.AnhBia != "defaulth-bg.jpg")
+                        if (!string.IsNullOrEmpty(member.AnhBia) && member.AnhBia != "default-bg.jpg")
                         {
                             string oldPath = Path.Combine(Server.MapPath("~/Images"), member.AnhBia);
                             if (System.IO.File.Exists(oldPath))
@@ -274,7 +280,7 @@ namespace DienDanThaoLuan.Controllers
                             string path = Path.Combine(Server.MapPath("~/Images"), fileName);
 
                             // Xóa ảnh cũ nếu có
-                            if (!string.IsNullOrEmpty(admin.AnhBia) && admin.AnhBia != "defaulth-bg.jpg")
+                            if (!string.IsNullOrEmpty(admin.AnhBia) && admin.AnhBia != "default-bg.jpg")
                             {
                                 string oldPath = Path.Combine(Server.MapPath("~/Images"), admin.AnhBia);
                                 if (System.IO.File.Exists(oldPath))

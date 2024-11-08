@@ -120,8 +120,8 @@
     }
 
     .share-btn {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2rem;
+        height: 2rem;
         border-radius: 9999px;
         border: none;
         display: flex;
@@ -197,7 +197,7 @@
                             <i class="fab fa-twitter"></i>
                         </button>
                     </div>
-                    <button class="report-button right-btn" style="bottom: 10px; right: 20px;" onclick="showModal('@Model.MaBV')">Tố cáo</button>
+                    <button class="report-button right-btn" style="bottom: 10px; right: 105px;" onclick="showModal('@Model.MaBV')">Tố cáo</button>
                 }
                 else if (Session["AdminId"] != null)
                 {
@@ -209,7 +209,7 @@
                             <i class="fab fa-twitter"></i>
                         </button>
                     </div>
-                    <button class="report-button right-btn" style="bottom: 10px; right: 120px;" onclick="showXacNhan('@Model.MaBV')">Xóa</button>
+                    <button class="report-button right-btn" style="bottom: 10px; right: 105px;" onclick="showXacNhan('@Model.MaBV')">Xóa</button>
                 }
             </div>
         </div>
@@ -243,9 +243,10 @@
     });
 
     function shareOnFacebook() {
-    const postUrl = window.location.href;
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
-    window.open(facebookUrl, '_blank', 'width=600,height=400');
+        const postUrl = window.location.href;
+        const postTitle = document.querySelector('.post-title').innerText;
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}&quote=${encodeURIComponent(postTitle)}`;
+        window.open(facebookUrl, '_blank', 'width=600,height=400');
     }
 
     function shareOnTwitter() {
