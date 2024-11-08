@@ -209,7 +209,7 @@ namespace DienDanThaoLuan.Controllers
         public string XuLyNoiDung(string noiDung, string codeContent)
         {
             // Decode the content from the request
-            var decodedCodeContent = HttpUtility.UrlDecode(codeContent ?? string.Empty); // Ensure not null
+            var decodedCodeContent = codeContent ?? string.Empty; // Ensure not null
             var decodedNoiDung = HttpUtility.UrlDecode(noiDung);
 
             string xmlString;

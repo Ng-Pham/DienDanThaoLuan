@@ -19,7 +19,7 @@
             <tr>
                 <th style="text-align:center;">STT</th>
                 <th>Nội Dung</th>
-                <th style="text-align:center;">Ngày Thêm</th>
+                <th style="text-align:center;">Ngày Cập Nhập</th>
                 <th style="text-align:center;">Chức Năng</th>
             </tr>
         </thead>
@@ -39,6 +39,7 @@
                             Sửa
                         </button>
                         <button class="btn btn-danger btn-sm btnDel" data-id="@tb.MaTB">Xóa</button>
+                        <button class="btn btn-primary btn-sm btnChonHien" data-id="@tb.MaTB">Chọn</button>
                     </td>
                 </tr>
             }
@@ -166,5 +167,22 @@
                 }
             });
         }
+    });
+    $('.btnChonHien').click(function () {
+        var idTB = $(this).data('id');
+        $.ajax({
+            url: '/Admin/ThongBaoTong/ChonHien',
+            type: 'post',
+            data: {
+                maTB: idTB
+            },
+            success: function (response) {
+                alert("Thông báo đã được thay thành công!");
+                location.reload(); // Tải lại trang để cập nhật danh sách thông báo
+            },
+            error: function () {
+                alert("Có lỗi xảy ra. Vui lòng thử lại.");
+            }
+        });
     });
 </script>

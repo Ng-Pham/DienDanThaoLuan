@@ -79,5 +79,22 @@ namespace DienDanThaoLuan.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
             }
         }
+        [HttpPost]
+        public ActionResult ChonHien(string maTB)
+        {
+            try
+            {
+                var tb = db.ThongBaos.SingleOrDefault(t => t.MaTB == maTB);
+                tb.NgayTB = DateTime.Now;
+                db.SaveChanges();
+
+                return Json(new { success = true, message = "Thông báo đã được thay thành công!" });
+            }
+            catch (Exception ex)
+            {
+                // Trả về lỗi nếu xảy ra
+                return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
+            }
+        }
     }
 }
