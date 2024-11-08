@@ -54,7 +54,13 @@
                     <li class="nav-item">
                         @if (Session["AdminId"] != null)
                         {
-                            <a class="nav-link position-relative" href="@Url.Action("QLThanhVien", "QLThanhVien", new { area = "Admin" })">QUẢN LÝ THÀNH VIÊN</a>
+                            <a class="nav-link" href="@Url.Action("QLThanhVien", "QLThanhVien", new { area = "Admin" })">QUẢN LÝ THÀNH VIÊN</a>
+                        }
+                    </li>
+                    <li class="nav-item">
+                        @if (Session["AdminId"] != null)
+                        {
+                            <a class="nav-link" href="@Url.Action("Index", "ThongBaoTong", new { area = "Admin" })">THÔNG BÁO TỔNG</a>
                         }
                     </li>
                 </ul>
