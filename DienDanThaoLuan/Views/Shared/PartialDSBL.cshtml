@@ -62,7 +62,7 @@
 
     .admin {
         background-color: #e7f3ff; /* Màu nền nhẹ */
-        border-left: 2px solid #007bff; /* Đường viền bên trái màu xanh */
+        border-left: 5px solid #007bff; /* Đường viền bên trái màu xanh */
         padding: 15px;
         margin-bottom: 15px;
         box-shadow: 0 2px 10px rgba(0, 123, 255, 0.3); /* Hiệu ứng đổ bóng */
@@ -87,8 +87,9 @@
                     @if (!string.IsNullOrEmpty(@bl.CodeContent))
                     {
                         <div class="code-container">
-                            <button class="copy-button" onclick="copyCode()">Copy</button>
-                            <pre><code class="language" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(@bl.CodeContent))</code></pre>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                            <button class="run-button" onclick="runCode(this)">Run</button>
+                            <pre><code class="language codeBlock">@Html.Raw(HttpUtility.HtmlEncode(@bl.CodeContent))</code></pre>
                             <div class="copy-notification" id="copyNotification">Code copied to clipboard!</div>
                         </div>
                     }

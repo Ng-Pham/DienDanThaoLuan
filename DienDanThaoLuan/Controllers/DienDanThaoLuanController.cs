@@ -14,6 +14,7 @@ using System.Web.Security;
 using System.Data.SqlClient;
 using PagedList;
 using System.Web.UI;
+using HtmlAgilityPack;
 
 namespace DienDanThaoLuan.Controllers
 {
@@ -444,8 +445,7 @@ namespace DienDanThaoLuan.Controllers
 
             // Lưu nội dung vào ViewBag
             ViewBag.NoiDungVanBan = noiDungVanBan;
-            ViewBag.CodeContent = codeContent; 
-           
+            ViewBag.CodeContent = codeContent;
             var tvViet = db.ThanhViens.FirstOrDefault(tv => tv.MaTV == nd.MaTV);
             if (tvViet != null)
             {

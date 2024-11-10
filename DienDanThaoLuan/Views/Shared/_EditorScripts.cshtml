@@ -4,6 +4,7 @@
 <!-- Thêm thư viện CodeMirror -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.3/codemirror.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.3/codemirror.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.3/theme/darcula.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.3/mode/javascript/javascript.min.js"></script>
 
 <script>
@@ -51,7 +52,7 @@
                 if (!textArea.CodeMirrorInstance) {
                     textArea.CodeMirrorInstance = CodeMirror.fromTextArea(textArea, {
                         lineNumbers: true, // Thay đổi theo ngôn ngữ bạn muốn
-                        theme: "default",  // Chọn theme cho CodeMirror
+                        theme: "darcula",  // Chọn theme cho CodeMirror
                         lineWrapping: true
                     });
                 }

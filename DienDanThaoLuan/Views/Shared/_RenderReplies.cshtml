@@ -29,8 +29,9 @@
                     @if (!string.IsNullOrEmpty(@reply.CodeContent))
                     {
                         <div class="code-container">
-                            <button class="copy-button" onclick="copyCode()">Copy</button>
-                            <pre><code class="language" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(@reply.CodeContent))</code></pre>
+                            <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                            <button class="run-button" onclick="runCode(this)">Run</button>
+                            <pre><code class="language codeBlock">@Html.Raw(HttpUtility.HtmlEncode(@reply.CodeContent))</code></pre>
                             <div class="copy-notification" id="copyNotification">Code copied to clipboard!</div>
                         </div>
                     }
