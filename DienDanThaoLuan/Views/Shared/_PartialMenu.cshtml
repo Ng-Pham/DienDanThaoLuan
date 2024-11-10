@@ -36,6 +36,9 @@
                         }
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ExecutionResult", "Code")">RUN CODE</a>
+                    </li>
+                    <li class="nav-item">
                         @if (Session["AdminId"] != null)
                         {
                             <a class="nav-link position-relative" href="@Url.Action("DuyetBai", "BaiViet", new { area = "Admin" })">DUYỆT BÀI<span id="unreadCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-sm">@ViewBag.SLBV</span></a>

@@ -1,0 +1,182 @@
+﻿@{
+    ViewBag.Title = "Execution Result";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2 class="execution-title mt-3">Run Code</h2>
+
+<!-- Chọn ngôn ngữ lập trình -->
+<div class="language-container">
+    <label for="languageSelect" class="language-label">Chọn ngôn ngữ lập trình:</label>
+    <select id="languageSelect" class="form-control mt-2">
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+        <option value="csharp">C#</option>
+        <option value="php">PHP</option>
+        <option value="c">C</option>
+        <option value="cpp">C++</option>
+        <option value="javascript">JavaScript</option>
+        <option value="html">HTML</option>
+    </select>
+</div>
+
+<!-- Phần chứa code -->
+<div class="code-container">
+    <h3 class="section-title">Code:</h3>
+    <div class="code-box">
+        <textarea name="CodeContent" id="Code" class="form-control mt-2 codeContent">@Html.Raw(HttpUtility.HtmlEncode(ViewBag.CodeContent))</textarea>
+    </div>
+    <button class="run-button" onclick="runCode()">Run</button>
+</div>
+
+<!-- Phần kết quả -->
+<div class="result-container">
+    <div class="output-section">
+        <h3 class="section-title">Output:</h3>
+        <div class="output-box">
+            <pre>@ViewBag.Stdout</pre>
+        </div>
+
+        <h3 class="section-title mt-2">Errors:</h3>
+        <div class="error-box">
+            <pre>@ViewBag.Stderr</pre>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm style cho giao diện -->
+<style>
+    /* Tiêu đề */
+    .execution-title {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    /* Chọn ngôn ngữ */
+    .language-container {
+        margin-bottom: 20px;
+        margin: 20px auto;
+        padding: 15px;
+        border-radius: 8px;
+        max-width: 82%;
+    }
+
+    .language-label {
+        font-size: 1.2rem;
+        color: #34495e;
+    }
+
+    /* Tiêu đề các phần Code, Output, Errors */
+    .section-title {
+        color: #34495e;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    /* Phần chứa Code và Kết quả */
+    .code-container, .result-container {
+        margin: 20px auto;
+        padding: 15px;
+        background-color: #f4f4f4;
+        border-radius: 8px;
+        max-width: 80%;
+    }
+
+    /* Hộp chứa mã và kết quả */
+    .code-box, .output-box, .error-box {
+        background-color: #2d2d2d;
+        color: #f1f1f1;
+        padding: 15px;
+        border-radius: 8px;
+        overflow: auto;
+        font-family: "Courier New", Courier, monospace;
+    }
+
+        .code-box pre, .output-box pre, .error-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+    /* Phần output và error */
+    .output-section {
+        margin-top: 20px;
+    }
+
+    /* Nút Run */
+    .run-button {
+        background-color: #0c88c2;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+
+        .run-button:hover {
+            background-color: #0078a0;
+        }
+</style>
+
+<!-- Liên kết đến CodeMirror -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.3/theme/monokai.min.css">
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const textArea = document.getElementById('Code');
+        if (!textArea.CodeMirrorInstance) {
+            textArea.CodeMirrorInstance = CodeMirror.fromTextArea(textArea, {
+                lineNumbers: true,
+                theme: "monokai",
+                lineWrapping: true,
+            });
+        }
+    });
+
+    function runCode() {
+        const language = document.getElementById("languageSelect").value; // Lấy ngôn ngữ người dùng chọn
+        const sourceCode = document.getElementById("Code").CodeMirrorInstance.getValue();  // Lấy mã nguồn từ textarea
+        const languagehtml = language.includes("html") ? "html" : "unknown"; // Lấy ngôn ngữ từ class
+
+        if (language === "html") {
+            // Nếu là mã HTML, gửi mã HTML đến controller và chuyển hướng đến trang mới
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Code/ExecuteAndDisplayHtml"; // URL đến action trong controller
+
+            const sourceCodeInput = document.createElement("input");
+            sourceCodeInput.type = "hidden";
+            sourceCodeInput.name = "sourceCode";
+            sourceCodeInput.value = sourceCode;
+            form.appendChild(sourceCodeInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+        else {
+            // Gửi dữ liệu bằng form POST để chuyển đến view kết quả
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Code/ExecuteAndDisplayResult";
+
+            const languageInput = document.createElement("input");
+            languageInput.type = "hidden";
+            languageInput.name = "language";
+            languageInput.value = language;
+            form.appendChild(languageInput);
+
+            const sourceCodeInput = document.createElement("input");
+            sourceCodeInput.type = "hidden";
+            sourceCodeInput.name = "sourceCode";
+            sourceCodeInput.value = sourceCode;
+            form.appendChild(sourceCodeInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+
+@Html.Partial("_EditorScripts")

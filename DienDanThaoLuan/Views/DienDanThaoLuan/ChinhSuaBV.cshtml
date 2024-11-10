@@ -1,7 +1,7 @@
 ﻿@model DienDanThaoLuan.Models.BaiViet
 @{
     ViewBag.Title = "ChinhSuaBV";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <style>
     pre {
@@ -118,7 +118,7 @@
         if (!textArea.CodeMirrorInstance) {
             textArea.CodeMirrorInstance = CodeMirror.fromTextArea(textArea, {
                 lineNumbers: true, // Thay đổi theo ngôn ngữ bạn muốn
-                theme: "default",  // Chọn theme cho CodeMirror
+                theme: "darcula",  // Chọn theme cho CodeMirror
                 lineWrapping: true
             });
         }

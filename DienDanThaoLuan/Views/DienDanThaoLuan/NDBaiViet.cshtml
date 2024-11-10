@@ -15,27 +15,7 @@
         overflow-y: auto; /* Hiển thị thanh cuộn dọc nếu cần */
         font-family: 'Courier New', Courier, monospace; /* Font chữ */
     }
-
-    .hljs-keyword {
-        color: #ff79c6;
-    }
-    /* Màu cho từ khóa */
-    .hljs-string {
-        color: #50fa7b;
-    }
-    /* Màu cho chuỗi */
-    .hljs-variable {
-        color: #bd93f9;
-    }
-    /* Màu cho biến */
-    .hljs-function {
-        color: #66d9ef;
-    }
-    /* Màu cho hàm */
-    .hljs-comment {
-        color: #6272a4;
-        font-style: italic;
-    }
+    
     /* Định dạng cho mã bên trong */
     code {
         display: block; /* Chuyển thành khối */
@@ -103,7 +83,7 @@
         }
     .post {
         background-color: #e7f3ff; /* Màu nền bài viết */
-        border: 1px solid #007bff; /* Đường viền màu xanh đậm */
+        border: 4px solid #ae00ff;
         padding: 20px;
         margin-bottom: 20px;
         box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4); /* Đổ bóng nổi bật */
@@ -148,6 +128,26 @@
     .share-btn.twitter:hover {
         background-color: #1a8cd8;
     }
+    .run-button {
+        background-color: #0c88c2;
+        color: white;
+        position: absolute;
+        top: 10px; /* Vị trí bên trên */
+        right: 70px;
+        border-radius: 5px;
+        border: none;
+        padding: 4px 8px; /* Giảm kích thước nút */
+        font-size: 12px;
+    }
+
+        .run-button:hover {
+            background-color: #0078a0;
+            transform: scale(1.05);
+        }
+
+        .run-button:focus {
+            outline: none;
+        }
 </style>
 
 @section breadcrumb{
@@ -182,8 +182,9 @@
                 @if (!string.IsNullOrEmpty(ViewBag.CodeContent))
                 {
                     <div class="code-container">
-                        <button class="copy-button" onclick="copyCode()">Copy</button>
-                        <pre><code class="language" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(ViewBag.CodeContent))</code></pre>
+                        <button class="copy-button" onclick="copyCode(this)">Copy</button>
+                        <button class="run-button" onclick="runCode(this)">Run</button>
+                        <pre><code class="language codeBlock" id="codeBlock">@Html.Raw(HttpUtility.HtmlEncode(ViewBag.CodeContent))</code></pre>
                         <div class="copy-notification" id="copyNotification">Code copied to clipboard!</div>
                     </div>
                 }
@@ -257,25 +258,35 @@
     }
 
     /*code ban đầu */
-    function copyCode() {
-        // Lấy nội dung của code
-        const code = document.getElementById("codeBlock").innerText;
+    function copyCode(button) {
+        // Tìm phần tử codeBlock trong cùng code-container với nút Copy
+        const codeContainer = button.closest(".code-container");
+        const codeBlock = codeContainer.querySelector(".codeBlock");
 
-        // Tạo một textarea tạm thời để sao chép
-        const textarea = document.createElement("textarea");
-        textarea.value = code;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
+        if (codeBlock) {
+            // Lấy nội dung của codeBlock
+            const code = codeBlock.innerText;
 
-        const notification = document.getElementById("copyNotification");
-        notification.style.display = "block"; // Hiện thông báo
-        notification.style.opacity = 1; // Đặt độ mờ thành 100%
-        setTimeout(() => {
-            notification.style.opacity = 0; // Để ẩn thông báo
-        }, 2000);
+            // Tạo một textarea tạm thời để sao chép nội dung
+            const textarea = document.createElement("textarea");
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            // Hiển thị thông báo sao chép thành công
+            const notification = codeContainer.querySelector(".copy-notification");
+            notification.style.display = "block";
+            notification.style.opacity = 1;
+            setTimeout(() => {
+                notification.style.opacity = 0;
+            }, 2000);
+        } else {
+            console.error("Lỗi không thể copy code.");
+        }
     }
+
     document.addEventListener("DOMContentLoaded", function () {
         hljs.highlightAll(); // Khởi tạo Highlight.js
     });
@@ -304,4 +315,52 @@
             }
         });
     });
+
+    function runCode(button) {
+        // Tìm phần tử codeBlock gần nút vừa nhấn
+        const codeContainer = button.closest('.code-container');
+        const codeBlock = codeContainer.querySelector('.codeBlock');  // Tìm thẻ <code> trong cùng một .code-container
+
+        // Lấy tên ngôn ngữ từ lớp của codeBlock
+        const language = codeBlock.className.split(' ').find(className => className.startsWith("language-")).replace("language-", "");
+
+        // Lấy mã nguồn từ codeBlock
+        const sourceCode = codeBlock.textContent;
+
+        if (language === "xml") {
+            // Nếu là mã HTML, gửi mã HTML đến controller và chuyển hướng đến trang mới
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Code/ExecuteAndDisplayHtml"; // URL đến action trong controller
+
+            const sourceCodeInput = document.createElement("input");
+            sourceCodeInput.type = "hidden";
+            sourceCodeInput.name = "sourceCode";
+            sourceCodeInput.value = sourceCode;
+            form.appendChild(sourceCodeInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        } else {
+            // Gửi dữ liệu bằng form POST để chuyển đến view kết quả
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Code/ExecuteAndDisplayResult";
+
+            const languageInput = document.createElement("input");
+            languageInput.type = "hidden";
+            languageInput.name = "language";
+            languageInput.value = language;
+            form.appendChild(languageInput);
+
+            const sourceCodeInput = document.createElement("input");
+            sourceCodeInput.type = "hidden";
+            sourceCodeInput.name = "sourceCode";
+            sourceCodeInput.value = sourceCode;
+            form.appendChild(sourceCodeInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
 </script>
