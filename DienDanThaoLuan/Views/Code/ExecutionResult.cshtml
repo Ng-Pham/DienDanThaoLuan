@@ -8,7 +8,7 @@
 <!-- Chọn ngôn ngữ lập trình -->
 <div class="language-container">
     <label for="languageSelect" class="language-label">Chọn ngôn ngữ lập trình:</label>
-    <select id="languageSelect" class="form-control mt-2" name="language">
+    <select id="languageSelect" class="form-control mt-2" name="language" onchange="toggleInput()">
         <option value="python" @(ViewBag.SelectedLanguage == "python" ? "selected" : "")>Python</option>
         <option value="java" @(ViewBag.SelectedLanguage == "java" ? "selected" : "")>Java</option>
         <option value="csharp" @(ViewBag.SelectedLanguage == "csharp" ? "selected" : "")>C#</option>
@@ -29,10 +29,11 @@
     <button class="run-button" onclick="runCode()">Run</button>
 </div>
 
-<div class="input-container">
+<!-- Phần nhập input -->
+<div class="input-container" id="userInputContainer">
     <h3 class="section-title">Input:</h3>
     <div class="input-box">
-        <textarea id="Input" name="InputContent" class="form-control mt-2">@Html.Raw(HttpUtility.HtmlEncode(ViewBag.CodeInput))</textarea>
+        <textarea id="Input" name="InputContent" class="form-control mt-2"">@Html.Raw(HttpUtility.HtmlEncode(ViewBag.CodeInput))</textarea>
     </div>
 </div>
 
@@ -83,7 +84,7 @@
     }
 
     /* Phần chứa Code và Kết quả */
-    .code-container, .result-container {
+    .code-container, .result-container, .input-container {
         margin: 20px auto;
         padding: 15px;
         background-color: #f4f4f4;
@@ -92,7 +93,7 @@
     }
 
     /* Hộp chứa mã và kết quả */
-    .code-box, .output-box, .error-box {
+    .code-box, .output-box, .error-box, .input-box {
         background-color: #2d2d2d;
         color: #f1f1f1;
         padding: 15px;
@@ -106,6 +107,18 @@
             word-wrap: break-word;
         }
 
+    /* Phần textarea input */
+    #Input {
+        background-color: #2d2d2d;
+        color: #f1f1f1;
+        padding: 15px;
+        border-radius: 8px;
+        border: none;
+        overflow: auto;
+        font-family: "Courier New", Courier, monospace;
+        resize: none;
+    }
+    
     /* Phần output và error */
     .output-section {
         margin-top: 20px;
@@ -127,22 +140,6 @@
             background-color: #0078a0;
         }
 
-    .input-container {
-        margin: 20px auto;
-        padding: 15px;
-        background-color: #f4f4f4;
-        border-radius: 8px;
-        max-width: 80%;
-    }
-
-    .input-box {
-        background-color: #2d2d2d;
-        color: #f1f1f1;
-        padding: 15px;
-        border-radius: 8px;
-        overflow: auto;
-        font-family: "Courier New", Courier, monospace;
-    }
 </style>
 
 <!-- Liên kết đến CodeMirror -->
@@ -159,11 +156,12 @@
         }
     });
 
+
     function runCode() {
         const language = document.getElementById("languageSelect").value; // Lấy ngôn ngữ người dùng chọn
         const sourceCode = document.getElementById("Code").CodeMirrorInstance.getValue();  // Lấy mã nguồn từ textarea
         const languagehtml = language.includes("html") ? "html" : "unknown"; // Lấy ngôn ngữ từ class
-        const input = document.getElementById("Input").value; // Lấy input từ textarea
+        const input = document.getElementById("Input")?.value || ""; // Lấy input từ textarea nếu tồn tại
 
         if (language === "html") {
             // Nếu là mã HTML, gửi mã HTML đến controller và chuyển hướng đến trang mới
@@ -207,6 +205,22 @@
             form.submit();
         }
     }
+    /*ẩn input khi chọn html */
+    function toggleInput() {
+        const language = document.getElementById("languageSelect").value;
+        const userInputContainer = document.getElementById("userInputContainer");
+
+        if (language === "html") {
+            userInputContainer.style.display = "none"; // Ẩn phần input nếu chọn HTML
+        } else {
+            userInputContainer.style.display = "block"; // Hiện phần input nếu chọn ngôn ngữ khác
+        }
+    }
+
+    // Gọi hàm khi trang được tải để ẩn input nếu cần thiết
+    document.addEventListener("DOMContentLoaded", function () {
+        toggleInput();
+    });
 </script>
 
 @Html.Partial("_EditorScripts")
