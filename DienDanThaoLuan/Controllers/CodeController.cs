@@ -73,14 +73,16 @@ namespace DienDanThaoLuan.Controllers
                 // Truyền mã và kết quả vào ViewBag để hiển thị trong View
                 ViewBag.CodeContent = sourceCode;
                 ViewBag.CodeInput = input; // Truyền lại input để hiển thị
+                ViewBag.SelectedLanguage = language; // Lưu ngôn ngữ được chọn
             }
 
             return View("ExecutionResult"); // Điều hướng đến view kết quả
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult ExecuteAndDisplayHtml(string sourceCode)
+        public ActionResult ExecuteAndDisplayHtml(string sourceCode, string language)
         {
+            ViewBag.SelectedLanguage = language; // Lưu ngôn ngữ được chọn
             // Lưu mã HTML vào ViewBag để truyền cho View
             ViewBag.HtmlContent = sourceCode;
 

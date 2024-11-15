@@ -8,15 +8,15 @@
 <!-- Chọn ngôn ngữ lập trình -->
 <div class="language-container">
     <label for="languageSelect" class="language-label">Chọn ngôn ngữ lập trình:</label>
-    <select id="languageSelect" class="form-control mt-2">
-        <option value="python">Python</option>
-        <option value="java">Java</option>
-        <option value="csharp">C#</option>
-        <option value="php">PHP</option>
-        <option value="c">C</option>
-        <option value="cpp">C++</option>
-        <option value="javascript">JavaScript</option>
-        <option value="html">HTML</option>
+    <select id="languageSelect" class="form-control mt-2" name="language">
+        <option value="python" @(ViewBag.SelectedLanguage == "python" ? "selected" : "")>Python</option>
+        <option value="java" @(ViewBag.SelectedLanguage == "java" ? "selected" : "")>Java</option>
+        <option value="csharp" @(ViewBag.SelectedLanguage == "csharp" ? "selected" : "")>C#</option>
+        <option value="php" @(ViewBag.SelectedLanguage == "php" ? "selected" : "")>PHP</option>
+        <option value="c" @(ViewBag.SelectedLanguage == "c" ? "selected" : "")>C</option>
+        <option value="cpp" @(ViewBag.SelectedLanguage == "cpp" ? "selected" : "")>C++</option>
+        <option value="javascript" @(ViewBag.SelectedLanguage == "javascript" ? "selected" : "")>JavaScript</option>
+        <option value="html" @(ViewBag.SelectedLanguage == "html" ? "selected" : "")>HTML</option>
     </select>
 </div>
 
