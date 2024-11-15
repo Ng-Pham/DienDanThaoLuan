@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DienDanThaoLuan.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace DienDanThaoLuan.Controllers
 {
@@ -37,10 +38,18 @@ namespace DienDanThaoLuan.Controllers
             if (ModelState.IsValid)
             {
                 var member = db.ThanhViens.Find(model.MaTV);
-                var existingEmail = db.ThanhViens.Where(m => m.Email == model.Email).FirstOrDefault();
-                if (existingEmail != null)
+                if (member.Email != model.Email)
                 {
-                    TempData["SuccessMessage"] = "Email đã được sử dụng!! Vui lòng thử lại";
+                    var existingEmail = db.ThanhViens.Where(m => m.Email == model.Email).FirstOrDefault();
+                    if (existingEmail != null)
+                    {
+                        TempData["SuccessMessage"] = "Email đã được sử dụng!! Vui lòng thử lại";
+                        return RedirectToAction("Index");
+                    }
+                }
+                if (member.HoTen == model.HoTen && member.Email == model.Email && member.GioiTinh == model.GioiTinh && member.SDT == model.SDT && member.NgaySinh == model.NgaySinh)
+                {
+                    TempData["SuccessMessage"] = "Không có thông tin nào thay đổi!";
                     return RedirectToAction("Index");
                 }
                 if (member != null)
@@ -65,13 +74,26 @@ namespace DienDanThaoLuan.Controllers
             if (ModelState.IsValid)
             {
                 var admin = db.QuanTriViens.Find(model.MaQTV);
+                if (admin.Email != model.Email)
+                {
+                    var existingEmail = db.QuanTriViens.Where(m => m.Email == model.Email).FirstOrDefault();
+                    if (existingEmail != null)
+                    {
+                        TempData["SuccessMessage"] = "Email đã được sử dụng!! Vui lòng thử lại";
+                        return RedirectToAction("Index");
+                    }
+                }
+                if (admin.HoTen == model.HoTen && admin.Email == model.Email && admin.GioiTinh == model.GioiTinh && admin.SDT == model.SDT && admin.NgaySinh == model.NgaySinh)
+                {
+                    TempData["SuccessMessage"] = "Không có thông tin nào thay đổi!";
+                    return RedirectToAction("Index");
+                }
                 if (admin != null)
                 {
                     admin.HoTen = model.HoTen;
                     admin.Email = model.Email;
                     admin.SDT = model.SDT;
                     admin.NgaySinh = model.NgaySinh;
-
                     db.SaveChanges();
                     TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
                 }

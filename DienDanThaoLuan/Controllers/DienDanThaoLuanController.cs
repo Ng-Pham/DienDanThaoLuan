@@ -10,7 +10,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Drawing;
 using DienDanThaoLuan.Models;
-using System.Web.Security;
 using System.Data.SqlClient;
 using PagedList;
 using System.Web.UI;
