@@ -29,6 +29,13 @@
     <button class="run-button" onclick="runCode()">Run</button>
 </div>
 
+<div class="input-container">
+    <h3 class="section-title">Input:</h3>
+    <div class="input-box">
+        <textarea id="Input" name="InputContent" class="form-control mt-2">@Html.Raw(HttpUtility.HtmlEncode(ViewBag.CodeInput))</textarea>
+    </div>
+</div>
+
 <!-- Phần kết quả -->
 <div class="result-container">
     <div class="output-section">
@@ -119,6 +126,23 @@
         .run-button:hover {
             background-color: #0078a0;
         }
+
+    .input-container {
+        margin: 20px auto;
+        padding: 15px;
+        background-color: #f4f4f4;
+        border-radius: 8px;
+        max-width: 80%;
+    }
+
+    .input-box {
+        background-color: #2d2d2d;
+        color: #f1f1f1;
+        padding: 15px;
+        border-radius: 8px;
+        overflow: auto;
+        font-family: "Courier New", Courier, monospace;
+    }
 </style>
 
 <!-- Liên kết đến CodeMirror -->
@@ -139,6 +163,7 @@
         const language = document.getElementById("languageSelect").value; // Lấy ngôn ngữ người dùng chọn
         const sourceCode = document.getElementById("Code").CodeMirrorInstance.getValue();  // Lấy mã nguồn từ textarea
         const languagehtml = language.includes("html") ? "html" : "unknown"; // Lấy ngôn ngữ từ class
+        const input = document.getElementById("Input").value; // Lấy input từ textarea
 
         if (language === "html") {
             // Nếu là mã HTML, gửi mã HTML đến controller và chuyển hướng đến trang mới
@@ -156,7 +181,6 @@
             form.submit();
         }
         else {
-            // Gửi dữ liệu bằng form POST để chuyển đến view kết quả
             const form = document.createElement("form");
             form.method = "POST";
             form.action = "/Code/ExecuteAndDisplayResult";
@@ -172,6 +196,12 @@
             sourceCodeInput.name = "sourceCode";
             sourceCodeInput.value = sourceCode;
             form.appendChild(sourceCodeInput);
+
+            const inputInput = document.createElement("input");
+            inputInput.type = "hidden";
+            inputInput.name = "input";
+            inputInput.value = input;
+            form.appendChild(inputInput);
 
             document.body.appendChild(form);
             form.submit();

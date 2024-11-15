@@ -26,14 +26,14 @@ namespace DienDanThaoLuan.Controllers
             { "javascript", "18.15.0" },
             { "csharp", "6.12.0" },
             { "java", "15.0.2" },
-            { "cpp", "20" },
-            { "c",  "18" },
+            { "cpp", "10.2.0" },
+            { "c",  "10.2.0" },
              { "php", "8.2.3" }
         };
 
         [HttpPost]
         [ValidateInput(false)]
-        public async Task<ActionResult> ExecuteAndDisplayResult(string language, string sourceCode)
+        public async Task<ActionResult> ExecuteAndDisplayResult(string language, string sourceCode, string input)
         {
             var url = "https://emkc.org/api/v2/piston/execute";
 
@@ -42,7 +42,8 @@ namespace DienDanThaoLuan.Controllers
             {
                 language = language,
                 version = LANGUAGE_VERSIONS.ContainsKey(language) ? LANGUAGE_VERSIONS[language] : "",
-                files = new[] { new { content = sourceCode } }
+                files = new[] { new { content = sourceCode } },
+                stdin = input // Thêm input vào payload
             };
 
             // Serialize payload thành JSON string sử dụng Newtonsoft.Json
@@ -71,6 +72,7 @@ namespace DienDanThaoLuan.Controllers
                 }
                 // Truyền mã và kết quả vào ViewBag để hiển thị trong View
                 ViewBag.CodeContent = sourceCode;
+                ViewBag.CodeInput = input; // Truyền lại input để hiển thị
             }
 
             return View("ExecutionResult"); // Điều hướng đến view kết quả
