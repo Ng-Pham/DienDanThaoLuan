@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DienDanThaoLuan.Controllers;
+using System.Web.Helpers;
 
 namespace DienDanThaoLuan.Controllers
 {
@@ -55,7 +56,7 @@ namespace DienDanThaoLuan.Controllers
                 }
 
                 // Check đúng sai tài khoản mật khẩu của QuanTriVien
-                if (adminAcc.MatKhau != password)
+                if (!BCrypt.Net.BCrypt.Verify(password, adminAcc.MatKhau) || adminAcc.TenDangNhap != username)
                 {
                     ViewBag.error = "Sai tên tài khoản hoặc mật khẩu!! Vui lòng thử lại";
                     ViewBag.username = username;
@@ -75,7 +76,7 @@ namespace DienDanThaoLuan.Controllers
                 return View();
             }
             //Check đúng sai tài khoản mật khẩu
-            if (memberAcc.MatKhau != password || memberAcc.TenDangNhap != username)
+            if (!BCrypt.Net.BCrypt.Verify(password, memberAcc.MatKhau) || memberAcc.TenDangNhap != username)
             {
                 ViewBag.error = "Sai tên tài khoản hoặc mật khẩu!! Vui lòng thử lại";
                 ViewBag.username = username;
@@ -125,9 +126,16 @@ namespace DienDanThaoLuan.Controllers
                         ViewBag.tv.Email = tv.Email;
                         return View(tv);
                     }
+                    else if(tv.MatKhau.Length < 8)
+                    {
+                        ViewBag.error = "Mật khẩu phải có độ dài ít nhất 8 ký tự";
+                        ViewBag.tv.TenDangNhap = tv.TenDangNhap;
+                        return View(tv);
+                    }
                     tv.NgayThamGia = DateTime.Now;
                     tv.MaTV = newMaTV;
                     tv.AnhDaiDien = "avatar.jpg";
+                    tv.MatKhau = BCrypt.Net.BCrypt.HashPassword(tv.MatKhau);
                     // Thêm thành viên mới vào database
                     db.ThanhViens.Add(tv);
                     db.SaveChanges();
@@ -177,7 +185,7 @@ namespace DienDanThaoLuan.Controllers
 
             // Tạo mật khẩu mới ngẫu nhiên
             var newPassword = GenerateRandomPassword();
-            user.MatKhau = newPassword; // Cập nhật mật khẩu mới vào database
+            user.MatKhau = BCrypt.Net.BCrypt.HashPassword(newPassword); // Cập nhật mật khẩu mới vào database
             user.LastPasswordResetRequest = DateTime.Now; // Cập nhật thời gian gửi yêu cầu cuối cùng
             db.SaveChanges();
 

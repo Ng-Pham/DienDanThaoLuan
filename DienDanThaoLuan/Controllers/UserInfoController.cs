@@ -113,9 +113,13 @@ namespace DienDanThaoLuan.Controllers
                 var admin = db.QuanTriViens.SingleOrDefault(a => a.TenDangNhap.ToLower() == username.ToLower());
                 if (admin != null)
                 {
-                    if (admin.MatKhau != currentPassword)
+                    if (!BCrypt.Net.BCrypt.Verify(currentPassword, admin.MatKhau))
                     {
                         TempData["ErrorMessage"] = "Mật khẩu hiện tại không đúng!";
+                    }
+                    else if (newPassword.Length < 8)
+                    {
+                        TempData["ErrorMessage"] = "Mật khẩu phải có độ dài ít nhất 8 ký tự!";
                     }
                     else if (newPassword != confirmPassword)
                     {
@@ -123,7 +127,7 @@ namespace DienDanThaoLuan.Controllers
                     }
                     else
                     {
-                        admin.MatKhau = newPassword;
+                        admin.MatKhau = BCrypt.Net.BCrypt.HashPassword(newPassword);
                         db.SaveChanges();
                         TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
                     }
@@ -131,17 +135,22 @@ namespace DienDanThaoLuan.Controllers
             }
             else
             {
-                if (member.MatKhau != currentPassword)
+                if (!BCrypt.Net.BCrypt.Verify(currentPassword, member.MatKhau))
                 {
                     TempData["ErrorMessage"] = "Mật khẩu hiện tại không đúng!";
+                }
+                else if (newPassword.Length < 8)
+                {
+                    TempData["ErrorMessage"] = "Mật khẩu phải có độ dài ít nhất 8 ký tự!";
                 }
                 else if (newPassword != confirmPassword)
                 {
                     TempData["ErrorMessage"] = "Mật khẩu mới và xác nhận mật khẩu không khớp!";
                 }
+                
                 else
                 {
-                    member.MatKhau = newPassword;
+                    member.MatKhau = BCrypt.Net.BCrypt.HashPassword(newPassword);
                     db.SaveChanges();
                     TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
                 }
