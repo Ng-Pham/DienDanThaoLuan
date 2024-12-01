@@ -69,7 +69,7 @@
           <Property Name="SDT" Type="varchar" MaxLength="11" />
           <Property Name="NgaySinh" Type="date" />
           <Property Name="TenDangNhap" Type="varchar" MaxLength="15" />
-          <Property Name="MatKhau" Type="varchar" MaxLength="10" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="60" />
         </EntityType>
         <EntityType Name="ThanhVien">
           <Key>
@@ -85,7 +85,7 @@
           <Property Name="NgaySinh" Type="date" />
           <Property Name="NgayThamGia" Type="date" />
           <Property Name="TenDangNhap" Type="varchar" MaxLength="15" />
-          <Property Name="MatKhau" Type="varchar" MaxLength="10" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="60" />
         </EntityType>
         <EntityType Name="ThongBao">
           <Key>
@@ -348,7 +348,7 @@
           <Property Name="SDT" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="NgaySinh" Type="DateTime" Precision="0" />
           <Property Name="TenDangNhap" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="MatKhau" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="GioiTinh" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="BaiViets" Relationship="DienDanThaoLuanModel.FK__BaiViet__MaQTV__4222D4EF" FromRole="QuanTriVien" ToRole="BaiViet" />
           <NavigationProperty Name="BinhLuans" Relationship="DienDanThaoLuanModel.FK__BinhLuan__MaQTV__46E78A0C" FromRole="QuanTriVien" ToRole="BinhLuan" />
@@ -368,7 +368,7 @@
           <Property Name="NgaySinh" Type="DateTime" Precision="0" />
           <Property Name="NgayThamGia" Type="DateTime" Precision="0" />
           <Property Name="TenDangNhap" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="MatKhau" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BaiViets" Relationship="Self.FK__BaiViet__MaTV__412EB0B6" FromRole="ThanhVien" ToRole="BaiViet" />
           <NavigationProperty Name="BinhLuans" Relationship="Self.FK__BinhLuan__MaTV__44FF419A" FromRole="ThanhVien" ToRole="BinhLuan" />
           <NavigationProperty Name="Gopies" Relationship="Self.FK__GopY__MaTV__4D94879B" FromRole="ThanhVien" ToRole="GopY" />
