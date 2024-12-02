@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Admin\Documents\File BT học tập\Web\DienDanThaoLuan\DienDanThaoLuan\Models\DbContext.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\phucm\OneDrive\Desktop\project IT Xperience\DienDanThaoLuan\DienDanThaoLuan\Models\DbContext.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
