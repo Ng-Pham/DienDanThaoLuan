@@ -20,7 +20,7 @@
                                 <span id="unreadCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle badge-sm">@ViewBag.SLGY</span>
                             </a>
                         }
-                        else 
+                        else if(Session["UserId"] != null)
                         {
                             <a class="nav-link" href="@Url.Action("GopY", "DienDanThaoLuan")">GÓP Ý</a>
                         }
