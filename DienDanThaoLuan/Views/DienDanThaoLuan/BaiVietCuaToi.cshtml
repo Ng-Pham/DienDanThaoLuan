@@ -27,10 +27,15 @@
                     <button onclick="location.href='@Url.Action("ThemBV", "DienDanThaoLuan")'" class="btn btn-primary">Thêm bài</button>
                 </div>
             </div>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-warning">Chưa có bài viết nào</div>
+            }
             <!-- Post Items -->
             @foreach (var t in Model)
             {
-                <div class="mb-1 rounded-0 border-top pt-3 @(t.IsAdmin ? "admin" : "")">
+                <div class="mb-1 rounded-0 border-top pt-3">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center">
@@ -46,7 +51,7 @@
                                 <p class="mb-1">Ngày đăng: <span class="text-muted">@t.NgayDang</span></p>
                                 <p class="mb-0">
                                     Trả lời: <span class="text-muted">@t.SoBL</span>
-                                     </p>
+                                </p>
                             </div>
                         </div>
                     </div>

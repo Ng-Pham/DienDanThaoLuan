@@ -898,7 +898,7 @@ namespace DienDanThaoLuan.Controllers
                     var baiVietCuaToi = (from bv in db.BaiViets
                                          join cd in db.ChuDes on bv.MaCD equals cd.MaCD
                                          join loai in db.LoaiCDs on cd.MaLoai equals loai.MaLoai
-                                         where bv.MaTV == adminId
+                                         where bv.MaQTV == adminId
                                          orderby bv.NgayDang descending
                                          select new BaiVietView
                                          {
@@ -921,6 +921,63 @@ namespace DienDanThaoLuan.Controllers
                     return View(baiVietCuaToi.ToPagedList(iPageNumber, iSize));
                 }
             }
+        }
+
+        public ActionResult ThongTin(int? page, string id)
+        {
+            var thongTinTV = db.ThanhViens.SingleOrDefault(tt => tt.MaTV == id);
+            var thongTinVaDSBV = new List<BaiVietView>();
+            QuanTriVien thongTinQTV = null;
+            if (thongTinTV == null)
+            {
+                thongTinQTV = db.QuanTriViens.SingleOrDefault(tt => tt.MaQTV == id);
+                ViewBag.ThongTin = thongTinQTV;
+                ViewBag.IsAd = true;
+                thongTinVaDSBV = (from bv in db.BaiViets
+                                  join cd in db.ChuDes on bv.MaCD equals cd.MaCD
+                                  join loai in db.LoaiCDs on cd.MaLoai equals loai.MaLoai
+                                  where bv.MaQTV == id && bv.TrangThai.Contains("Đã duyệt")
+                                  orderby bv.NgayDang descending
+                                  select new BaiVietView
+                                  {
+                                      MaLoai = loai.MaLoai,
+                                      TenLoai = loai.TenLoai,
+                                      MaCD = cd.MaCD,
+                                      TenCD = cd.TenCD,
+                                      MaBV = bv.MaBV,
+                                      TieuDe = bv.TieuDeBV,
+                                      ND = bv.NoiDung,
+                                      NgayDang = bv.NgayDang ?? DateTime.Now,
+                                      SoBL = db.BinhLuans.Count(bl => bl.MaBV == bv.MaBV),
+                                  }).ToList();
+            }
+            else
+            {
+                ViewBag.ThongTin = thongTinTV;
+                ViewBag.IsAd = false;
+                thongTinVaDSBV = (from bv in db.BaiViets
+                                  join cd in db.ChuDes on bv.MaCD equals cd.MaCD
+                                  join loai in db.LoaiCDs on cd.MaLoai equals loai.MaLoai
+                                  where bv.MaTV == id && bv.TrangThai.Contains("Đã duyệt")
+                                  orderby bv.NgayDang descending
+                                  select new BaiVietView
+                                  {
+                                      MaLoai = loai.MaLoai,
+                                      TenLoai = loai.TenLoai,
+                                      MaCD = cd.MaCD,
+                                      TenCD = cd.TenCD,
+                                      MaBV = bv.MaBV,
+                                      TieuDe = bv.TieuDeBV,
+                                      ND = bv.NoiDung,
+                                      NgayDang = bv.NgayDang ?? DateTime.Now,
+                                      SoBL = db.BinhLuans.Count(bl => bl.MaBV == bv.MaBV),
+                                  }).ToList();
+            }
+            ViewBag.Id = id;
+            int iSize = 8;
+            int iPageNumber = (page ?? 1);
+            return View(thongTinVaDSBV.ToPagedList(iPageNumber, iSize));
+
         }
 
     }

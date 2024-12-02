@@ -15,7 +15,7 @@
         overflow-y: auto; /* Hiển thị thanh cuộn dọc nếu cần */
         font-family: 'Courier New', Courier, monospace; /* Font chữ */
     }
-    
+
     /* Định dạng cho mã bên trong */
     code {
         display: block; /* Chuyển thành khối */
@@ -81,6 +81,7 @@
             background-color: #ff4d4d;
             color: white;
         }
+
     .post {
         background-color: #e7f3ff; /* Màu nền bài viết */
         border: 4px solid #ae00ff;
@@ -111,23 +112,24 @@
         cursor: pointer;
     }
 
-    .share-btn.facebook {
-        background-color: #1877f2;
-        color: white;
-    }
+        .share-btn.facebook {
+            background-color: #1877f2;
+            color: white;
+        }
 
-    .share-btn.facebook:hover {
-        background-color: #166fe5;
-    }
+            .share-btn.facebook:hover {
+                background-color: #166fe5;
+            }
 
-    .share-btn.twitter {
-        background-color: #1da1f2;
-        color: white;
-    }
+        .share-btn.twitter {
+            background-color: #1da1f2;
+            color: white;
+        }
 
-    .share-btn.twitter:hover {
-        background-color: #1a8cd8;
-    }
+            .share-btn.twitter:hover {
+                background-color: #1a8cd8;
+            }
+
     .run-button {
         background-color: #0c88c2;
         color: white;
@@ -164,6 +166,19 @@
 <div class="post-title mt-2">
     @Model.TieuDeBV
 </div>
+@{
+    string idNguoiViet = string.Empty;
+    var nguoiVietBai = ViewBag.NguoiVietBai;
+
+    if (nguoiVietBai.GetType().Name.Contains("ThanhVien"))
+    {
+        idNguoiViet = nguoiVietBai.MaTV.ToString();
+    }
+    else if (nguoiVietBai.GetType().Name.Contains("QuanTriVien"))
+    {
+        idNguoiViet = nguoiVietBai.MaQTV.ToString();
+    }
+}
 
 <!-- Main Post -->
 <div class="post-container post">
@@ -173,7 +188,7 @@
             <div class="avatar">
                 <img src="~/Images/@ViewBag.NguoiVietBai.AnhDaiDien" alt="Avatar">
             </div>
-            <div class="post-header pt-2">@ViewBag.NguoiVietBai.TenDangNhap</div>
+            <div class="pt-2"><a class="post-header" style="text-decoration: none;" href="@Url.Action("ThongTin","DienDanThaoLuan", new { id = idNguoiViet })">@ViewBag.NguoiVietBai.TenDangNhap</a></div>
         </div>
         <div class="col-10">
             <div class="post-date">@Model.NgayDang</div>

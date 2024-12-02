@@ -78,7 +78,7 @@
                 <div class="avatar">
                     <img src="~/Images/@bl.avatarNguoiBL" alt="Avatar" />
                 </div>
-                <div class="post-header pt-2">@bl.TenNguoiViet</div>
+                <div class="pt-2"><a class="post-header" style="text-decoration: none;" href="@Url.Action("ThongTin","DienDanThaoLuan", new { id = bl.MaNguoiGui})">@bl.TenNguoiViet</a></div>
             </div>
             <div class="col-10">
                 <div class="post-date">@bl.NgayGui</div>

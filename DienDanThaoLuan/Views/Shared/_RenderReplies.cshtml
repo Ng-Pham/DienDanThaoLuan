@@ -11,7 +11,7 @@
                 <div class="avatar">
                     <img src="~/Images/@reply.avatarNguoiBL" alt="Avatar" />
                 </div>
-                <div class="post-header pt-2">@reply.TenNguoiViet</div>
+                <div class="pt-2"><a class="post-header" style="text-decoration: none;" href="@Url.Action("ThongTin","DienDanThaoLuan", new { id = reply.MaNguoiGui })">@reply.TenNguoiViet</a></div>
             </div>
             <div class="col-10">
                 @if (!string.IsNullOrEmpty(@reply.ReplyToContent))
