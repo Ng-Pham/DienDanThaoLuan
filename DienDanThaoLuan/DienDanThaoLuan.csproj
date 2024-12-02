@@ -440,6 +440,7 @@
     <Content Include="Views\Code\ExecutionResult.cshtml" />
     <Content Include="Views\Code\DisplayHtml.cshtml" />
     <Content Include="Views\DienDanThaoLuan\BaiVietCuaToi.cshtml" />
+    <Content Include="Views\DienDanThaoLuan\ThongTin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
