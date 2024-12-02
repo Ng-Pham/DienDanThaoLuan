@@ -55,7 +55,6 @@ namespace DienDanThaoLuan.Controllers
                 var response = await client.PostAsync(url, content);
                 string responseString = response.Content.ReadAsStringAsync().Result;
                 var result = JsonConvert.DeserializeObject<CodeExecutionResult>(responseString);
-                Console.WriteLine(responseString); // hoặc sử dụng logger
 
                 if (result == null || result.run == null)
                 {

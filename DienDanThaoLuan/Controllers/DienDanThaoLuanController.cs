@@ -849,5 +849,79 @@ namespace DienDanThaoLuan.Controllers
             db.SaveChanges();
             return RedirectToAction("ThongBao");
         }
+
+        public ActionResult BaiVietCuaToi(int? page)
+        {
+            // Lấy UserID từ Session
+            string userId = Session["UserId"]?.ToString();
+            // Lấy AdminID từ Session
+            string adminId = Session["AdminId"]?.ToString();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+
+                using (var db = new DienDanThaoLuanEntities())
+                {
+                    // Truy vấn danh sách bài viết của người dùng hiện tại
+                    var baiVietCuaToi = (from bv in db.BaiViets
+                                         join cd in db.ChuDes on bv.MaCD equals cd.MaCD
+                                         join loai in db.LoaiCDs on cd.MaLoai equals loai.MaLoai
+                                         where bv.MaTV == userId && bv.TrangThai.Contains("Đã duyệt")
+                                         orderby bv.NgayDang descending
+                                         select new BaiVietView
+                                         {
+                                             MaLoai = loai.MaLoai,
+                                             TenLoai = loai.TenLoai,
+                                             MaCD = cd.MaCD,
+                                             TenCD = cd.TenCD,
+                                             MaBV = bv.MaBV,
+                                             TieuDe = bv.TieuDeBV,
+                                             ND = bv.NoiDung,
+                                             TenNguoiViet = db.ThanhViens.Where(tv => tv.MaTV == bv.MaTV).Select(tv => tv.HoTen).FirstOrDefault(),
+                                             NgayDang = bv.NgayDang ?? DateTime.Now,
+                                             SoBL = db.BinhLuans.Count(bl => bl.MaBV == bv.MaBV),
+                                             TrangThaiBV = bv.TrangThai,
+                                             IsAdmin = bv.MaQTV != null
+                                         }).ToList();
+
+                    // Phân trang
+                    int iSize = 8;
+                    int iPageNumber = (page ?? 1);
+                    return View(baiVietCuaToi.ToPagedList(iPageNumber, iSize));
+                }
+            }
+            else
+            { 
+                using (var db = new DienDanThaoLuanEntities())
+                {
+                    // Truy vấn danh sách bài viết của người dùng hiện tại
+                    var baiVietCuaToi = (from bv in db.BaiViets
+                                         join cd in db.ChuDes on bv.MaCD equals cd.MaCD
+                                         join loai in db.LoaiCDs on cd.MaLoai equals loai.MaLoai
+                                         where bv.MaTV == adminId
+                                         orderby bv.NgayDang descending
+                                         select new BaiVietView
+                                         {
+                                             MaLoai = loai.MaLoai,
+                                             TenLoai = loai.TenLoai,
+                                             MaCD = cd.MaCD,
+                                             TenCD = cd.TenCD,
+                                             MaBV = bv.MaBV,
+                                             TieuDe = bv.TieuDeBV,
+                                             ND = bv.NoiDung,
+                                             TenNguoiViet = db.QuanTriViens.Where(qtv => qtv.MaQTV == bv.MaQTV).Select(qtv => qtv.HoTen).FirstOrDefault(),
+                                             NgayDang = bv.NgayDang ?? DateTime.Now,
+                                             SoBL = db.BinhLuans.Count(bl => bl.MaBV == bv.MaBV),
+                                             IsAdmin = bv.MaQTV != null
+                                         }).ToList();
+
+                    // Phân trang
+                    int iSize = 8;
+                    int iPageNumber = (page ?? 1);
+                    return View(baiVietCuaToi.ToPagedList(iPageNumber, iSize));
+                }
+            }
+        }
+
     }
 }
